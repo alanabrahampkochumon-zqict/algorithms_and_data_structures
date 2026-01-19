@@ -1,4 +1,4 @@
-# Implementation of Different Algorithms
+# Data Structures and Algorithms
 
 The projects aims to implement different algorithms covered in <a href="https://mitpress.mit.edu/9780262046305/introduction-to-algorithms/" target="_blank">Introduction to Algorithms</a> in C++.
 
