@@ -10,4 +10,4 @@ FetchContent_Declare(
 FetchContent_MakeAvailable(googletest)
 
 # Group the projects into a single folder
-set_target_properties(gtest gtest_main gmock gmock_main PROPERTIES Folder "Google Test")
+set_target_properties(gtest gtest_main gmock gmock_main PROPERTIES FOLDER "Google Test")
