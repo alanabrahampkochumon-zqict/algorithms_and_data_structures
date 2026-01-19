@@ -3,6 +3,9 @@ project(Algorithms)
 
 set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(dependencies.cmake)
 
 add_subdirectory(sorting)
