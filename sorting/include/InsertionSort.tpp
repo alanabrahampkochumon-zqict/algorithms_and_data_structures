@@ -1,4 +1,3 @@
-#pragma once
 #include <cstddef>
 
 namespace Sorting
@@ -6,11 +5,14 @@ namespace Sorting
     namespace InsertionSort
     {
         template <typename T, std::size_t SIZE, typename Comparator>
-        void sort(const T (&nums)[SIZE], Comparator comp);
+        void sort(const T (&nums)[SIZE], Comparator comp)
+        {
+        }
 
         template <typename T, std::size_t SIZE>
-        void sort(const T (&nums)[SIZE]);
+        void sort(const T (&nums)[SIZE])
+        {
+        }
+
     }
 }
-
-#include <InsertionSort.tpp>
