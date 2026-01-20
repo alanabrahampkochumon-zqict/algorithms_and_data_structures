@@ -3,8 +3,11 @@ add_library(
     INTERFACE
 )
 
+set(Headers include/InsertionSort.h)
+set(TemplateUnits include/InsertionSort.tpp)
+
 set(INCLUDE_FILES
-    include/InsertionSort.h include/InsertionSort.tpp
+    ${Headers} ${TemplateUnits}
 )
 
 target_sources(
@@ -25,7 +28,9 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-add_custom_target(SortingHeaders ALL
+source_group("Templates" FILES ${TemplateUnits})
+
+add_custom_target(SortingAlgorithms ALL
     SOURCES
     ${INCLUDE_FILES}
 )
