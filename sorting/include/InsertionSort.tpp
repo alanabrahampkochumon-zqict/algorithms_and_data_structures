@@ -31,7 +31,7 @@ namespace Algorithms::InsertionSort
 	}
 
 	template<typename T, typename Comparator>
-        void sort(std::vector<T>& vector, Comparator comp)
+	void sort(std::vector<T>& vector, Comparator comp)
 	{
 			_sort_internal(vector.data(), vector.size(), comp);
 	}
