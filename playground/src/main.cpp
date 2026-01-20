@@ -4,5 +4,6 @@
 
 
 int main() {
-	std::cout << "Hello, world";
+
+	std::cout << "Welcome to CPP Algorithm Playground\n";
 }

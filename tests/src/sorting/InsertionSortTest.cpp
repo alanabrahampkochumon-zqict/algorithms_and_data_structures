@@ -14,13 +14,15 @@ TEST(InsertionSort, SortsArrayOfLength1)
 
 TEST(InsertionSort, SortsArrayOfLength10)
 {
+	// Arrange
 	int array[] = { 316, 284, 3912, 329111, 85, 0, 55, 22, -555, -328123 };
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 	
+	// Act
 	sort(array);
 
-	constexpr size_t size = std::size(array);
-	for (std::size_t i = 0; i < size; i++)
+	// Assert
+	for (std::size_t i = 0, size = std::size(array); i < size; i++)
 	{
 		ASSERT_EQ(sorted[i], array[i]);
 	}
@@ -28,12 +30,15 @@ TEST(InsertionSort, SortsArrayOfLength10)
 
 TEST(InsertionSort, SortsSortedArray)
 {
-	std::size_t SIZE = 10;
+	// Arrange
 	int array[] = { -328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111 };
-	int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+
+	// Act
 	sort(array);
 
-	for (std::size_t i = 0; i < SIZE; i++)
+	// Assert
+	for (std::size_t i = 0, size = std::size(array); i < size; i++)
 	{
 		ASSERT_EQ(sorted[i], array[i]);
 	}
@@ -41,15 +46,97 @@ TEST(InsertionSort, SortsSortedArray)
 
 TEST(InsertionSort, SortsReverseArray)
 {
-	std::size_t SIZE = 10;
+	// Arrange
 	int array[] = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
-	int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+
+	// Act
 	sort(array);
 
-	std::size_t size = sizeof(array) / sizeof(*array);
-
-	for (std::size_t i = 0; i < size; i++)
+	// Assert
+	for (std::size_t i = 0, size = std::size(array); i < size; i++)
 	{
 		ASSERT_EQ(sorted[i], array[i]);
+	}
+}
+
+TEST(InsertionSort, SortsArrayDescendingUsingComparator)
+{
+	// Arrange
+	int array[] = { -328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111 };
+	const int sorted[] = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
+
+	// Act
+	sort(array, std::greater<int>());
+
+	// Assert
+	for (std::size_t i = 0, size = std::size(array); i < size; i++)
+	{
+		ASSERT_EQ(sorted[i], array[i]);
+	}
+}
+
+TEST(InsertionSort, SortsLettersInAscendingByDefault)
+{
+	// Arrange
+	int array[] = { 'f', 'e', 'a', 'm', 't', 'l', 'r', 'a', 'd', 'b' };
+	const int sorted[] = { 'a', 'a', 'b', 'd', 'e', 'f', 'l', 'm', 'r', 't' };
+
+	// Act
+	sort(array);
+
+	// Assert
+	for (std::size_t i = 0, size = std::size(array); i < size; i++)
+	{
+		ASSERT_EQ(sorted[i], array[i]);
+	}
+}
+
+TEST(InsertionSort, SortsVectorOfLength10)
+{
+	// Arrange
+	std::vector vector = { 316, 284, 3912, 329111, 85, 0, 55, 22, -555, -328123 };
+	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+
+	// Act
+	sort(vector);
+
+	// Assert
+	for (std::size_t i = 0, size = std::size(vector); i < size; i++)
+	{
+		ASSERT_EQ(sorted[i], vector[i]);
+	}
+}
+
+TEST(InsertionSort, SortsSortedVector)
+{
+	// Arrange
+	std::vector vector = { -328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111 };
+	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+
+	// Act
+	sort(vector);
+
+	// Assert
+	for (std::size_t i = 0, size = vector.size(); i < size; i++)
+	{
+		ASSERT_EQ(sorted[i], vector[i]);
+	}
+}
+
+TEST(InsertionSort, SortsReverseVector)
+{
+	// Arrange
+	std::vector vector = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
+	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+
+	// Act
+	sort(vector);
+
+	std::cout << "Memory Address (After): " << &vector << "\n";
+	// Assert
+	for (std::size_t i = 0, size = vector.size(); i < size; i++)
+	{
+		ASSERT_EQ(sorted[i], vector[i]);
 	}
 }
