@@ -3,7 +3,7 @@
 
 #include <InsertionSort.h>
 
-using namespace Sorting::InsertionSort;
+using namespace Algorithms::InsertionSort;
 
 TEST(InsertionSort, SortsArrayOfLength1)
 {
@@ -14,12 +14,13 @@ TEST(InsertionSort, SortsArrayOfLength1)
 
 TEST(InsertionSort, SortsArrayOfLength10)
 {
-	std::size_t SIZE = 10;
 	int array[] = { 316, 284, 3912, 329111, 85, 0, 55, 22, -555, -328123 };
-	int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
+	
 	sort(array);
 
-	for (std::size_t i = 0; i < SIZE; i++)
+	constexpr size_t size = std::size(array);
+	for (std::size_t i = 0; i < size; i++)
 	{
 		ASSERT_EQ(sorted[i], array[i]);
 	}

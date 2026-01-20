@@ -1,16 +1,14 @@
 #pragma once
 #include <cstddef>
 
-namespace Sorting
+namespace Algorithms::InsertionSort
 {
-    namespace InsertionSort
-    {
-        template <typename T, std::size_t SIZE, typename Comparator>
-        void sort(const T (&nums)[SIZE], Comparator comp);
+        template <typename T, std::size_t Size, typename Comparator>
+        void sort(T (&array)[Size], Comparator comp);
 
-        template <typename T, std::size_t SIZE>
-        void sort(const T (&nums)[SIZE]);
-    }
+        template <typename T, std::size_t Size>
+        void sort(T (&array)[Size]);
+
 }
 
 #include <InsertionSort.tpp>
