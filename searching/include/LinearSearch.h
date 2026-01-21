@@ -5,9 +5,9 @@ namespace Algorithms
 	namespace Searching {
 
 
-		//template<typename T, 
+		template<typename T, std::size_t
 		void linearSearch();
 	}
 }
 
-#include <LinearSearch.tpp>
+#include "LinearSearch.tpp"

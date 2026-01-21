@@ -2,6 +2,7 @@ add_library(
     Sorting
     INTERFACE
 )
+target_compile_features(Sorting INTERFACE cxx_std_17)
 
 set(Headers include/InsertionSort.h)
 set(TemplateUnits include/InsertionSort.tpp)

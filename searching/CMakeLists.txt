@@ -1,4 +1,5 @@
 add_library(Searching INTERFACE)
+target_compile_features(Searching INTERFACE cxx_std_17)
 
 set(TemplateUnits include/LinearSearch.tpp)
 set(Headers include/LinearSearch.h)
@@ -14,7 +15,7 @@ target_sources(Searching
 target_include_directories(
     Searching
     INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include"
     "$<INSTALL_INTERFACE:include>"
 )
 

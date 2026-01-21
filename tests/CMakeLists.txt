@@ -11,6 +11,7 @@ target_link_libraries(
 
     PRIVATE
     Sorting
+    Searching
     GTest::gtest_main
 )
 
