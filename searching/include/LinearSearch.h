@@ -8,10 +8,10 @@ namespace Algorithms
 
 
 		template<typename T, std::size_t Size>
-		int linearSearch(const T (&array)[Size], const T& element);
+		std::optional<size_t> linearSearch(const T (&array)[Size], const T& element);
 
 		template<typename T>
-		int linearSearch(const std::vector<T>& vector, const T& element);
+		std::optional<size_t> linearSearch(const std::vector<T>& vector, const T& element);
 	}
 }
 

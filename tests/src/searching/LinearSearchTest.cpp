@@ -13,7 +13,7 @@ TEST(LinearSearch, SearchingItemInFirstIndexReturnsZero)
 	int searchElement = array[0];
 
 	// Act
-	int position = linearSearch(array, searchElement);
+	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
 	ASSERT_EQ(0, position);
@@ -26,7 +26,7 @@ TEST(LinearSearch, SearchingItemInLastIndexReturnsLastIndexMinusOne)
 	int searchElement = array[std::size(array) - 1];
 
 	// Act
-	int position = linearSearch(array, searchElement);
+	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
 	ASSERT_EQ(std::size(array) - 1, position);
@@ -39,23 +39,23 @@ TEST(LinearSearch, SearchingItemAtAnyPositionReturnsCorrectIndex)
 	int searchElement = 593;
 
 	// Act
-	int position = linearSearch(array, searchElement);
+	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
 	ASSERT_EQ(4, position);
 }
 
-TEST(LinearSearch, SearchingNonExistantItemReturnsNegativeOne)
+TEST(LinearSearch, SearchingNonExistantItemReturnsNullOptional)
 {
 	// Arrange
 	const int array[] = { 316, 55, 11, 293, 593, 55, 329, 592, 391, 999 };
 	int searchElement = 455555;
 
 	// Act
-	int position = linearSearch(array, searchElement);
+	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(-1, position);
+	ASSERT_EQ(std::nullopt, position);
 }
 
 TEST(LinearSearch, SearchForStringInStringArrayReturnssCorrectIndex)
@@ -65,7 +65,7 @@ TEST(LinearSearch, SearchForStringInStringArrayReturnssCorrectIndex)
 	std::string searchElement = "test3";
 
 	// Act
-	int position = linearSearch(array, searchElement);
+	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
 	ASSERT_EQ(2, position);
@@ -78,7 +78,7 @@ TEST(LinearSearch, SearchForNumberInVectorReturnsCorrectIndex)
 	int searchElement = vector[4];
 
 	// Act
-	int position = linearSearch(vector, searchElement);
+	std::optional<size_t> position = linearSearch(vector, searchElement);
 
 	// Assert
 	ASSERT_EQ(4, position);
