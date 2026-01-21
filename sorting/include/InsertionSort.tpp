@@ -3,7 +3,7 @@
 namespace Algorithms::InsertionSort
 {
 	template <typename T, typename Comparator>
-	void _sort_internal(T* data, std::size_t size, Comparator comp)
+	void _sort(T* data, std::size_t size, Comparator comp)
 	{
 		for (std::size_t i = 1; i < size; i++)
 		{
@@ -21,7 +21,7 @@ namespace Algorithms::InsertionSort
 	template <typename T, std::size_t Size, typename Comparator>
 	void sort(T (&array)[Size], Comparator comp)
 	{
-		_sort_internal(array, Size, comp);
+		_sort(array, Size, comp);
 	}
 
 	template <typename T, std::size_t Size>
@@ -33,7 +33,7 @@ namespace Algorithms::InsertionSort
 	template<typename T, typename Comparator>
 	void sort(std::vector<T>& vector, Comparator comp)
 	{
-			_sort_internal(vector.data(), vector.size(), comp);
+			_sort(vector.data(), vector.size(), comp);
 	}
 
 	template<typename T>

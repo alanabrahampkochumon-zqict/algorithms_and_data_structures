@@ -15,10 +15,12 @@ target_sources(Searching
 target_include_directories(
     Searching
     INTERFACE
+    # Fixed the missing closing '>' below
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
 )
 
+# Grouping for VS Solution Explorer
 source_group("Templates" FILES ${TemplateUnits})
 
 add_custom_target(
