@@ -12,4 +12,5 @@ target_sources(
 target_link_libraries(
     Playground
     Sorting
+    Searching
 )
