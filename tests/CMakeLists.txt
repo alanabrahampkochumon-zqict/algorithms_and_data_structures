@@ -1,9 +1,13 @@
 add_executable(Tests)
 
+set(SearchTestSources "src/searching/LinearSearchTest.cpp")
+set(SortTestSources "src/sorting/InsertionSortTest.cpp")
+
+
 target_sources(
     Tests
     PRIVATE
-    src/sorting/InsertionSortTest.cpp
+    ${SearchTestSources} ${SortTestSources}
 )
 
 target_link_libraries(
