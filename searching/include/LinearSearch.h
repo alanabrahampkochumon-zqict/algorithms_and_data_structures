@@ -1,10 +1,13 @@
 #pragma once
 
-namespace Algorithms::LinearSearch
+namespace Algorithms
 {
-	
-	//template<typename T, 
-	void linearSearch()
+	namespace Searching {
+
+
+		//template<typename T, 
+		void linearSearch();
+	}
 }
 
 #include <LinearSearch.tpp>
