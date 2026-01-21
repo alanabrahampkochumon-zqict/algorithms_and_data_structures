@@ -1,9 +1,8 @@
 #include <gtest/gtest.h>
 
 #include <LinearSearch.h>
+
 using namespace Algorithms::Searching;
-
-
 
 
 TEST(LinearSearch, SearchingItemInFirstIndexReturnsZero)
