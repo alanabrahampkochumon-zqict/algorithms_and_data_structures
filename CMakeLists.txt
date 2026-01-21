@@ -9,6 +9,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 include(dependencies.cmake)
 
 add_subdirectory(sorting)
+add_subdirectory(searching)
 add_subdirectory(playground)
 add_subdirectory(tests)
 
