@@ -1,7 +1,7 @@
 add_library(Searching INTERFACE)
 target_compile_features(Searching INTERFACE cxx_std_17)
 
-set(TemplateUnits include/LinearSearch.tpp)
+set(TemplateDefinitions include/LinearSearch.tpp)
 set(Headers include/LinearSearch.h)
 
 target_sources(Searching
@@ -9,7 +9,7 @@ target_sources(Searching
     FILE_SET HEADERS
     BASE_DIRS include
     FILES
-        ${TemplateUnits} ${Headers}
+        ${TemplateDefinitions} ${Headers}
 )
 
 target_include_directories(
@@ -21,11 +21,11 @@ target_include_directories(
 )
 
 # Grouping for VS Solution Explorer
-source_group("Templates" FILES ${TemplateUnits})
+source_group("Templates" FILES ${TemplateDefinitions})
 
 add_custom_target(
     SearchingAlgorithms
     ALL
     SOURCES
-    ${TemplateUnits} ${Headers}
+    ${TemplateDefinitions} ${Headers}
 )

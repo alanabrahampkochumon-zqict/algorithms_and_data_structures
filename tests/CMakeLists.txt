@@ -17,7 +17,7 @@ target_link_libraries(
     PRIVATE
     Sorting
     Searching
-    GenericAlgorithms
+    Generic
     GTest::gtest_main
 )
 

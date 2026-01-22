@@ -5,10 +5,10 @@ add_library(
 target_compile_features(Sorting INTERFACE cxx_std_17)
 
 set(Headers include/InsertionSort.h)
-set(TemplateUnits include/InsertionSort.tpp)
+set(TemplateDefinitions include/InsertionSort.tpp)
 
 set(INCLUDE_FILES
-    ${Headers} ${TemplateUnits}
+    ${Headers} ${TemplateDefinitions}
 )
 
 target_sources(
@@ -29,7 +29,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-source_group("Templates" FILES ${TemplateUnits})
+source_group("Templates" FILES ${TemplateDefinitions})
 
 add_custom_target(SortingAlgorithms ALL
     SOURCES
