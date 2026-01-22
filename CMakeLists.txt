@@ -10,6 +10,7 @@ include(dependencies.cmake)
 
 add_subdirectory(sorting)
 add_subdirectory(searching)
+add_subdirectory(generic)
 add_subdirectory(playground)
 add_subdirectory(tests)
 

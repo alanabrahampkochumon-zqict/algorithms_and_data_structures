@@ -2,12 +2,13 @@ add_executable(Tests)
 
 set(SearchTestSources "src/searching/LinearSearchTest.cpp")
 set(SortTestSources "src/sorting/InsertionSortTest.cpp")
+set(GenericTestSources "src/generic/BinaryAdderTests.cpp")
 
 
 target_sources(
     Tests
     PRIVATE
-    ${SearchTestSources} ${SortTestSources}
+    ${SearchTestSources} ${SortTestSources} ${GenericTestSources}
 )
 
 target_link_libraries(
@@ -16,6 +17,7 @@ target_link_libraries(
     PRIVATE
     Sorting
     Searching
+    GenericAlgorithms
     GTest::gtest_main
 )
 
