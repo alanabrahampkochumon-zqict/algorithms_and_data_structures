@@ -39,6 +39,6 @@ namespace Algorithms::InsertionSort
 	template<typename T>
     void sort(std::vector<T>& vector)
 	{
-		sort(vector);
+		sort(vector, std::less<T>());
 	}
 }

@@ -7,19 +7,23 @@ set(TemplateDefinitions include/BinaryAdder.tpp)
 target_sources(
     Generic
     INTERFACE
-    ${HeaderFiles} ${TemplateDefinitions}
+    FILE_SET HEADERS
+    BASE_DIRS include
+    FILES
+        ${HeaderFiles} ${TemplateDefinitions}
 )
 
 target_include_directories(
     Generic
     INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_DEFAULT_SOURCE_DIR}/include>"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
 )
 
 source_group("Templates" FILES ${TemplateDefinitions})
 
-add_custom_target(GenericAlgorithms
+add_custom_target(
+    GenericAlgorithms
     ALL
     SOURCES
         ${HeaderFiles} ${TemplateDefinitions}

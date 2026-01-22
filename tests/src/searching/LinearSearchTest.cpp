@@ -82,3 +82,4 @@ TEST(LinearSearch, SearchForNumberInVectorReturnsCorrectIndex)
 	// Assert
 	ASSERT_EQ(4, position);
 }
+
