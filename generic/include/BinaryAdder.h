@@ -4,8 +4,8 @@
 
 namespace Algorithms::Generic
 {
-	template<typename T, std::size_t Size>
-	std::array<T, Size + 1> binaryAdd(std::array<T, Size> first, std::array<T, Size> second);
+	template<std::size_t Size>
+	std::optional<std::array<int, Size + 1>> binaryAdd(std::array<int, Size> first, std::array<int, Size> second);
 
 }
 

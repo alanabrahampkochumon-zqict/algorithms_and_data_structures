@@ -1,5 +1,4 @@
 #include <gtest/gtest.h>
-#include <cstddef>
 
 #include <InsertionSort.h>
 
@@ -133,7 +132,6 @@ TEST(InsertionSort, SortsReverseVector)
 	// Act
 	sort(vector);
 
-	std::cout << "Memory Address (After): " << &vector << "\n";
 	// Assert
 	for (std::size_t i = 0, size = vector.size(); i < size; i++)
 	{

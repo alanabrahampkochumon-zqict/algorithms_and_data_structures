@@ -12,15 +12,18 @@ TEST(BinaryAdder, AddTwoArrayOfSameSizeReturnsCorrectResult)
 	std::array result = {0, 1, 0, 1, 1, 0};
 
 	// Act
-	std::array calc = binaryAdd(bin1, bin2);
+	auto calc = binaryAdd(bin1, bin2);
 
+	
 	// Assert
-	std::size_t size = calc.size();
+	ASSERT_TRUE(calc.has_value());
+	auto unwrapper = calc.value_or({});
+	std::size_t size = unwrapper.size();
 	ASSERT_EQ(result.size(), size);
 
 	for (std::size_t i = 0; i < size; i++)
 	{
-		ASSERT_EQ(result[i], calc[i]);
+		ASSERT_EQ(result[i], unwrapper[i]);
 	}
 }
 
@@ -32,14 +35,29 @@ TEST(BinaryAdder, AddTwoArrayResultingInOverflowReturnsCorrectResult)
 	std::array result = { 1, 1, 1, 1, 1, 0 };
 
 	// Act
-	std::array calc = binaryAdd(bin1, bin2);
+	auto calc = binaryAdd(bin1, bin2);
 
 	// Assert
-	std::size_t size = calc.size();
+	ASSERT_TRUE(calc.has_value());
+	auto unwrapper = calc.value_or({});
+	std::size_t size = unwrapper.size();
 	ASSERT_EQ(result.size(), size);
 
 	for (std::size_t i = 0; i < size; i++)
 	{
-		ASSERT_EQ(result[i], calc[i]);
+		ASSERT_EQ(result[i], unwrapper[i]);
 	}
+}
+
+TEST(BinaryAdder, InvalidBinaryResultsInANull)
+{
+	// Arrange
+	std::array bin1 = { 2, 1, 1, 1, 1 };
+	std::array bin2 = { 1, 1, 3, 1, 1 };
+
+	// Act
+	auto calc = binaryAdd(bin1, bin2);
+
+	// Assert
+	ASSERT_EQ(std::nullopt, calc);
 }

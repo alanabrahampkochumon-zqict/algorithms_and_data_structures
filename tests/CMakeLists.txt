@@ -1,7 +1,7 @@
 add_executable(Tests)
 
 set(SearchTestSources "src/searching/LinearSearchTest.cpp")
-set(SortTestSources "src/sorting/InsertionSortTest.cpp" "src/generic/Test.cpp")
+set(SortTestSources "src/sorting/InsertionSortTest.cpp")
 set(GenericTestSources "src/generic/BinaryAdderTests.cpp")
 
 
