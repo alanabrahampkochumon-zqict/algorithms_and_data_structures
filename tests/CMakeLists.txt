@@ -26,10 +26,6 @@ ConcatWithFolder(${SearchTestFolder} "${SearchTestFiles}" SearchTestSources)
 ConcatWithFolder(${GenericTestFolder} "${GenericTestFiles}" GenericTestSources)
 
 
-message(${SortTestSources})
-message(${SearchTestSources})
-message(${GenericTestSources})
-
 target_sources(
     Tests
     PRIVATE

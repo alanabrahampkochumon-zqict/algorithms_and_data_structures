@@ -4,12 +4,31 @@ add_library(
 )
 target_compile_features(Sorting INTERFACE cxx_std_17)
 
-set(Headers include/InsertionSort.h)
-set(TemplateDefinitions include/InsertionSort.tpp)
+set(HeaderFolder "include/")
+set(TemplateFolder "include/")
 
-set(INCLUDE_FILES
-    ${Headers} ${TemplateDefinitions}
-)
+set(HeaderFiles "InsertionSort.h;SelectionSort.h")
+set(TemplateFiles "InsertionSort.tpp;SelectionSort.tpp")
+
+function(ConcatWithFolder FolderName FileList ResultList)
+
+    set(TempList "${${ResultList}}")
+
+    foreach(_file ${FileList})
+        string(CONCAT FileName ${FolderName} ${_file})
+        list(APPEND TempList ${FileName})
+    endforeach()
+
+    set(${ResultList} ${TempList} PARENT_SCOPE)
+
+endfunction()
+
+
+ConcatWithFolder(${HeaderFolder} "${HeaderFiles}" HeaderSources)
+ConcatWithFolder(${TemplateFolder} "${TemplateFiles}" TemplateDefinitionSources)
+
+
+set(INCLUDE_FILES ${HeaderSources} ${TemplateDefinitionSources})
 
 target_sources(
     Sorting
@@ -29,7 +48,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-source_group("Templates" FILES ${TemplateDefinitions})
+source_group("Templates" FILES ${TemplateDefinitionSources})
 
 add_custom_target(SortingAlgorithms ALL
     SOURCES
