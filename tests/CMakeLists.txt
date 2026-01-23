@@ -1,9 +1,34 @@
 add_executable(Tests)
 
-set(SearchTestSources "src/searching/LinearSearchTest.cpp")
-set(SortTestSources "src/sorting/InsertionSortTest.cpp")
-set(GenericTestSources "src/generic/BinaryAdderTests.cpp")
+set(SortTestFolder "src/sorting/")
+set(SearchTestFolder "src/searching/")
+set(GenericTestFolder "src/generic/")
 
+set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp")
+set(SearchTestFiles "LinearSearchTest.cpp")
+set(GenericTestFiles "BinaryAdderTest.cpp")
+
+function (ConcatWithFolder FolderName FileList ResultList)
+    set(TempList "${${ResultList}}")
+
+    foreach(_file ${FileList})
+        string(CONCAT FileName ${FolderName} ${_file})
+        list(APPEND TempList ${FileName})
+    endforeach()
+
+    set(${ResultList} "${TempList}" PARENT_SCOPE)
+
+endfunction()
+
+
+ConcatWithFolder(${SortTestFolder} "${SortTestFiles}" SortTestSources)
+ConcatWithFolder(${SearchTestFolder} "${SearchTestFiles}" SearchTestSources)
+ConcatWithFolder(${GenericTestFolder} "${GenericTestFiles}" GenericTestSources)
+
+
+message(${SortTestSources})
+message(${SearchTestSources})
+message(${GenericTestSources})
 
 target_sources(
     Tests
