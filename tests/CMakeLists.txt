@@ -5,7 +5,7 @@ set(SearchTestFolder "src/searching/")
 set(GenericTestFolder "src/generic/")
 
 set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp")
-set(SearchTestFiles "LinearSearchTest.cpp")
+set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp")
 set(GenericTestFiles "BinaryAdderTest.cpp")
 
 function (ConcatWithFolder FolderName FileList ResultList)
@@ -41,7 +41,7 @@ target_link_libraries(
     Generic
     GTest::gtest_main
 )
- 
+
 enable_testing()
 include(GoogleTest)
 gtest_discover_tests(Tests)
