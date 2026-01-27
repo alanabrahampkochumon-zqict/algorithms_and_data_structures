@@ -15,12 +15,9 @@ set(HeaderFiles LinearSearch.h BinarySearch.h)
 CreateSourceWithFolder(${HeaderDirectory} "${HeaderFiles}" HeaderSource)
 
 set(TemplateDefinitionDirectory "include/")
-set(TemplateDefinitionFiles LinearSearch.h BinarySearch.h)
+set(TemplateDefinitionFiles LinearSearch.tpp BinarySearch.tpp)
 CreateSourceWithFolder(${TemplateDefinitionDirectory} "${TemplateDefinitionFiles}" TemplateDefinitionSource)
 
-
-set(Headers include/LinearSearch.h include/BinarySearch.h)
-set(TemplateDefinitions include/LinearSearch.tpp include/BinarySearch.tpp)
 
 target_sources(Searching
     INTERFACE
@@ -32,7 +29,7 @@ target_sources(Searching
 
 target_include_directories(
     Searching
-    INTERFACE
+    INTERFACE   
     "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
 )
