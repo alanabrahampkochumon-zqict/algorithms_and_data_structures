@@ -1,22 +1,13 @@
 add_library(Searching INTERFACE)
 target_compile_features(Searching INTERFACE cxx_std_17)
 
-function(CreateSourceWithFolder FolderName FileList ResultList)
-    set(TempList "${${ResultList}}")
-    foreach(_FILE ${FileList})
-        string(CONCAT Filename ${FolderName} ${_FILE})
-        list(APPEND ResultList ${Filename})
-    endforeach()
-    set(${ResultList} ${TempList} PARENT_SCOPE)
-endfunction()
-
 set(HeaderDirectory "include/")
 set(HeaderFiles LinearSearch.h BinarySearch.h)
-CreateSourceWithFolder(${HeaderDirectory} "${HeaderFiles}" HeaderSource)
+list(TRANSFORM HeaderFiles PREPEND ${HeaderDirectory})
 
 set(TemplateDefinitionDirectory "include/")
 set(TemplateDefinitionFiles LinearSearch.tpp BinarySearch.tpp)
-CreateSourceWithFolder(${TemplateDefinitionDirectory} "${TemplateDefinitionFiles}" TemplateDefinitionSource)
+list(TRANSFORM TemplateDefinitionFiles PREPEND ${TemplateDefinitionDirectory})
 
 
 target_sources(Searching
@@ -24,7 +15,7 @@ target_sources(Searching
     FILE_SET HEADERS
     BASE_DIRS include
     FILES
-        ${HeaderSource} ${TemplateDefinitionSource}
+        ${HeaderFiles} ${TemplateDefinitionFiles}
 )
 
 target_include_directories(
@@ -35,11 +26,11 @@ target_include_directories(
 )
 
 # Grouping for VS Solution Explorer
-source_group("Templates" FILES ${TemplateDefinitionSource})
+source_group("Templates" FILES ${TemplateDefinitionFiles})
 
 add_custom_target(
     SearchingAlgorithms
     ALL
     SOURCES
-    ${HeaderSource} ${TemplateDefinitionSource}
+    ${HeaderFiles} ${TemplateDefinitionFiles}
 )
