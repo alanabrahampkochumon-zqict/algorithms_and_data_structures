@@ -6,11 +6,11 @@
 
 namespace Algorithms::Searching
 {
-	template<typename T, size_t Size>
-	std::optional<size_t> binarySearch(const T(&array)[Size], T searchElement);
+	template<typename T, std::size_t Size>
+	std::optional<std::size_t> binarySearch(const T(&array)[Size], T searchElement);
 
 	template<typename T>
-	std::optional<size_t> binarySearch(const std::vector<T>& vector, T searchElement);
+	std::optional<std::size_t> binarySearch(const std::vector<T>& vector, T searchElement);
 
 
 }

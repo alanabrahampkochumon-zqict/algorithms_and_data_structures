@@ -1,17 +1,17 @@
 #include <gtest/gtest.h>
 
-#include <InsertionSort.h>
+#include <RecursiveInsertionSort.h>
 
-using namespace Algorithms::InsertionSort;
+using namespace Algorithms::RecursiveInsertionSort;
 
-TEST(InsertionSort, SortsArrayOfLength1)
+TEST(RecursiveInsertionSort, SortsArrayOfLength1)
 {
     int array[1] = {316};
     sort(array);
     ASSERT_EQ(316, array[0]);
 }
 
-TEST(InsertionSort, SortsArrayOfLength10)
+TEST(RecursiveInsertionSort, SortsArrayOfLength10)
 {
     // Arrange
     int array[] = {316, 284, 3912, 329111, 85, 0, 55, 22, -555, -328123};
@@ -27,7 +27,7 @@ TEST(InsertionSort, SortsArrayOfLength10)
     }
 }
 
-TEST(InsertionSort, SortsSortedArray)
+TEST(RecursiveInsertionSort, SortsSortedArray)
 {
     // Arrange
     int array[] = {-328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111};
@@ -43,7 +43,7 @@ TEST(InsertionSort, SortsSortedArray)
     }
 }
 
-TEST(InsertionSort, SortsReverseArray)
+TEST(RecursiveInsertionSort, SortsReverseArray)
 {
     // Arrange
     int array[] = {329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123};
@@ -59,7 +59,7 @@ TEST(InsertionSort, SortsReverseArray)
     }
 }
 
-TEST(InsertionSort, SortsArrayDescendingUsingComparator)
+TEST(RecursiveInsertionSort, SortsArrayDescendingUsingComparator)
 {
     // Arrange
     int array[] = {-328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111};
@@ -75,7 +75,7 @@ TEST(InsertionSort, SortsArrayDescendingUsingComparator)
     }
 }
 
-TEST(InsertionSort, SortsLettersInAscendingByDefault)
+TEST(RecursiveInsertionSort, SortsLettersInAscendingByDefault)
 {
     // Arrange
     int array[] = {'f', 'e', 'a', 'm', 't', 'l', 'r', 'a', 'd', 'b'};
@@ -91,7 +91,7 @@ TEST(InsertionSort, SortsLettersInAscendingByDefault)
     }
 }
 
-TEST(InsertionSort, SortsVectorOfLength10)
+TEST(RecursiveInsertionSort, SortsVectorOfLength10)
 {
     // Arrange
     std::vector vector = {316, 284, 3912, 329111, 85, 0, 55, 22, -555, -328123};
@@ -107,7 +107,7 @@ TEST(InsertionSort, SortsVectorOfLength10)
     }
 }
 
-TEST(InsertionSort, SortsSortedVector)
+TEST(RecursiveInsertionSort, SortsSortedVector)
 {
     // Arrange
     std::vector vector = {-328123, -555, 0, 22, 85, 55, 284, 316, 3912, 329111};
@@ -123,7 +123,7 @@ TEST(InsertionSort, SortsSortedVector)
     }
 }
 
-TEST(InsertionSort, SortsReverseVector)
+TEST(RecursiveInsertionSort, SortsReverseVector)
 {
     // Arrange
     std::vector vector = {329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123};

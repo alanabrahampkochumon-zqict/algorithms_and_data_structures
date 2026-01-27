@@ -13,30 +13,29 @@ set(TemplateDefinitionsFolder "include/")
 set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp")
 list(TRANSFORM TemplateDefinitionsFiles PREPEND ${TemplateDefinitionsFolder})
 
-
-set(INCLUDE_FILES ${HeaderFiles} ${TemplateDefinitionsFiles})
+# message(${TemplateDefinitionsFiles})
+# message(${HeaderFiles})
 
 target_sources(
     Sorting
-
     INTERFACE
     FILE_SET HEADERS
     TYPE HEADERS
     BASE_DIRS include
     FILES
-        ${INCLUDE_FILES}
+        ${HeaderFiles} ${TemplateDefinitionsFiles}
 )
 
 target_include_directories(
     Sorting
     INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include"
+    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
     "$<INSTALL_INTERFACE:include>"
 )
 
-source_group("Templates" FILES ${TemplateDefinitionFiles})
+source_group("Template Files" FILES ${TemplateDefinitionsFiles})
 
 add_custom_target(SortingAlgorithms ALL
     SOURCES
-    ${INCLUDE_FILES}
+    ${HeaderFiles} ${TemplateDefinitionsFiles}
 )

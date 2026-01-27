@@ -1,11 +1,11 @@
 add_executable(Tests)
 
 set(SortTestFolder "src/sorting/")
-set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp")
+set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp;RecursiveInsertionSortTest.cpp")
 list(TRANSFORM SortTestFiles PREPEND ${SortTestFolder})
 
 set(SearchTestFolder "src/searching/")
-set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp;RecursiveInsertionSortTest.cpp")
+set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp")
 list(TRANSFORM SearchTestFiles PREPEND ${SearchTestFolder})
 
 set(GenericTestFolder "src/generic/")
