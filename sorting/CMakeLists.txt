@@ -4,31 +4,17 @@ add_library(
 )
 target_compile_features(Sorting INTERFACE cxx_std_17)
 
+
 set(HeaderFolder "include/")
-set(TemplateFolder "include/")
+set(HeaderFiles "InsertionSort.h;SelectionSort.h;RecursiveInsertionSort.h")
+list(TRANSFORM HeaderFiles PREPEND ${HeaderFolder})
 
-set(HeaderFiles "InsertionSort.h;SelectionSort.h")
-set(TemplateFiles "InsertionSort.tpp;SelectionSort.tpp")
-
-function(ConcatWithFolder FolderName FileList ResultList)
-
-    set(TempList "${${ResultList}}")
-
-    foreach(_file ${FileList})
-        string(CONCAT FileName ${FolderName} ${_file})
-        list(APPEND TempList ${FileName})
-    endforeach()
-
-    set(${ResultList} ${TempList} PARENT_SCOPE)
-
-endfunction()
+set(TemplateDefinitionsFolder "include/")
+set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp")
+list(TRANSFORM TemplateDefinitionsFiles PREPEND ${TemplateDefinitionsFolder})
 
 
-ConcatWithFolder(${HeaderFolder} "${HeaderFiles}" HeaderSources)
-ConcatWithFolder(${TemplateFolder} "${TemplateFiles}" TemplateDefinitionSources)
-
-
-set(INCLUDE_FILES ${HeaderSources} ${TemplateDefinitionSources})
+set(INCLUDE_FILES ${HeaderFiles} ${TemplateDefinitionsFiles})
 
 target_sources(
     Sorting
@@ -48,7 +34,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-source_group("Templates" FILES ${TemplateDefinitionSources})
+source_group("Templates" FILES ${TemplateDefinitionFiles})
 
 add_custom_target(SortingAlgorithms ALL
     SOURCES
