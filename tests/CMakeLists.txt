@@ -1,35 +1,22 @@
 add_executable(Tests)
 
 set(SortTestFolder "src/sorting/")
-set(SearchTestFolder "src/searching/")
-set(GenericTestFolder "src/generic/")
-
 set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp")
-set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp")
+list(TRANSFORM SortTestFiles PREPEND ${SortTestFolder})
+
+set(SearchTestFolder "src/searching/")
+set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp;RecursiveInsertionSortTest.cpp")
+list(TRANSFORM SearchTestFiles PREPEND ${SearchTestFolder})
+
+set(GenericTestFolder "src/generic/")
 set(GenericTestFiles "BinaryAdderTest.cpp")
-
-function (ConcatWithFolder FolderName FileList ResultList)
-    set(TempList "${${ResultList}}")
-
-    foreach(_file ${FileList})
-        string(CONCAT FileName ${FolderName} ${_file})
-        list(APPEND TempList ${FileName})
-    endforeach()
-
-    set(${ResultList} "${TempList}" PARENT_SCOPE)
-
-endfunction()
-
-
-ConcatWithFolder(${SortTestFolder} "${SortTestFiles}" SortTestSources)
-ConcatWithFolder(${SearchTestFolder} "${SearchTestFiles}" SearchTestSources)
-ConcatWithFolder(${GenericTestFolder} "${GenericTestFiles}" GenericTestSources)
+list(TRANSFORM GenericTestFiles PREPEND ${GenericTestFolder})
 
 
 target_sources(
     Tests
     PRIVATE
-    ${SearchTestSources} ${SortTestSources} ${GenericTestSources}
+    ${SearchTestFiles} ${SortTestFiles} ${GenericTestFiles}
 )
 
 target_link_libraries(
