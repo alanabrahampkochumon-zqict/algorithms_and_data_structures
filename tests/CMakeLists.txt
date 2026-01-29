@@ -9,7 +9,7 @@ set(SearchTestFiles "LinearSearchTest.cpp;BinarySearchTest.cpp")
 list(TRANSFORM SearchTestFiles PREPEND ${SearchTestFolder})
 
 set(GenericTestFolder "src/generic/")
-set(GenericTestFiles "BinaryAdderTest.cpp")
+set(GenericTestFiles "BinaryAdderTest.cpp;TwoSumTest.cpp")
 list(TRANSFORM GenericTestFiles PREPEND ${GenericTestFolder})
 
 
