@@ -6,11 +6,11 @@ target_compile_features(Sorting INTERFACE cxx_std_17)
 
 
 set(HeaderFolder "include/")
-set(HeaderFiles "InsertionSort.h;SelectionSort.h;RecursiveInsertionSort.h;BinaryInsertionSort.h")
+set(HeaderFiles "InsertionSort.h;SelectionSort.h;RecursiveInsertionSort.h;BinaryInsertionSort.h;MergeSort.h")
 list(TRANSFORM HeaderFiles PREPEND ${HeaderFolder})
 
 set(TemplateDefinitionsFolder "include/")
-set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp;BinaryInsertionSort.tpp")
+set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp;BinaryInsertionSort.tpp;MergeSort.tpp")
 list(TRANSFORM TemplateDefinitionsFiles PREPEND ${TemplateDefinitionsFolder})
 
 # message(${TemplateDefinitionsFiles})
