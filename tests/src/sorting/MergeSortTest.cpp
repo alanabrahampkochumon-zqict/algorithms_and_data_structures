@@ -20,10 +20,6 @@ TEST(MergeSort, SortsArrayOfLength10)
 	// Act
 	sort(array);
 
-	for (int i = 0; i < std::size(array); i++)
-	{
-		std::cout << array[i] << ", ";
-	}
 	std::cout << std::endl;
 
 	// Assert
