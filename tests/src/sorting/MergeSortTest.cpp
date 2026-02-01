@@ -1,6 +1,9 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <MergeSort.h>
+
+using ::testing::ElementsAreArray;
 
 using namespace Algorithms::MergeSort;
 
@@ -8,7 +11,7 @@ TEST(MergeSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
 	sort(array);
-	ASSERT_EQ(316, array[0]);
+	EXPECT_EQ(316, array[0]);
 }
 
 TEST(MergeSort, SortsArrayOfLength10)
@@ -20,13 +23,8 @@ TEST(MergeSort, SortsArrayOfLength10)
 	// Act
 	sort(array);
 
-	std::cout << std::endl;
-
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(MergeSort, SortsSortedArray)
@@ -39,10 +37,7 @@ TEST(MergeSort, SortsSortedArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(MergeSort, SortsReverseArray)
@@ -55,10 +50,7 @@ TEST(MergeSort, SortsReverseArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(MergeSort, SortsArrayDescendingUsingComparator)
@@ -71,10 +63,7 @@ TEST(MergeSort, SortsArrayDescendingUsingComparator)
 	sort(array, std::greater<int>());
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(MergeSort, SortsLettersInAscendingByDefault)
@@ -87,10 +76,7 @@ TEST(MergeSort, SortsLettersInAscendingByDefault)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(MergeSort, SortsVectorOfLength10)
@@ -103,10 +89,7 @@ TEST(MergeSort, SortsVectorOfLength10)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(vector); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(MergeSort, SortsSortedVector)
@@ -119,10 +102,7 @@ TEST(MergeSort, SortsSortedVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(MergeSort, SortsReverseVector)
@@ -135,8 +115,5 @@ TEST(MergeSort, SortsReverseVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
