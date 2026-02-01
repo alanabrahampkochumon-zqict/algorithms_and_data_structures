@@ -1,6 +1,10 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
+
 
 #include <SelectionSort.h>
+
+using ::testing::ElementsAreArray;
 
 using namespace Algorithms::SelectionSort;
 
@@ -8,7 +12,7 @@ TEST(SelectionSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
 	sort(array);
-	ASSERT_EQ(316, array[0]);
+	EXPECT_EQ(316, array[0]);
 }
 
 TEST(SelectionSort, SortsArrayOfLength10)
@@ -21,10 +25,7 @@ TEST(SelectionSort, SortsArrayOfLength10)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(SelectionSort, SortsSortedArray)
@@ -37,10 +38,7 @@ TEST(SelectionSort, SortsSortedArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(SelectionSort, SortsReverseArray)
@@ -53,10 +51,7 @@ TEST(SelectionSort, SortsReverseArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(SelectionSort, SortsArrayDescendingUsingComparator)
@@ -69,10 +64,7 @@ TEST(SelectionSort, SortsArrayDescendingUsingComparator)
 	sort(array, std::greater<int>());
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(SelectionSort, SortsLettersInAscendingByDefault)
@@ -85,10 +77,7 @@ TEST(SelectionSort, SortsLettersInAscendingByDefault)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(SelectionSort, SortsVectorOfLength10)
@@ -101,10 +90,7 @@ TEST(SelectionSort, SortsVectorOfLength10)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(vector); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(SelectionSort, SortsSortedVector)
@@ -117,10 +103,7 @@ TEST(SelectionSort, SortsSortedVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(SelectionSort, SortsReverseVector)
@@ -133,8 +116,5 @@ TEST(SelectionSort, SortsReverseVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
