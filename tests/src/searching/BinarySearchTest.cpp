@@ -15,7 +15,7 @@ TEST(BinarySearch, SearchingItemInFirstIndexReturnsZero)
 	std::optional<size_t> position = binarySearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(0, position);
+	EXPECT_EQ(0, position);
 }
 
 TEST(BinarySearch, SearchingItemInLastIndexReturnsArraySizeMinusOne)
@@ -28,7 +28,7 @@ TEST(BinarySearch, SearchingItemInLastIndexReturnsArraySizeMinusOne)
 	std::optional<size_t> position = binarySearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(std::size(array) - 1, position);
+	EXPECT_EQ(std::size(array) - 1, position);
 }
 
 TEST(BinarySearch, SearchingItemAtAnyPositionReturnsCorrectIndex)
@@ -41,7 +41,7 @@ TEST(BinarySearch, SearchingItemAtAnyPositionReturnsCorrectIndex)
 	std::optional<size_t> position = binarySearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(8, position);
+	EXPECT_EQ(8, position);
 }
 
 TEST(BinarySearch, SearchingNonExistantItemReturnsNullOptional)
@@ -54,7 +54,7 @@ TEST(BinarySearch, SearchingNonExistantItemReturnsNullOptional)
 	std::optional<size_t> position = binarySearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, position);
+	EXPECT_EQ(std::nullopt, position);
 }
 
 TEST(BinarySearch, SearchForStringInStringArrayReturnssCorrectIndex)
@@ -67,7 +67,7 @@ TEST(BinarySearch, SearchForStringInStringArrayReturnssCorrectIndex)
 	std::optional<size_t> position = binarySearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(2, position);
+	EXPECT_EQ(2, position);
 }
 
 TEST(BinarySearch, SearchForNumberInVectorReturnsCorrectIndex)
@@ -80,6 +80,6 @@ TEST(BinarySearch, SearchForNumberInVectorReturnsCorrectIndex)
 	std::optional<size_t> position = binarySearch(vector, searchElement);
 
 	// Assert
-	ASSERT_EQ(4, position);
+	EXPECT_EQ(4, position);
 }
 
