@@ -1,4 +1,5 @@
 #include <gtest/gtest.h>
+#include <gmock/gmock.h>
 
 #include <BinaryInsertionSort.h>
 
@@ -8,7 +9,7 @@ TEST(BinaryInsertionSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
 	sort(array);
-	ASSERT_EQ(316, array[0]);
+	EXPECT_EQ(316, array[0]);
 }
 
 TEST(BinaryInsertionSort, SortsArrayOfLength10)
@@ -21,10 +22,7 @@ TEST(BinaryInsertionSort, SortsArrayOfLength10)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_EQ(sorted, array);
 }
 
 TEST(BinaryInsertionSort, SortsSortedArray)
@@ -37,10 +35,7 @@ TEST(BinaryInsertionSort, SortsSortedArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_EQ(sorted, array);
 }
 
 TEST(BinaryInsertionSort, SortsReverseArray)
@@ -53,10 +48,7 @@ TEST(BinaryInsertionSort, SortsReverseArray)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_EQ(sorted, array);
 }
 
 TEST(BinaryInsertionSort, SortsArrayDescendingUsingComparator)
@@ -69,10 +61,7 @@ TEST(BinaryInsertionSort, SortsArrayDescendingUsingComparator)
 	sort(array, std::greater<int>());
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_EQ(sorted, array);
 }
 
 TEST(BinaryInsertionSort, SortsLettersInAscendingByDefault)
@@ -85,10 +74,7 @@ TEST(BinaryInsertionSort, SortsLettersInAscendingByDefault)
 	sort(array);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(array); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], array[i]);
-	}
+	EXPECT_EQ(sorted, array);
 }
 
 TEST(BinaryInsertionSort, SortsVectorOfLength10)
@@ -101,10 +87,7 @@ TEST(BinaryInsertionSort, SortsVectorOfLength10)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = std::size(vector); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(BinaryInsertionSort, SortsSortedVector)
@@ -117,10 +100,7 @@ TEST(BinaryInsertionSort, SortsSortedVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(BinaryInsertionSort, SortsReverseVector)
@@ -133,8 +113,5 @@ TEST(BinaryInsertionSort, SortsReverseVector)
 	sort(vector);
 
 	// Assert
-	for (std::size_t i = 0, size = vector.size(); i < size; i++)
-	{
-		ASSERT_EQ(sorted[i], vector[i]);
-	}
+	EXPECT_EQ(sorted, vector);
 }

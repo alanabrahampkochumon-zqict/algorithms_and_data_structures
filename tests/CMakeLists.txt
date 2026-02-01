@@ -27,6 +27,7 @@ target_link_libraries(
     Searching
     Generic
     GTest::gtest_main
+    GTest::gmock_main
 )
 
 enable_testing()
