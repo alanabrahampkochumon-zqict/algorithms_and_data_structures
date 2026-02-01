@@ -88,7 +88,7 @@ TEST(BinaryInsertionSort, SortsVectorOfLength10)
 	sort(vector);
 
 	// Assert
-	EXPECT_THAT(sorted, ElementsAreArray(vector));
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(BinaryInsertionSort, SortsSortedVector)
@@ -101,7 +101,7 @@ TEST(BinaryInsertionSort, SortsSortedVector)
 	sort(vector);
 
 	// Assert
-	EXPECT_THAT(sorted, ElementsAreArray(vector));
+	EXPECT_EQ(sorted, vector);
 }
 
 TEST(BinaryInsertionSort, SortsReverseVector)
@@ -114,5 +114,5 @@ TEST(BinaryInsertionSort, SortsReverseVector)
 	sort(vector);
 
 	// Assert
-	EXPECT_THAT(sorted, ElementsAreArray(vector));
+	EXPECT_EQ(sorted, vector);
 }
