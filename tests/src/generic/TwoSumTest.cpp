@@ -15,8 +15,8 @@ TEST(TwoSum, ArrayOfPositiveIntegersWithElementsHavingSumReturnsValidPair)
 
 	// Assert
 	ASSERT_TRUE(result.has_value());
-	ASSERT_EQ(2, result->first);
-	ASSERT_EQ(7, result->second);
+	EXPECT_EQ(2, result->first);
+	EXPECT_EQ(7, result->second);
 }
 
 TEST(TwoSum, ArrayOfNegativeIntegersWithElementsHavingSumReturnsValidPair)
@@ -30,8 +30,8 @@ TEST(TwoSum, ArrayOfNegativeIntegersWithElementsHavingSumReturnsValidPair)
 
 	// Assert
 	ASSERT_TRUE(result.has_value());
-	ASSERT_EQ(-2, result->first);
-	ASSERT_EQ(1, result->second);
+	EXPECT_EQ(-2, result->first);
+	EXPECT_EQ(1, result->second);
 }
 
 TEST(TwoSum, ArrayOfMixedIntegersWithElementsHavingSumReturnsValidPair)
@@ -45,8 +45,8 @@ TEST(TwoSum, ArrayOfMixedIntegersWithElementsHavingSumReturnsValidPair)
 
 	// Assert
 	ASSERT_TRUE(result.has_value());
-	ASSERT_EQ(-5, result->first);
-	ASSERT_EQ(10, result->second);
+	EXPECT_EQ(-5, result->first);
+	EXPECT_EQ(10, result->second);
 }
 
 TEST(TwoSum, ArrayOfMixedIntegersWithoutElementsHavingSumReturnsNullOptional)
@@ -59,7 +59,7 @@ TEST(TwoSum, ArrayOfMixedIntegersWithoutElementsHavingSumReturnsNullOptional)
 	const std::optional<std::pair<int, int>> result = twoSum(nums, target);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, result);
+	EXPECT_EQ(std::nullopt, result);
 }
 
 TEST(TwoSum, ArrayOfIntegersWithSumZeroReturnsPairOfZero)
@@ -74,8 +74,8 @@ TEST(TwoSum, ArrayOfIntegersWithSumZeroReturnsPairOfZero)
 
 	// Assert
 	ASSERT_TRUE(result.has_value());
-	ASSERT_EQ(0, result->first);
-	ASSERT_EQ(0, result->second);
+	EXPECT_EQ(0, result->first);
+	EXPECT_EQ(0, result->second);
 }
 
 TEST(TwoSum, ArrayOfMixedFloatsWithElementsHavingSumReturnsValidPair)
@@ -104,7 +104,7 @@ TEST(TwoSum, ArrayOfMixedFloatsWithoutElementsHavingSumReturnsNullOptional)
 	const std::optional<std::pair<float, float>> result = twoSum(nums, target);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, result);
+	EXPECT_EQ(std::nullopt, result);
 }
 
 TEST(TwoSum, VectorOfMixedIntegersWithElementHavingSumReturnValidPair)
@@ -118,8 +118,8 @@ TEST(TwoSum, VectorOfMixedIntegersWithElementHavingSumReturnValidPair)
 
 	// Assert
 	ASSERT_TRUE(result.has_value());
-	ASSERT_EQ(-5, result->first);
-	ASSERT_EQ(10, result->second);
+	EXPECT_EQ(-5, result->first);
+	EXPECT_EQ(10, result->second);
 
 }
 
@@ -133,5 +133,5 @@ TEST(TwoSum, VectorOfMixedFloatsWithoutElementsHavingSumReturnsNullOptional)
 	const std::optional<std::pair<int, int>> result = twoSum(nums, target);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, result);
+	EXPECT_EQ(std::nullopt, result);
 }
