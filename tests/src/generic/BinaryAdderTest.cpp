@@ -19,12 +19,9 @@ TEST(BinaryAdder, AddTwoArrayOfSameSizeReturnsCorrectResult)
 	ASSERT_TRUE(calc.has_value());
 	auto unwrapper = calc.value_or({});
 	std::size_t size = unwrapper.size();
-	ASSERT_EQ(result.size(), size);
-
-	for (std::size_t i = 0; i < size; i++)
-	{
-		ASSERT_EQ(result[i], unwrapper[i]);
-	}
+	EXPECT_EQ(result.size(), size);
+	EXPECT_EQ(result, unwrapper);
+	
 }
 
 TEST(BinaryAdder, AddTwoArrayResultingInOverflowReturnsCorrectResult)
@@ -41,12 +38,8 @@ TEST(BinaryAdder, AddTwoArrayResultingInOverflowReturnsCorrectResult)
 	ASSERT_TRUE(calc.has_value());
 	auto unwrapper = calc.value_or({});
 	std::size_t size = unwrapper.size();
-	ASSERT_EQ(result.size(), size);
-
-	for (std::size_t i = 0; i < size; i++)
-	{
-		ASSERT_EQ(result[i], unwrapper[i]);
-	}
+	EXPECT_EQ(result.size(), size);
+	EXPECT_EQ(result, unwrapper);
 }
 
 TEST(BinaryAdder, InvalidBinaryResultsInANull)
@@ -59,5 +52,5 @@ TEST(BinaryAdder, InvalidBinaryResultsInANull)
 	auto calc = binaryAdd(bin1, bin2);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, calc);
+	EXPECT_EQ(std::nullopt, calc);
 }
