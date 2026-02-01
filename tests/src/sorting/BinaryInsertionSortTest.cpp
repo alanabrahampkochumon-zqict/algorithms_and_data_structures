@@ -4,6 +4,7 @@
 #include <BinaryInsertionSort.h>
 
 using namespace Algorithms::BinaryInsertionSort;
+using ::testing::ElementsAreArray;
 
 TEST(BinaryInsertionSort, SortsArrayOfLength1)
 {
@@ -22,7 +23,7 @@ TEST(BinaryInsertionSort, SortsArrayOfLength10)
 	sort(array);
 
 	// Assert
-	EXPECT_EQ(sorted, array);
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(BinaryInsertionSort, SortsSortedArray)
@@ -35,7 +36,7 @@ TEST(BinaryInsertionSort, SortsSortedArray)
 	sort(array);
 
 	// Assert
-	EXPECT_EQ(sorted, array);
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(BinaryInsertionSort, SortsReverseArray)
@@ -48,7 +49,7 @@ TEST(BinaryInsertionSort, SortsReverseArray)
 	sort(array);
 
 	// Assert
-	EXPECT_EQ(sorted, array);
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(BinaryInsertionSort, SortsArrayDescendingUsingComparator)
@@ -61,7 +62,7 @@ TEST(BinaryInsertionSort, SortsArrayDescendingUsingComparator)
 	sort(array, std::greater<int>());
 
 	// Assert
-	EXPECT_EQ(sorted, array);
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(BinaryInsertionSort, SortsLettersInAscendingByDefault)
@@ -74,7 +75,7 @@ TEST(BinaryInsertionSort, SortsLettersInAscendingByDefault)
 	sort(array);
 
 	// Assert
-	EXPECT_EQ(sorted, array);
+	EXPECT_THAT(sorted, ElementsAreArray(array));
 }
 
 TEST(BinaryInsertionSort, SortsVectorOfLength10)
@@ -87,7 +88,7 @@ TEST(BinaryInsertionSort, SortsVectorOfLength10)
 	sort(vector);
 
 	// Assert
-	EXPECT_EQ(sorted, vector);
+	EXPECT_THAT(sorted, ElementsAreArray(vector));
 }
 
 TEST(BinaryInsertionSort, SortsSortedVector)
@@ -100,7 +101,7 @@ TEST(BinaryInsertionSort, SortsSortedVector)
 	sort(vector);
 
 	// Assert
-	EXPECT_EQ(sorted, vector);
+	EXPECT_THAT(sorted, ElementsAreArray(vector));
 }
 
 TEST(BinaryInsertionSort, SortsReverseVector)
@@ -113,5 +114,5 @@ TEST(BinaryInsertionSort, SortsReverseVector)
 	sort(vector);
 
 	// Assert
-	EXPECT_EQ(sorted, vector);
+	EXPECT_THAT(sorted, ElementsAreArray(vector));
 }

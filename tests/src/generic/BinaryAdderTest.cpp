@@ -1,7 +1,11 @@
 #include <gtest/gtest.h>
-#include <BinaryAdder.h>
+#include <gmock/gmock.h>
+
 #include <array>
 
+#include <BinaryAdder.h>
+
+using ::testing::ElementsAreArray;
 using namespace Algorithms::Generic;
 
 TEST(BinaryAdder, AddTwoArrayOfSameSizeReturnsCorrectResult)
