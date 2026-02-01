@@ -15,7 +15,7 @@ TEST(LinearSearch, SearchingItemInFirstIndexReturnsZero)
 	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(0, position);
+	EXPECT_EQ(0, position);
 }
 
 TEST(LinearSearch, SearchingItemInLastIndexReturnsLastIndexMinusOne)
@@ -28,7 +28,7 @@ TEST(LinearSearch, SearchingItemInLastIndexReturnsLastIndexMinusOne)
 	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(std::size(array) - 1, position);
+	EXPECT_EQ(std::size(array) - 1, position);
 }
 
 TEST(LinearSearch, SearchingItemAtAnyPositionReturnsCorrectIndex)
@@ -41,7 +41,7 @@ TEST(LinearSearch, SearchingItemAtAnyPositionReturnsCorrectIndex)
 	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(4, position);
+	EXPECT_EQ(4, position);
 }
 
 TEST(LinearSearch, SearchingNonExistantItemReturnsNullOptional)
@@ -54,7 +54,7 @@ TEST(LinearSearch, SearchingNonExistantItemReturnsNullOptional)
 	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(std::nullopt, position);
+	EXPECT_EQ(std::nullopt, position);
 }
 
 TEST(LinearSearch, SearchForStringInStringArrayReturnssCorrectIndex)
@@ -67,7 +67,7 @@ TEST(LinearSearch, SearchForStringInStringArrayReturnssCorrectIndex)
 	std::optional<size_t> position = linearSearch(array, searchElement);
 
 	// Assert
-	ASSERT_EQ(2, position);
+	EXPECT_EQ(2, position);
 }
 
 TEST(LinearSearch, SearchForNumberInVectorReturnsCorrectIndex)
@@ -80,6 +80,6 @@ TEST(LinearSearch, SearchForNumberInVectorReturnsCorrectIndex)
 	std::optional<size_t> position = linearSearch(vector, searchElement);
 
 	// Assert
-	ASSERT_EQ(4, position);
+	EXPECT_EQ(4, position);
 }
 
