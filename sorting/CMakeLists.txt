@@ -5,11 +5,11 @@ add_library(
 target_compile_features(Sorting INTERFACE cxx_std_17)
 
 set(HeaderFolder "include/")
-set(HeaderFiles "InsertionSort.h;SelectionSort.h;RecursiveInsertionSort.h;BinaryInsertionSort.h;MergeSort.h;HybridSort.h")
+set(HeaderFiles "InsertionSort.h;SelectionSort.h;RecursiveInsertionSort.h;BinaryInsertionSort.h;MergeSort.h;HybridSort.h;BubbleSort.h")
 list(TRANSFORM HeaderFiles PREPEND ${HeaderFolder})
 
 set(TemplateDefinitionsFolder "include/")
-set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp;BinaryInsertionSort.tpp;MergeSort.tpp;HybridSort.tpp")
+set(TemplateDefinitionsFiles "InsertionSort.tpp;SelectionSort.tpp;RecursiveInsertionSort.tpp;BinaryInsertionSort.tpp;MergeSort.tpp;HybridSort.tpp;BubbleSort.tpp")
 list(TRANSFORM TemplateDefinitionsFiles PREPEND ${TemplateDefinitionsFolder})
 
 target_sources(
