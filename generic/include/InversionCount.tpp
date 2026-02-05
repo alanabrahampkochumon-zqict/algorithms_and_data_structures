@@ -32,10 +32,7 @@ namespace Algorithms::Generic
 		while (j < end)
 			temp[k++] = data[j++];
 
-		for (i = start; i < end; ++i)
-		{
-			data[i] = temp[i - start];
-		}
+		std::copy(temp.begin(), temp.end(), data + start);
 
 
 		return count;
