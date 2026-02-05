@@ -83,3 +83,29 @@ TEST(InversionCount, GivenArbitraryVectorReturnsCorrectInversionCount)
 	// Assert
 	EXPECT_EQ(expected, actual);
 }
+
+struct Player
+{
+	int points;
+	std::string name;
+};
+
+TEST(InversionCount, GivenCustomDataTypeAndComparatorReturnsCorrectInversions)
+{
+	// Arrange
+	Player players[] = {
+		{2, "Player 1"},
+		{3, "Player 2"},
+		{8, "Player 3"},
+		{6, "Player 4"},
+		{1, "Player 5"},
+	};
+
+	std::size_t expected = 5;
+
+	// Act
+	std::size_t actual = countInversions(players, [](const Player& one, const Player& two)->bool { return one.points <= two.points; });
+
+	// Assert
+	EXPECT_EQ(expected, actual);
+}
