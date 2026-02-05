@@ -2,9 +2,9 @@ add_library(Generic INTERFACE)
 target_compile_features(Generic INTERFACE cxx_std_17)
 
 set(HeaderDirectory "include/")
-set(HeaderFiles BinaryAdder.h TwoSum.h HornersRule.h)
+set(HeaderFiles BinaryAdder.h TwoSum.h HornersRule.h InversionCount.h)
 list(TRANSFORM HeaderFiles PREPEND ${HeaderDirectory})
-set(TemplateDefinitionFiles BinaryAdder.tpp TwoSum.tpp HornersRule.tpp)
+set(TemplateDefinitionFiles BinaryAdder.tpp TwoSum.tpp HornersRule.tpp InversionCount.tpp)
 list(TRANSFORM TemplateDefinitionFiles PREPEND ${HeaderDirectory})
 
 target_sources(
