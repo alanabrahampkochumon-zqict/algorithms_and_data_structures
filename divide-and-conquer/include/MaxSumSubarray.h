@@ -22,3 +22,5 @@ namespace Algorithms::DivideAndConquer
 	std::tuple<std::size_t, std::size_t, T> maxSumSubarray(std::span<T> elements);
 
 }
+
+#include "MaxSumSubarray.tpp"

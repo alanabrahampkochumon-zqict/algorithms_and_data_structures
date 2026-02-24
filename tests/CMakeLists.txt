@@ -34,6 +34,7 @@ target_link_libraries(
     Sorting
     Searching
     Generic
+    DivideAndConquer
     GTest::gtest_main
     GTest::gmock_main
 )
