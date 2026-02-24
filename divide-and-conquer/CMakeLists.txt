@@ -1,5 +1,7 @@
 add_library(DivideAndConquer INTERFACE)
 
+target_compile_options(DivideAndConquer INTERFACE cxx_std_20)
+
 set(IncludeDirectory "include/")
 set(HeaderFiles "MaxSumSubarray.h")
 list(TRANSFORM HeaderFiles PREPEND ${IncludeDirectory})
