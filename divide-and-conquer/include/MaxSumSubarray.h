@@ -19,8 +19,7 @@ namespace Algorithms::DivideAndConquer
 	};
 
 	template<Arithmetic T>
-	std::tuple<std::size_t, std::size_t, T> maxSumSubarray(std::span<T> elements);
-
+	std::tuple<std::size_t, std::size_t, T> maxSumSubarray(std::span<T> elements, AlgorithmType algorithm = DIVIDE_AND_CONQUER);
 }
 
 #include "MaxSumSubarray.tpp"
