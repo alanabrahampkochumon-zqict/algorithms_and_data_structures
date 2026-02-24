@@ -12,12 +12,20 @@ set(GenericTestFolder "src/generic/")
 set(GenericTestFiles "BinaryAdderTest.cpp;TwoSumTest.cpp;HornersRuleTest.cpp;InversionCountTest.cpp")
 list(TRANSFORM GenericTestFiles PREPEND ${GenericTestFolder})
 
+set(DivideAndConquerTestFolder "src/divide-and-conquer/")
+set(DivideAndConquerTestFiles "MaxSumSubarray.cpp")
+list(TRANSFORM DivideAndConquerTestFiles PREPEND ${DivideAndConquerTestFolder})
 
 target_sources(
     Tests
     PRIVATE
-    ${SearchTestFiles} ${SortTestFiles} ${GenericTestFiles}
+    ${SearchTestFiles} ${SortTestFiles} ${GenericTestFiles} ${DivideAndConquerTestFiles}
 )
+
+source_group("Source Files\\SearchTests" FILES ${SearchTestFiles})
+source_group("Source Files\\SortTests" FILES ${SortTestFiles})
+source_group("Source Files\\GenericTests" FILES ${GenericTestFiles})
+source_group("Source Files\\DivideAndConquerTests" FILES ${DivideAndConquerTestFiles})
 
 target_link_libraries(
     Tests
@@ -29,6 +37,7 @@ target_link_libraries(
     GTest::gtest_main
     GTest::gmock_main
 )
+
 
 enable_testing()
 include(GoogleTest)

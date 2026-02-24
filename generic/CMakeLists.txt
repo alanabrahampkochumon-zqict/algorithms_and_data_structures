@@ -23,7 +23,7 @@ target_include_directories(
     "$<INSTALL_INTERFACE:include>"
 )
 
-source_group("Templates" FILES ${TemplateDefinitionFiles})
+source_group("Templates Files" FILES ${TemplateDefinitionFiles})
 
 add_custom_target(
     GenericAlgorithms
