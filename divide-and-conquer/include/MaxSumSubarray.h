@@ -1,7 +1,7 @@
 #pragma once
 
 #include <cstddef>
-#include <span>
+#include <ranges>
 #include <tuple>
 #include <concepts>
 
@@ -18,8 +18,9 @@ namespace Algorithms::DivideAndConquer
 		HYBRID
 	};
 
-	template<Arithmetic T>
-	std::tuple<std::size_t, std::size_t, T> maxSumSubarray(std::span<T> elements, AlgorithmType algorithm = DIVIDE_AND_CONQUER);
+	template<std::ranges::contiguous_range Range>
+	requires Arithmetic<std::ranges::range_value_t<Range>>
+	std::tuple<std::size_t, std::size_t, std::ranges::range_value_t<Range>> maxSumSubarray(const Range& elements, AlgorithmType algorithm = DIVIDE_AND_CONQUER);
 }
 
 #include "MaxSumSubarray.tpp"

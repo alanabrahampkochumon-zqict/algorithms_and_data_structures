@@ -1,6 +1,6 @@
 add_library(DivideAndConquer INTERFACE)
 
-target_compile_options(DivideAndConquer INTERFACE cxx_std_20)
+target_compile_features(DivideAndConquer INTERFACE cxx_std_20)
 
 set(IncludeDirectory "include/")
 set(HeaderFiles "MaxSumSubarray.h")

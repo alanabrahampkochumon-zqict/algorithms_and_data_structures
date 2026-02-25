@@ -7,22 +7,7 @@
 namespace Algorithms::MergeSort
 {
 	template <typename T, typename Comparator>
-	void _mergeSort(T* data, std::size_t start, std::size_t end, Comparator comp)
-	{
-		static_assert(std::is_invocable_r_v<bool, Comparator, T, T>, "Comparator must be a invocable(function)(T, T) with a bool return type.");
-
-		if (end - start < 2) return;
-
-		std::size_t middle = start + (end - start) / 2;
-
-		_mergeSort(data, start, middle, comp);
-		_mergeSort(data, middle, end, comp);
-
-		_merge(data, start, middle, end, comp);
-	}
-
-	template <typename T, typename Comparator>
-	void _merge(T* data, std::size_t start, std::size_t middle,std::size_t end, Comparator comp)
+	void _merge(T* data, std::size_t start, std::size_t middle, std::size_t end, Comparator comp)
 	{
 		std::vector<T> temp(end - start);
 
@@ -48,6 +33,21 @@ namespace Algorithms::MergeSort
 		{
 			data[i] = temp[i - start];
 		}
+	}
+
+	template <typename T, typename Comparator>
+	void _mergeSort(T* data, std::size_t start, std::size_t end, Comparator comp)
+	{
+		static_assert(std::is_invocable_r_v<bool, Comparator, T, T>, "Comparator must be a invocable(function)(T, T) with a bool return type.");
+
+		if (end - start < 2) return;
+
+		std::size_t middle = start + (end - start) / 2;
+
+		_mergeSort(data, start, middle, comp);
+		_mergeSort(data, middle, end, comp);
+
+		_merge(data, start, middle, end, comp);
 	}
 
 	template <typename T, std::size_t Size, typename Comparator>
