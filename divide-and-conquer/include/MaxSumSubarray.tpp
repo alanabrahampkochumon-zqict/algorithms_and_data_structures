@@ -7,15 +7,10 @@ namespace Algorithms::DivideAndConquer
 {
 	template<std::ranges::contiguous_range Range>
 		requires Arithmetic<std::ranges::range_value_t<Range>>
-	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, AlgorithmType algorithm)
+	static auto _bruteForce(const Range& elements)
 	{
 		using R = WideType<std::ranges::range_value_t<Range>>;
-		if (elements.empty())
-		{
-			return { 0, 0, 0 };
-		}
-
-		R maxSum = std::numeric_limits<R>::min(); // Initialize to the Wide types(double's or long long's min value)
+		R maxSum = std::numeric_limits<R>::lowest(); // Initialize to the Wide types(double's or long long's min value)
 		std::size_t start = 0, end = 0;
 
 		for (std::size_t i = 0; i < elements.size(); ++i)
@@ -33,7 +28,23 @@ namespace Algorithms::DivideAndConquer
 			}
 		}
 
-		return { start, end, maxSum };
+		return std::make_tuple(start, end, maxSum);
+	}
+
+	template<std::ranges::contiguous_range Range>
+		requires Arithmetic<std::ranges::range_value_t<Range>>
+	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, AlgorithmType algorithm)
+	{
+		if (elements.empty())
+		{
+			return { 0, 0, 0 };
+		}
+
+		if (algorithm == AlgorithmType::BRUTE_FORCE)
+			return _bruteForce(elements);
+
+		// TODO: Implement DIVIDE_AND_CONQUER and HYBRID
+		throw std::invalid_argument("Algorithm not yet implemented");
 	}
 
 }

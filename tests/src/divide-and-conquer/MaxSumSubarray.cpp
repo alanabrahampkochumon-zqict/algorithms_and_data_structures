@@ -33,24 +33,40 @@ static std::ostream& operator<<(std::ostream& os, const AlgorithmTestParam<T>& p
 }
 
 
-class MaxSumSubarrayTestFixture : public ::testing::TestWithParam<AlgorithmTestParam<int>> { };
+class MaxSumSubarrayIntegralTestFixture : public ::testing::TestWithParam<AlgorithmTestParam<int>> { };
+class MaxSumSubarrayFloatingPointTestFixture : public ::testing::TestWithParam<AlgorithmTestParam<float>> { };
 
-TEST_P(MaxSumSubarrayTestFixture, ReturnsCorrectSubarrayAndSum)
+template <typename T>
+static void runTests(const AlgorithmTestParam<T>& param)
 {
-	const auto& [algo, data] = GetParam();
+	auto [algo, data] = param;
 
 	auto [start, end, sum] = maxSumSubarray(data.input, algo);
 
+	if constexpr(std::is_floating_point_v<T>)
+		ASSERT_DOUBLE_EQ(data.sum, sum);
+	else
+		ASSERT_EQ(data.sum, sum);
+
 	ASSERT_EQ(data.start, start);
 	ASSERT_EQ(data.end, end);
-	ASSERT_EQ(data.sum, sum);
+}
+
+TEST_P(MaxSumSubarrayIntegralTestFixture, ReturnsCorrectSubarrayAndSum)
+{
+	runTests(GetParam());
+}
+
+TEST_P(MaxSumSubarrayFloatingPointTestFixture, ReturnsCorrectSubarrayAndSum)
+{
+	runTests(GetParam());
 }
 
 
 
 INSTANTIATE_TEST_CASE_P(
-	MaxSumSubarrayTests,
-	MaxSumSubarrayTestFixture,
+	MaxSumSubarrayIntegralTests,
+	MaxSumSubarrayIntegralTestFixture,
 	::testing::Values(
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {-5, -8, -1, -2, -4}, 2, 2, -1 }),
@@ -58,5 +74,18 @@ INSTANTIATE_TEST_CASE_P(
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {7}, 0, 0, 7 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {0}, 0, 0, 0 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
+	)
+);
+
+INSTANTIATE_TEST_CASE_P(
+	MaxSumSubarrayFloatingPointTests,
+	MaxSumSubarrayFloatingPointTestFixture,
+	::testing::Values(
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {-2.0f, 1.0f, -3.0f, 4.0f, -1.0f, 2.0f, 1.0f, -5.0f, 4.0f}, 3, 6, 6.0f }),
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {-5.0f, -8.0f, -1.0f, -2.0f, -4.0f}, 2, 2, -1.0f }),
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {1.0f, 2.0f, 3.0f, 4.0f, 5.0f}, 0, 4, 15.0f }),
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {7.0f}, 0, 0, 7.0f }),
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {0.0f}, 0, 0, 0.0f }),
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) })
 	)
 );
