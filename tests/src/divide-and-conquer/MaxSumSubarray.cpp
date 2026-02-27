@@ -41,7 +41,7 @@ static void runTests(const AlgorithmTestParam<T>& param)
 {
 	auto [algo, data] = param;
 
-	auto [start, end, sum] = maxSumSubarray(data.input, algo);
+	auto [start, end, sum] = maxSumSubarray(data.input, data.input.size(), algo);
 
 	if constexpr(std::is_floating_point_v<T>)
 		ASSERT_DOUBLE_EQ(data.sum, sum);
@@ -80,8 +80,8 @@ INSTANTIATE_TEST_CASE_P(
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {-5, -8, -1, -2, -4}, 2, 2, -1 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {1, 2, 3, 4, 5}, 0, 4, 15 }),
-		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {7}, 0, 0, 7 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {0}, 0, 0, 0 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {7}, 0, 0, 7 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
 	)
 );

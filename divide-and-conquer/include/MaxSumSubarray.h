@@ -24,12 +24,13 @@ namespace Algorithms::DivideAndConquer
 	 * Finds the maximum sum subarray in the given array or vector.
 	 * @tparam Range A contiguous container type (e.g., std::vector, std::array, std::span, or C-array) whose elements satisfy the Arithmetic concept.
 	 * @param elements C-style array, std::array or std::vector elements in which to find the max sum subarray. 
+	 * @param size Size of the container, NOT Byte Size.
 	 * @param algorithm Algorithm to use. Options are AlgorithmType::BRUTE_FORCE, DIVIDE_AND_CONQUER, and HYBRID. Default is DIVIDE_AND_CONQUER
 	 * @return std::tuple(start, end, maxSum)
 	 */
 	template<std::ranges::contiguous_range Range>
 	requires Arithmetic<std::ranges::range_value_t<Range>>
-	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, AlgorithmType algorithm = DIVIDE_AND_CONQUER);
+	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, std::size_t size, AlgorithmType algorithm = DIVIDE_AND_CONQUER);
 }
 
 #include "MaxSumSubarray.tpp"
