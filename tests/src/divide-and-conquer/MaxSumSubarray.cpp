@@ -68,12 +68,21 @@ INSTANTIATE_TEST_CASE_P(
 	MaxSumSubarrayIntegralTests,
 	MaxSumSubarrayIntegralTestFixture,
 	::testing::Values(
+		// Brute Force
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {-5, -8, -1, -2, -4}, 2, 2, -1 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {1, 2, 3, 4, 5}, 0, 4, 15 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {7}, 0, 0, 7 }),
 		AlgorithmTestParam<int>(BRUTE_FORCE, { {0}, 0, 0, 0 }),
-		AlgorithmTestParam<int>(BRUTE_FORCE, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
+		AlgorithmTestParam<int>(BRUTE_FORCE, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) }),
+
+		// Divide and Conquer
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {-5, -8, -1, -2, -4}, 2, 2, -1 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {1, 2, 3, 4, 5}, 0, 4, 15 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {7}, 0, 0, 7 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {0}, 0, 0, 0 }),
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
 	)
 );
 
@@ -81,11 +90,20 @@ INSTANTIATE_TEST_CASE_P(
 	MaxSumSubarrayFloatingPointTests,
 	MaxSumSubarrayFloatingPointTestFixture,
 	::testing::Values(
+		// Brute Force
 		AlgorithmTestParam<float>(BRUTE_FORCE, { {-2.0f, 1.0f, -3.0f, 4.0f, -1.0f, 2.0f, 1.0f, -5.0f, 4.0f}, 3, 6, 6.0f }),
 		AlgorithmTestParam<float>(BRUTE_FORCE, { {-5.0f, -8.0f, -1.0f, -2.0f, -4.0f}, 2, 2, -1.0f }),
 		AlgorithmTestParam<float>(BRUTE_FORCE, { {1.0f, 2.0f, 3.0f, 4.0f, 5.0f}, 0, 4, 15.0f }),
 		AlgorithmTestParam<float>(BRUTE_FORCE, { {7.0f}, 0, 0, 7.0f }),
 		AlgorithmTestParam<float>(BRUTE_FORCE, { {0.0f}, 0, 0, 0.0f }),
-		AlgorithmTestParam<float>(BRUTE_FORCE, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) })
+		AlgorithmTestParam<float>(BRUTE_FORCE, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) }),
+
+		// Divide and Conquer
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {-2.0f, 1.0f, -3.0f, 4.0f, -1.0f, 2.0f, 1.0f, -5.0f, 4.0f}, 3, 6, 6.0f }),
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {-5.0f, -8.0f, -1.0f, -2.0f, -4.0f}, 2, 2, -1.0f }),
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {1.0f, 2.0f, 3.0f, 4.0f, 5.0f}, 0, 4, 15.0f }),
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {7.0f}, 0, 0, 7.0f }),
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {0.0f}, 0, 0, 0.0f }),
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) })
 	)
 );

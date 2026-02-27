@@ -32,6 +32,13 @@ namespace Algorithms::DivideAndConquer
 	}
 
 	template<std::ranges::contiguous_range Range>
+	requires Arithmetic<std::ranges::range_value_t<Range>>
+	static auto _divideAndConquer(const Range& elements, std::size_t start, std::size_t end)
+	{
+		return std::make_tuple(0, 0, 0);
+	}
+
+	template<std::ranges::contiguous_range Range>
 		requires Arithmetic<std::ranges::range_value_t<Range>>
 	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, AlgorithmType algorithm)
 	{
@@ -42,6 +49,8 @@ namespace Algorithms::DivideAndConquer
 
 		if (algorithm == AlgorithmType::BRUTE_FORCE)
 			return _bruteForce(elements);
+		else if (algorithm == AlgorithmType::DIVIDE_AND_CONQUER)
+			return _divideAndConquer(elements, 0, elements.size());
 
 		// TODO: Implement DIVIDE_AND_CONQUER and HYBRID
 		throw std::invalid_argument("Algorithm not yet implemented");
