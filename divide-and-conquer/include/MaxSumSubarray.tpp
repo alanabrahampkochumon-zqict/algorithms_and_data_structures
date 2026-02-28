@@ -5,30 +5,33 @@
 
 namespace Algorithms::DivideAndConquer
 {
+
+	// NOTE: End values are inclusive
+
 	template<std::ranges::contiguous_range Range>
 		requires Arithmetic<std::ranges::range_value_t<Range>>
-	static auto bruteForce(const Range& elements, std::size_t size)
+	static auto bruteForce(const Range& elements, std::size_t start, std::size_t end)
 	{
 		using R = WideType<std::ranges::range_value_t<Range>>;
 		R maxSum = std::numeric_limits<R>::lowest(); // Initialize to the Wide types(double's or long long's min value)
-		std::size_t start = 0, end = 0;
+		std::size_t lowerLimit = 0, upperLimit = 0;
 
-		for (std::size_t i = 0; i < size; ++i)
+		for (std::size_t i = start; i <= end; ++i)
 		{
 			R currentSum = 0;
-			for (std::size_t j = i; j < size; ++j)
+			for (std::size_t j = i; j <= end; ++j)
 			{
 				currentSum += elements[j];
 				if (currentSum > maxSum)
 				{
 					maxSum = currentSum;
-					start = i;
-					end = j;
+					lowerLimit = i;
+					upperLimit = j;
 				}
 			}
 		}
 
-		return std::make_tuple(start, end, maxSum);
+		return std::make_tuple(lowerLimit, upperLimit, maxSum);
 	}
 
 	template<std::ranges::contiguous_range Range>
@@ -56,7 +59,7 @@ namespace Algorithms::DivideAndConquer
 
 		// Find the max sum subarray in the left part [6, 8, -4] -> [6, 8]
 		currentSum = 0;
-		for (std::size_t i = middle + 1; i <= end ; ++i)
+		for (std::size_t i = middle + 1; i <= end; ++i)
 		{
 			currentSum += elements[i];
 			if (currentSum > rightSum)
@@ -75,7 +78,7 @@ namespace Algorithms::DivideAndConquer
 	{
 		if (start == end)
 			return { start, end, elements[start] };
-		std::size_t middle = start + ( end - start ) / 2;
+		std::size_t middle = start + (end - start) / 2;
 
 		const auto [leftStart, leftEnd, leftSum] = divideAndConquer(elements, start, middle); // Left
 		const auto [rightStart, rightEnd, rightSum] = divideAndConquer(elements, middle + 1, end); // Right
@@ -93,7 +96,30 @@ namespace Algorithms::DivideAndConquer
 
 	template<std::ranges::contiguous_range Range>
 		requires Arithmetic<std::ranges::range_value_t<Range>>
-	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, std::size_t size, AlgorithmType algorithm)
+	static std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> hybridSort(const Range& elements, std::size_t start, std::size_t end, std::size_t limit)
+	{
+		if (end - start < limit)
+			return bruteForce(elements, start, end);
+
+		std::size_t middle = start + (end - start) / 2;
+
+		const auto [leftStart, leftEnd, leftSum] = hybridSort(elements, start, middle, limit);
+		const auto [rightStart, rightEnd, rightSum] = hybridSort(elements, middle + 1, end, limit);
+		const auto [crossStart, crossEnd, crossSum] = crossMaxSumSubarray(elements, start, middle, end);
+
+		// If the greatest sum subarray is the left subarray return it
+		if (leftSum >= rightSum && leftSum >= crossSum)
+			return { leftStart, leftEnd, leftSum };
+		// If the greatest sum subarray is in the right subarray return it
+		else if (rightSum >= crossSum)
+			return { rightStart, rightEnd, rightSum };
+		// Else return the subarray between the two containing the max sum
+		return { crossStart, crossEnd, crossSum };
+	}
+
+	template<std::ranges::contiguous_range Range>
+		requires Arithmetic<std::ranges::range_value_t<Range>>
+	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, std::size_t size, AlgorithmType algorithm, std::size_t limit)
 	{
 
 		if (elements.empty())
@@ -101,14 +127,13 @@ namespace Algorithms::DivideAndConquer
 			return { 0, 0, 0 };
 		}
 
-		std::cout << "Size: " << size;
 		if (algorithm == AlgorithmType::BRUTE_FORCE)
-			return bruteForce(elements, size);
-		else if (algorithm == AlgorithmType::DIVIDE_AND_CONQUER)
+			return bruteForce(elements, 0, size - 1);
+		
+		if (algorithm == AlgorithmType::DIVIDE_AND_CONQUER)
 			return divideAndConquer(elements, 0, size - 1);
-
-		// TODO: Implement DIVIDE_AND_CONQUER and HYBRID
-		throw std::invalid_argument("Algorithm not yet implemented");
+		
+		return hybridSort(elements, 0, size - 1, limit);
 	}
 
 }

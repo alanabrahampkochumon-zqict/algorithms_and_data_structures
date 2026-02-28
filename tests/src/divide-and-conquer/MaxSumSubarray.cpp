@@ -15,6 +15,7 @@ struct TestCaseData
 	std::size_t start;
 	std::size_t end;
 	WideType<T> sum;
+	std::size_t limit = 5;
 };
 
 template<typename T>
@@ -41,7 +42,7 @@ static void runTests(const AlgorithmTestParam<T>& param)
 {
 	auto [algo, data] = param;
 
-	auto [start, end, sum] = maxSumSubarray(data.input, data.input.size(), algo);
+	auto [start, end, sum] = maxSumSubarray(data.input, data.input.size(), algo, data.limit);
 
 	if constexpr(std::is_floating_point_v<T>)
 		ASSERT_DOUBLE_EQ(data.sum, sum);
@@ -82,7 +83,17 @@ INSTANTIATE_TEST_CASE_P(
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {1, 2, 3, 4, 5}, 0, 4, 15 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {0}, 0, 0, 0 }),
 		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {7}, 0, 0, 7 }),
-		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
+		AlgorithmTestParam<int>(DIVIDE_AND_CONQUER, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) }),
+
+		// Hybrid
+		AlgorithmTestParam<int>(HYBRID, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6, 3 }),
+		AlgorithmTestParam<int>(HYBRID, { {-2, 1, -3, 4, -1, 2, 1, -5, 4}, 3, 6, 6, 6 }),
+		AlgorithmTestParam<int>(HYBRID, { {-5, -8, -1, -2, -4}, 2, 2, -1 }),
+		AlgorithmTestParam<int>(HYBRID, { {1, 2, 3, 4, 5}, 0, 4, 15 }),
+		AlgorithmTestParam<int>(HYBRID, { {0}, 0, 0, 0 }),
+		AlgorithmTestParam<int>(HYBRID, { {7}, 0, 0, 7 }),
+		AlgorithmTestParam<int>(HYBRID, { {13, -3, -25, 20, -3, -16, -23, 18, 20, -7, 12, -5, -22, 15, -4, 7}, 7, 10, 43, 5 }),
+		AlgorithmTestParam<int>(HYBRID, { {INT32_MAX, INT32_MAX}, 0, 1, 2 * static_cast<WideType<int>>(INT32_MAX) })
 	)
 );
 
@@ -104,6 +115,14 @@ INSTANTIATE_TEST_CASE_P(
 		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {1.0f, 2.0f, 3.0f, 4.0f, 5.0f}, 0, 4, 15.0f }),
 		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {7.0f}, 0, 0, 7.0f }),
 		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {0.0f}, 0, 0, 0.0f }),
-		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) })
+		AlgorithmTestParam<float>(DIVIDE_AND_CONQUER, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) }),
+
+		// Hybrid
+		AlgorithmTestParam<float>(HYBRID, { {-2.0f, 1.0f, -3.0f, 4.0f, -1.0f, 2.0f, 1.0f, -5.0f, 4.0f}, 3, 6, 6.0f }),
+		AlgorithmTestParam<float>(HYBRID, { {-5.0f, -8.0f, -1.0f, -2.0f, -4.0f}, 2, 2, -1.0f }),
+		AlgorithmTestParam<float>(HYBRID, { {1.0f, 2.0f, 3.0f, 4.0f, 5.0f}, 0, 4, 15.0f }),
+		AlgorithmTestParam<float>(HYBRID, { {7.0f}, 0, 0, 7.0f }),
+		AlgorithmTestParam<float>(HYBRID, { {0.0f}, 0, 0, 0.0f }),
+		AlgorithmTestParam<float>(HYBRID, { {FLT_MAX, FLT_MAX}, 0, 1, 2 * static_cast<WideType<float>>(FLT_MAX) })
 	)
 );
