@@ -7,7 +7,18 @@ FetchContent_Declare(
     SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/vendors/googletest"
 )
 
+FetchContent_Declare(
+    googlebenchmark
+    GIT_REPOSITORY https://github.com/google/benchmark.git
+    GIT_TAG v1.9.5
+    SOURCE_DIR "${CMAKE_CURRENT_LIST_DIR}/vendors/googlebenchmark"
+)
+
+set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE) # Disbles google benchmark from creating its own test suite
+
 FetchContent_MakeAvailable(googletest)
+FetchContent_MakeAvailable(googlebenchmark)
 
 # Group the projects into a single folder
 set_target_properties(gtest gtest_main gmock gmock_main PROPERTIES FOLDER "Google Test")
+set_target_properties(benchmark benchmark_main PROPERTIES FOLDER "Google Benchmark")

@@ -14,6 +14,6 @@ add_subdirectory(generic)
 add_subdirectory(playground)
 add_subdirectory(divide-and-conquer)
 add_subdirectory(tests)
-add_subdirectory(benchmark)
+add_subdirectory(benchmark-suite)
 
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Playground)
