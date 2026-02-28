@@ -5,10 +5,15 @@ set(DACDirectory "src/DivideAndConquer/")
 set(DACFiles "MaxSumSubArrayBenchmarks.cpp")
 list(TRANSFORM DACFiles PREPEND ${DACDirectory})
 
+set(HelperDirectory "include/helpers/")
+set(HelperFiles "RandomGenerators.h")
+list(TRANSFORM HelperFiles PREPEND ${HelperDirectory})
+
 target_sources(
     BenchmarkSuite
     PRIVATE
     ${DACFiles}
+    ${HelperFiles}
 )
 
 target_link_libraries(
