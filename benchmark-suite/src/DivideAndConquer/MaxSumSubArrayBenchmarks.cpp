@@ -6,14 +6,20 @@
 
 using namespace Helpers;
 
-static void BM_BruteForce(benchmark::State &state)
+using namespace Algorithms::DivideAndConquer;
+
+template<AlgorithmType Algorithm>
+static void BM_MaxSumSubarray(benchmark::State &state)
 {
 	std::size_t size = state.range(0);
 	std::vector vector = generateRandomVector<int>(size);
 
 	for (auto _ : state)
-		benchmark::DoNotOptimize(Algorithms::DivideAndConquer::maxSumSubarray(vector, vector.size(), Algorithms::DivideAndConquer::BRUTE_FORCE));
+		benchmark::DoNotOptimize(maxSumSubarray(vector, vector.size(), Algorithm));
 }
 
 
-BENCHMARK(BM_BruteForce)->RangeMultiplier(2)->Range(8, 8192);
+
+BENCHMARK_TEMPLATE(BM_MaxSumSubarray, BRUTE_FORCE)->RangeMultiplier(2)->Range(8, 8192);
+BENCHMARK_TEMPLATE(BM_MaxSumSubarray, DIVIDE_AND_CONQUER)->RangeMultiplier(2)->Range(8, 8192);
+BENCHMARK_TEMPLATE(BM_MaxSumSubarray, HYBRID)->RangeMultiplier(2)->Range(8, 8192);
