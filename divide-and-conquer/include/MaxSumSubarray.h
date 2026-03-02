@@ -15,9 +15,10 @@ namespace Algorithms::DivideAndConquer
 
 	enum AlgorithmType
 	{
-		BRUTE_FORCE,
-		DIVIDE_AND_CONQUER,
-		HYBRID
+		BRUTE_FORCE, // theta(n^2)
+		DIVIDE_AND_CONQUER, // theta(nlgn)
+		HYBRID, // theta(nlgn)
+		KADANES // theta(n)
 	};
 
 	/**

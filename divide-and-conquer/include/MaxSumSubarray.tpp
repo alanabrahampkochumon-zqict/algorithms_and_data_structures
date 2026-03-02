@@ -119,6 +119,33 @@ namespace Algorithms::DivideAndConquer
 
 	template<std::ranges::contiguous_range Range>
 		requires Arithmetic<std::ranges::range_value_t<Range>>
+	static std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> kadanes(const Range& elements, std::size_t size)
+	{
+		using R = WideType<std::ranges::range_value_t<Range>>;
+		R bestSum = std::numeric_limits<R>::lowest();
+		std::size_t bestStart = 0, tempStart = 0, bestEnd = 0;
+
+		R currentSum = 0;
+		for (std::size_t i = 0; i < size; ++i)
+		{
+			currentSum += elements[i];
+			if (currentSum > bestSum)
+			{
+				bestSum = currentSum;
+				bestStart = tempStart;
+				bestEnd = i;
+			}
+			else if (currentSum < 0)
+			{
+				currentSum = 0;
+				tempStart = i + 1;
+			}
+		}
+		return { bestStart, bestEnd, bestSum };
+	}
+
+	template<std::ranges::contiguous_range Range>
+		requires Arithmetic<std::ranges::range_value_t<Range>>
 	std::tuple<std::size_t, std::size_t, WideType<std::ranges::range_value_t<Range>>> maxSumSubarray(const Range& elements, std::size_t size, AlgorithmType algorithm, std::size_t limit)
 	{
 
@@ -132,8 +159,12 @@ namespace Algorithms::DivideAndConquer
 		
 		if (algorithm == AlgorithmType::DIVIDE_AND_CONQUER)
 			return divideAndConquer(elements, 0, size - 1);
-		
-		return hybridSort(elements, 0, size - 1, limit);
+
+		if (algorithm == AlgorithmType::HYBRID)
+			return hybridSort(elements, 0, size - 1, limit);
+
+		// else use Kadane's
+		return kadanes(elements, size);
 	}
 
 }
