@@ -44,10 +44,12 @@ namespace Algorithms::Generic
 		if (end - start < 2) return 0;
 
 		std::size_t middle = start + (end - start) / 2;
+		
+		std::size_t leftInversions = _mergeAndCountInversions(data, start, middle, comp);
+		std::size_t rightInversions = _mergeAndCountInversions(data, middle, end, comp);
+		std::size_t mergedInversions = _merge(data, start, middle, end, comp);
 
-		return _mergeAndCountInversions(data, start, middle, comp) + // Left Partition
-			_mergeAndCountInversions(data, middle, end, comp) + // Right Partition
-			_merge(data, start, middle, end, comp); // Merge And count current partition
+		return leftInversions + rightInversions + mergedInversions;
 
 	}
 
