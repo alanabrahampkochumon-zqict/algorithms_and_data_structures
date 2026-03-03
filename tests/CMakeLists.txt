@@ -13,7 +13,7 @@ set(GenericTestFiles "BinaryAdderTest.cpp;TwoSumTest.cpp;HornersRuleTest.cpp;Inv
 list(TRANSFORM GenericTestFiles PREPEND ${GenericTestFolder})
 
 set(DivideAndConquerTestFolder "src/divide-and-conquer/")
-set(DivideAndConquerTestFiles "MaxSumSubarray.cpp")
+set(DivideAndConquerTestFiles "MaxSumSubarrayTest.cpp;MatrixMultiplicationTest.cpp")
 list(TRANSFORM DivideAndConquerTestFiles PREPEND ${DivideAndConquerTestFolder})
 
 target_sources(

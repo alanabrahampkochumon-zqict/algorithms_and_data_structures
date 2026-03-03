@@ -3,10 +3,10 @@ add_library(DivideAndConquer INTERFACE)
 target_compile_features(DivideAndConquer INTERFACE cxx_std_20)
 
 set(IncludeDirectory "include/")
-set(HeaderFiles "MaxSumSubarray.h")
+set(HeaderFiles "MaxSumSubarray.h;MatrixMultiplication.h")
 list(TRANSFORM HeaderFiles PREPEND ${IncludeDirectory})
 
-set(TemplateFiles "MaxSumSubarray.tpp")
+set(TemplateFiles "MaxSumSubarray.tpp;MatrixMultiplication.tpp")
 list(TRANSFORM TemplateFiles PREPEND ${IncludeDirectory})
 
 target_sources(
