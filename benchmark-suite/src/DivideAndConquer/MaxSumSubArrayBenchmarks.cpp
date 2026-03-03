@@ -20,9 +20,10 @@ namespace
 			benchmark::DoNotOptimize(maxSumSubarray(vector, vector.size(), Algorithm));
 	}
 
-	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, BRUTE_FORCE)->RangeMultiplier(2)->Range(8, 8192);
-	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, DIVIDE_AND_CONQUER)->RangeMultiplier(2)->Range(8, 8192);
-	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, HYBRID)->RangeMultiplier(2)->Range(8, 8192);
+	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, BRUTE_FORCE)->RangeMultiplier(2)->Range(8, 8192); // theta(n^2)
+	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, DIVIDE_AND_CONQUER)->RangeMultiplier(2)->Range(8, 8192); // theta(nlgn)
+	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, HYBRID)->RangeMultiplier(2)->Range(8, 8192); // theta(nlgn) Optimized
+	BENCHMARK_TEMPLATE(BM_MaxSumSubarray, KADANES)->RangeMultiplier(2)->Range(8, 8192); // theta(n)
 
 	//void BM_MaxSumSubarray_Hybrid(benchmark::State& state)
 	//{

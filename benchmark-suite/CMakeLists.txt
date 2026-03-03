@@ -26,7 +26,7 @@ target_precompile_headers(
 target_link_libraries(
     BenchmarkSuite
     PRIVATE
-    
+    DivideAndConquer
     benchmark::benchmark
     benchmark::benchmark_main
 )
