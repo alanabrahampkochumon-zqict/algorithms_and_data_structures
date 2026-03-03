@@ -16,10 +16,17 @@ target_sources(
     ${HelperFiles}
 )
 
+target_precompile_headers(
+    BenchmarkSuite
+    PRIVATE
+    <benchmark/benchmark.h>
+    <vector>
+)
+
 target_link_libraries(
     BenchmarkSuite
     PRIVATE
-    DivideAndConquer
+    
     benchmark::benchmark
     benchmark::benchmark_main
 )

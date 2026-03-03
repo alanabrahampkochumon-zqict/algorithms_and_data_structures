@@ -27,6 +27,11 @@ source_group("Source Files\\SortTests" FILES ${SortTestFiles})
 source_group("Source Files\\GenericTests" FILES ${GenericTestFiles})
 source_group("Source Files\\DivideAndConquerTests" FILES ${DivideAndConquerTestFiles})
 
+target_precompile_headers(Tests PRIVATE
+    <vector>
+    <gtest/gtest.h>
+)
+
 target_link_libraries(
     Tests
 
