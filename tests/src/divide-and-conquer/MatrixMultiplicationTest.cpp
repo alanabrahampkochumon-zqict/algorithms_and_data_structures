@@ -8,7 +8,7 @@ template<typename T>
 	requires std::integral<T> || std::floating_point<T>
 struct TestDataParam
 {
-	std::initializer_list<std::initializer_list<T>> inputData;
+	std::vector<std::vector<T>> inputData;
 	std::size_t expectedRows;
 	std::size_t expectedCols;
 	std::vector<T> expectedData;
@@ -49,31 +49,31 @@ INSTANTIATE_TEST_SUITE_P(
 	MatrixInitializationTestFixture,
 	::testing::Values(
 		TestDataParam(
-			{ {1, 2}, {3, 4} },
+			std::vector<std::vector<int>>{ {1, 2}, {3, 4} },
 			2,
 			2,
 			{ 1, 2, 3, 4 }
 		),
 		TestDataParam(
-			{ {1, 2}, {3, 4, 5} },
+			std::vector<std::vector<int>>{ {1, 2}, {3, 4, 5} },
 			2,
 			3,
 			{ 1, 2, 0, 3, 4, 5 }
 		),
 		TestDataParam(
-			{ {1, 2, 3}, {4, 5} },
+			std::vector<std::vector<int>> { {1, 2, 3}, {4, 5} },
 			2,
 			3,
 			{ 1, 2, 3, 4, 5, 0 }
 		),
 		TestDataParam(
-			{ {1}, {2}, {3} },
+			std::vector<std::vector<int>> { {1}, {2}, {3} },
 			3,
 			1,
 			{ 1, 2, 3 }
 		),
 		TestDataParam(
-			{ {1, 2},{}, { 3, 4 } },
+			std::vector<std::vector<int>> { {1, 2},{}, { 3, 4 } },
 			3,
 			2,
 			{ 1, 2, 0, 0, 3, 4 }
