@@ -17,12 +17,16 @@ namespace Algorithms
 	template <Arithmetic T>
 	T& Matrix<T>::operator()(std::size_t row, std::size_t col)
 	{
+		if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
+			throw std::runtime_error("Invalid index");
 		return m_Data[row * m_Columns + col];
 	}
 
 	template <Arithmetic T>
 	const T& Matrix<T>::operator()(std::size_t row, std::size_t col) const
 	{
+		if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
+			throw std::runtime_error("Invalid index");
 		return m_Data[row * m_Columns + col];
 	}
 }

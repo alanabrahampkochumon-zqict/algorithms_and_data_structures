@@ -89,13 +89,13 @@ TEST(MatrixInitializationTest, RowColCountInitailizesIdentityMatrix)
 	const Algorithms::Matrix<int> mat(rows, cols);
 
 	// Then, rows and columns get correctly initialized
-	ASSERT_EQ(rows, mat.m_Rows);
-	ASSERT_EQ(cols, mat.m_Columns);
+	EXPECT_EQ(rows, mat.m_Rows);
+	EXPECT_EQ(cols, mat.m_Columns);
 
 	// And, the elements form an identity matrix
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			ASSERT_EQ(static_cast<int>(i == j), mat.m_Data[i * cols + j]);
+			EXPECT_EQ(static_cast<int>(i == j), mat.m_Data[i * cols + j]);
 }
 
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
@@ -108,11 +108,38 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 	// Then, the matrix can be access with (row, col)
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			ASSERT_EQ(static_cast<int>(i == j), mat(i, j));
+			EXPECT_EQ(static_cast<int>(i == j), mat(i, j));
 }
 
 
-TEST(MatrixAccess, ElementsCanBeMutatedAtRowColumn)
+TEST(MatrixAccess, AccessAtSizeThrowsError)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	const Algorithms::Matrix<int> mat(rows, cols);
+
+	// When accessed at rowsize, colsize
+	// Then, it throws runtime error
+	EXPECT_THROW(mat(rows, cols), std::runtime_error);
+}
+
+
+TEST(MatrixAccess, InvalidIndexThrowsError)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	const Algorithms::Matrix<int> mat(rows, cols);
+
+	// When accessed at invalid index
+	// Then, it throws runtime error
+	EXPECT_THROW(mat(rows + 10, cols + 10), std::runtime_error);
+}
+
+
+
+TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 {
 	// Given a matrix is created with rows and columns
 	constexpr int rows = 5;
@@ -126,5 +153,31 @@ TEST(MatrixAccess, ElementsCanBeMutatedAtRowColumn)
 	// Then, the matrix can be access with (row, col)
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			ASSERT_EQ(i == j ? 50: 0, mat(i, j));
+			EXPECT_EQ(i == j ? 50: 0, mat(i, j));
+}
+
+
+TEST(MatrixMutation, AtSizeThrowsError)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	Algorithms::Matrix<int> mat(rows, cols);
+
+	// When mutated at rowsize, colsize
+	// Then, it throws runtime error
+	EXPECT_THROW(mat(rows, cols) = 5, std::runtime_error);
+}
+
+
+TEST(MatrixMutation, InvalidIndexThrowsError)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	Algorithms::Matrix<int> mat(rows, cols);
+
+	// When mutated at invalid index
+	// Then, it throws runtime error
+	EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::runtime_error);
 }
