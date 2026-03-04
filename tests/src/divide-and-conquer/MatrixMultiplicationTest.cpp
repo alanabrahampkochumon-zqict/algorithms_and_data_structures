@@ -36,7 +36,7 @@ TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
 				if constexpr (std::is_same_v<typename decltype(mat)::value_type, double>)
 					EXPECT_DOUBLE_EQ(expectedData[i * expectedCols + j], mat.m_Data[i * expectedRows + j]);
 				else
-					EXPECT_FLOAT_EQ(expectedData[i * expectedCols + j], mat.m_Data[i * expectedRows + j]);
+					EXPECT_FLOAT_EQ(static_cast<float>(expectedData[i * expectedCols + j]), static_cast<float>(mat.m_Data[i * expectedRows + j]));
 			}
 		}
 	}
@@ -44,7 +44,7 @@ TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
 		EXPECT_EQ(mat.m_Data, expectedData);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
 	MatrixInitializationTest,
 	MatrixInitializationTestFixture,
 	::testing::Values(
@@ -80,3 +80,51 @@ INSTANTIATE_TEST_CASE_P(
 		)
 	)
 );
+
+TEST(MatrixInitializationTest, RowColCountInitailizesIdentityMatrix)
+{
+	// When a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	const Algorithms::Matrix<int> mat(rows, cols);
+
+	// Then, rows and columns get correctly initialized
+	ASSERT_EQ(rows, mat.m_Rows);
+	ASSERT_EQ(cols, mat.m_Columns);
+
+	// And, the elements form an identity matrix
+	for (std::size_t i = 0; i < rows; ++i)
+		for (std::size_t j = 0; j < cols; ++j)
+			ASSERT_EQ(static_cast<int>(i == j), mat.m_Data[i * cols + j]);
+}
+
+TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	const Algorithms::Matrix<int> mat(rows, cols);
+
+	// Then, the matrix can be access with (row, col)
+	for (std::size_t i = 0; i < rows; ++i)
+		for (std::size_t j = 0; j < cols; ++j)
+			ASSERT_EQ(static_cast<int>(i == j), mat(i, j));
+}
+
+
+TEST(MatrixAccess, ElementsCanBeMutatedAtRowColumn)
+{
+	// Given a matrix is created with rows and columns
+	constexpr int rows = 5;
+	constexpr int cols = 7;
+	Algorithms::Matrix<int> mat(rows, cols);
+
+	// When elements are mutated
+	for (std::size_t i = 0; i < rows; ++i)
+		mat(i, i) = 50;
+
+	// Then, the matrix can be access with (row, col)
+	for (std::size_t i = 0; i < rows; ++i)
+		for (std::size_t j = 0; j < cols; ++j)
+			ASSERT_EQ(i == j ? 50: 0, mat(i, j));
+}

@@ -18,8 +18,11 @@ namespace Algorithms
 		std::size_t m_Rows, m_Columns;
 		std::vector<T> m_Data;
 
-		Matrix(std::size_t row, std::size_t col);
+		Matrix(std::size_t rows, std::size_t cols);
 		Matrix(std::initializer_list<std::initializer_list<T>> list);
+
+		T& operator()(std::size_t row, std::size_t col);
+		const T& operator()(std::size_t row, std::size_t col) const;
 
 
 	};
