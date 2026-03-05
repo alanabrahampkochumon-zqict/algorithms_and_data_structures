@@ -18,7 +18,7 @@ class MatrixInitializationTestFixture : public ::testing::TestWithParam<MatrixIn
 
 
 template<typename T>
-requires std::integral<T> || std::floating_point<T>
+	requires std::integral<T> || std::floating_point<T>
 struct MatrixMultiplicationParams
 {
 	Algorithms::Matrix<T> a;
@@ -26,7 +26,7 @@ struct MatrixMultiplicationParams
 	Algorithms::Matrix<T> result;
 };
 
-class MatrixMultiplicationTestFixture: public ::testing::TestWithParam<MatrixMultiplicationParams<int>> {};
+class MatrixMultiplicationTestFixture : public ::testing::TestWithParam<MatrixMultiplicationParams<int>> { };
 
 TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
 {
@@ -61,31 +61,31 @@ INSTANTIATE_TEST_SUITE_P(
 	MatrixInitializationTestFixture,
 	::testing::Values(
 		MatrixInitializerParams(
-			std::vector<std::vector<int>>{ {1, 2}, {3, 4} },
+			std::vector<std::vector<int>>{ {1, 2}, { 3, 4 } },
 			2,
 			2,
 			{ 1, 2, 3, 4 }
 		),
 		MatrixInitializerParams(
-			std::vector<std::vector<int>>{ {1, 2}, {3, 4, 5} },
+			std::vector<std::vector<int>>{ {1, 2}, { 3, 4, 5 } },
 			2,
 			3,
 			{ 1, 2, 0, 3, 4, 5 }
 		),
 		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1, 2, 3}, {4, 5} },
+			std::vector<std::vector<int>> { {1, 2, 3}, { 4, 5 } },
 			2,
 			3,
 			{ 1, 2, 3, 4, 5, 0 }
 		),
 		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1}, {2}, {3} },
+			std::vector<std::vector<int>> { {1}, { 2 }, { 3 } },
 			3,
 			1,
 			{ 1, 2, 3 }
 		),
 		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1, 2},{}, { 3, 4 } },
+			std::vector<std::vector<int>> { {1, 2}, {}, { 3, 4 } },
 			3,
 			2,
 			{ 1, 2, 0, 0, 3, 4 }
@@ -93,7 +93,7 @@ INSTANTIATE_TEST_SUITE_P(
 	)
 );
 
-TEST(MatrixInitializationTest, RowColCountInitailizesIdentityMatrix)
+TEST(MatrixInitializationTest, RowColCountInitailizesZeroMatrix)
 {
 	// When a matrix is created with rows and columns
 	constexpr int rows = 5;
@@ -107,7 +107,7 @@ TEST(MatrixInitializationTest, RowColCountInitailizesIdentityMatrix)
 	// And, the elements form an identity matrix
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			EXPECT_EQ(static_cast<int>(i == j), mat.m_Data[i * cols + j]);
+			EXPECT_EQ(0, mat.m_Data[i * cols + j]);
 }
 
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
@@ -115,12 +115,16 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 	// Given a matrix is created with rows and columns
 	constexpr int rows = 5;
 	constexpr int cols = 7;
-	const Algorithms::Matrix<int> mat(rows, cols);
+	Algorithms::Matrix<int> mat(rows, cols);
+
+	for (std::size_t i = 0; i < rows; ++i)
+		for (std::size_t j = 0; j < cols; ++j)
+			mat(i, j) = static_cast<int>(i + j);
 
 	// Then, the matrix can be access with (row, col)
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			EXPECT_EQ(static_cast<int>(i == j), mat(i, j));
+			EXPECT_EQ(i + j, mat(i, j));
 }
 
 
@@ -163,7 +167,7 @@ TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 	// Then, the matrix can be access with (row, col)
 	for (std::size_t i = 0; i < rows; ++i)
 		for (std::size_t j = 0; j < cols; ++j)
-			EXPECT_EQ(i == j ? 50: 0, mat(i, j));
+			EXPECT_EQ(i == j ? 50 : 0, mat(i, j));
 }
 
 TEST(MatrixMutation, AtSizeThrowsError)
@@ -192,14 +196,14 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
 }
 
 template<typename T, typename U>
-requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
+	requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
 void EXPECT_MAT_NEQ(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<T>& actual)
 {
 	assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
 	using R = std::common_type_t<T, U>;
 	for (std::size_t i = 0; i < expected.m_Rows; ++i)
 		for (std::size_t j = 0; j < expected.m_Columns; ++j)
-				EXPECT_NE(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
+			EXPECT_NE(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
 }
 
 template<typename T, typename U>
@@ -248,7 +252,8 @@ TEST_P(MatrixMultiplicationTestFixture, MultiplicationProvidesCorrectResult)
 TEST_P(MatrixMultiplicationTestFixture, MultiplicationIsNotCommutative) // A * B != B * A
 {
 	// When two matrices are multiplied together
-	const auto& [matA, matB, matExpected] = GetParam();
+	Algorithms::Matrix<int> matA { {{1, 2}, {3, 4}} };
+	Algorithms::Matrix<int> matB { {{4, 5}, {6, 7}} };
 	auto result1 = matA.multiply(matB);
 	auto result2 = matB.multiply(matA);
 
@@ -282,9 +287,44 @@ INSTANTIATE_TEST_SUITE_P(
 	MatrixMutliplication,
 	MatrixMultiplicationTestFixture,
 	::testing::Values(
-		MatrixMultiplicationParams<int> {{{{1, 2}, {3, 4}}}, {{{5, 6}, {7, 8}}}, {{{19, 22}, {43, 50}}}},
-		MatrixMultiplicationParams<int> {{{{1, 2, 3}}}, {{{4, 5, 6}}}, {{{4, 8, 12}, {5, 10, 15}, {6, 12, 18}}}},
-		MatrixMultiplicationParams<int> {{{{1, 2}, {3, 4}}}, {{{1, 0}, {0, 1}}}, { {{1, 2}, {3, 4}} }},
-		MatrixMultiplicationParams<int> {{{{1, 2}, {3, 4}}}, {{{0, 0}, {0, 0}}}, {{{0, 0}, {0, 0}}}}
-	)
+		MatrixMultiplicationParams<int> {
+			{
+				{
+					{1, 2},
+					{ 3, 4 }
+				}
+			},
+			{
+				{
+					{5, 6},
+					{7, 8}
+				}
+			},
+			{
+				{
+					{19, 22},
+					{43, 50}
+				}
+			}
+},
+MatrixMultiplicationParams<int> {
+	{
+		{{1}, { 2 }, { 3 }}
+	},
+	{
+				{
+					{4, 5, 6}
+				}
+	},
+			{
+				{
+					{4, 8, 12},
+					{5, 10, 15},
+					{6, 12, 18}
+				}
+			}
+},
+MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{1, 0}, {0, 1}} }, { {{1, 2}, {3, 4}} }},
+MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{0, 0}, {0, 0}} }, { {{0, 0}, {0, 0}} }}
+)
 );

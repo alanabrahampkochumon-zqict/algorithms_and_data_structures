@@ -45,10 +45,10 @@ namespace Algorithms
 
 		
 		template<Arithmetic U>
-		auto multiply(const Matrix<U>& other, MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const;
+		auto multiply(const Matrix<U>& other, MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const -> Matrix<std::common_type_t<T, U>>;
 
 		template<Arithmetic U>
-		static auto multiply(const Matrix& matA, const Matrix<U>& matB, MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER);
+		static auto multiply(const Matrix& matA, const Matrix<U>& matB, MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) -> Matrix<std::common_type_t<T, U>>;
 
 	};
 
