@@ -16,7 +16,7 @@ struct MatrixInitializerParams
 	std::size_t expectedCols;
 	std::vector<T> expectedData;
 };
-class MatrixInitializationTestFixture : public ::testing::TestWithParam<MatrixInitializerParams<int>> { };
+class MatrixInitializationTestFixture : public ::testing::TestWithParam<MatrixInitializerParams<int>> {};
 
 
 
@@ -29,7 +29,7 @@ struct MatrixMultiplicationParams
 	Algorithms::Matrix<T> result;
 	Algorithms::MultiplicationAlgorithmType algo;
 };
-class MatrixMultiplicationTestFixture : public ::testing::TestWithParam<MatrixMultiplicationParams<int>> { };
+class MatrixMultiplicationTestFixture : public ::testing::TestWithParam<MatrixMultiplicationParams<int>> {};
 
 
 
