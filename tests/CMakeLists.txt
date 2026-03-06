@@ -1,5 +1,9 @@
 add_executable(Tests)
 
+set(IncludeDirectory "include/")
+set(TestUtilFiles "TestUtils.h")
+list(TRANSFORM TestUtilFiles PREPEND ${IncludeDirectory})
+
 set(SortTestFolder "src/sorting/")
 set(SortTestFiles "InsertionSortTest.cpp;SelectionSortTest.cpp;RecursiveInsertionSortTest.cpp;BinaryInsertionSortTest.cpp;MergeSortTest.cpp;HybridSortTest.cpp;BubbleSortTest.cpp")
 list(TRANSFORM SortTestFiles PREPEND ${SortTestFolder})
@@ -20,6 +24,11 @@ target_sources(
     Tests
     PRIVATE
     ${SearchTestFiles} ${SortTestFiles} ${GenericTestFiles} ${DivideAndConquerTestFiles}
+
+    PRIVATE
+    FILE_SET HEADERS
+    BASE_DIRS ${IncludeDirectory}
+    FILES ${TestUtilFiles}
 )
 
 source_group("Source Files\\SearchTests" FILES ${SearchTestFiles})

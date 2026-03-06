@@ -4,6 +4,9 @@
 #include <cassert>
 #include <MatrixMultiplication.h>
 
+#include "../../include/TestUtils.h"
+using namespace TestUtils;
+
 template<typename T>
 	requires std::integral<T> || std::floating_point<T>
 struct MatrixInitializerParams
@@ -13,8 +16,8 @@ struct MatrixInitializerParams
 	std::size_t expectedCols;
 	std::vector<T> expectedData;
 };
-
 class MatrixInitializationTestFixture : public ::testing::TestWithParam<MatrixInitializerParams<int>> { };
+
 
 
 template<typename T>
@@ -26,8 +29,9 @@ struct MatrixMultiplicationParams
 	Algorithms::Matrix<T> result;
 	Algorithms::MultiplicationAlgorithmType algo;
 };
-
 class MatrixMultiplicationTestFixture : public ::testing::TestWithParam<MatrixMultiplicationParams<int>> { };
+
+
 
 TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
 {
@@ -128,7 +132,6 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 			EXPECT_EQ(i + j, mat(i, j));
 }
 
-
 TEST(MatrixAccess, AccessAtSizeThrowsError)
 {
 	// Given a matrix is created with rows and columns
@@ -141,7 +144,6 @@ TEST(MatrixAccess, AccessAtSizeThrowsError)
 	EXPECT_THROW(mat(rows, cols), std::runtime_error);
 }
 
-
 TEST(MatrixAccess, InvalidIndexThrowsError)
 {
 	// Given a matrix is created with rows and columns
@@ -153,6 +155,7 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
 	// Then, it throws runtime error
 	EXPECT_THROW(mat(rows + 10, cols + 10), std::runtime_error);
 }
+
 
 TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 {
@@ -183,7 +186,6 @@ TEST(MatrixMutation, AtSizeThrowsError)
 	EXPECT_THROW(mat(rows, cols) = 5, std::runtime_error);
 }
 
-
 TEST(MatrixMutation, InvalidIndexThrowsError)
 {
 	// Given a matrix is created with rows and columns
@@ -196,49 +198,6 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
 	EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::runtime_error);
 }
 
-template<typename T, typename U>
-	requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-void EXPECT_MAT_NEQ(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<T>& actual)
-{
-	assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
-	using R = std::common_type_t<T, U>;
-	for (std::size_t i = 0; i < expected.m_Rows; ++i)
-		for (std::size_t j = 0; j < expected.m_Columns; ++j)
-			EXPECT_NE(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
-}
-
-template<typename T, typename U>
-	requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-constexpr void EXPECT_MAT_EQ(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<U>& actual)
-{
-	assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
-	using R = std::common_type_t<T, U>;
-	for (std::size_t i = 0; i < expected.m_Rows; ++i)
-	{
-		for (std::size_t j = 0; j < expected.m_Columns; ++j)
-		{
-			if constexpr (std::is_same_v<R, double>)
-				EXPECT_DOUBLE_EQ(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
-			else if constexpr (std::is_floating_point_v<R>)
-				EXPECT_FLOAT_EQ(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
-			else
-				EXPECT_EQ(static_cast<R>(expected(i, j)), static_cast<R>(actual(i, j)));
-
-		}
-	}
-}
-
-template<typename T, typename U>
-	requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-constexpr void EXPECT_MAT_NE(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<U>& actual)
-{
-	assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
-	using R = std::common_type_t<T, U>;
-	for (std::size_t i = 0; i < expected.m_Rows; ++i)
-		for (std::size_t j = 0; j < expected.m_Columns; ++j)
-			if (static_cast<R>(expected(i, j)) != static_cast<R>(actual(i, j)))
-				return SUCCEED();
-}
 
 TEST_P(MatrixMultiplicationTestFixture, MultiplicationProvidesCorrectResult)
 {
@@ -288,9 +247,9 @@ INSTANTIATE_TEST_SUITE_P(
 	MatrixMutliplication,
 	MatrixMultiplicationTestFixture,
 	::testing::Values(
-		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{5, 6}, {7, 8}} }, { {{19, 22}, {43, 50}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE },
-		MatrixMultiplicationParams<int> { { {{ 1 }, { 2 }, { 3 }} }, { {{4, 5, 6} } }, { { {4, 5, 6}, {8, 10, 12}, {12, 15, 18} } },Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE},
-		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{1, 0}, {0, 1}} }, { {{1, 2}, {3, 4}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE},
-		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{0, 0}, {0, 0}} }, { {{0, 0}, {0, 0}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE}
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{5, 6}, {7, 8}} }, { {{19, 22}, {43, 50}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 2x2 = 2x2
+		MatrixMultiplicationParams<int> { { {{ 1 }, { 2 }, { 3 }} }, { {{4, 5, 6} } }, { { {4, 5, 6}, {8, 10, 12}, {12, 15, 18} } }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE }, // 3x1 * 1x3 = 3x3
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{1, 0}, {0, 1}} }, { {{1, 2}, {3, 4}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * I2 = 2x2
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{0, 0}, {0, 0}} }, { {{0, 0}, {0, 0}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0)
 	)
 );
