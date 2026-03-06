@@ -24,6 +24,7 @@ struct MatrixMultiplicationParams
 	Algorithms::Matrix<T> a;
 	Algorithms::Matrix<T> b;
 	Algorithms::Matrix<T> result;
+	Algorithms::MultiplicationAlgorithmType algo;
 };
 
 class MatrixMultiplicationTestFixture : public ::testing::TestWithParam<MatrixMultiplicationParams<int>> { };
@@ -60,36 +61,36 @@ INSTANTIATE_TEST_SUITE_P(
 	MatrixInitializationTest,
 	MatrixInitializationTestFixture,
 	::testing::Values(
-		MatrixInitializerParams(
-			std::vector<std::vector<int>>{ {1, 2}, { 3, 4 } },
-			2,
-			2,
-			{ 1, 2, 3, 4 }
-		),
-		MatrixInitializerParams(
-			std::vector<std::vector<int>>{ {1, 2}, { 3, 4, 5 } },
-			2,
-			3,
-			{ 1, 2, 0, 3, 4, 5 }
-		),
-		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1, 2, 3}, { 4, 5 } },
-			2,
-			3,
-			{ 1, 2, 3, 4, 5, 0 }
-		),
-		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1}, { 2 }, { 3 } },
-			3,
-			1,
-			{ 1, 2, 3 }
-		),
-		MatrixInitializerParams(
-			std::vector<std::vector<int>> { {1, 2}, {}, { 3, 4 } },
-			3,
-			2,
-			{ 1, 2, 0, 0, 3, 4 }
-		)
+		MatrixInitializerParams {
+		  std::vector<std::vector<int>>{ {1, 2}, { 3, 4 } },
+		  2,
+		  2,
+		  { 1, 2, 3, 4 }
+		},
+		MatrixInitializerParams {
+		  std::vector<std::vector<int>>{ {1, 2}, { 3, 4, 5 } },
+		  2,
+		  3,
+		  { 1, 2, 0, 3, 4, 5 }
+		},
+		MatrixInitializerParams {
+		  std::vector<std::vector<int>> { {1, 2, 3}, { 4, 5 } },
+		  2,
+		  3,
+		  { 1, 2, 3, 4, 5, 0 }
+		},
+		MatrixInitializerParams {
+		  std::vector<std::vector<int>> { {1}, { 2 }, { 3 } },
+		  3,
+		  1,
+		  { 1, 2, 3 }
+		},
+		MatrixInitializerParams {
+		  std::vector<std::vector<int>> { {1, 2}, {}, { 3, 4 } },
+		  3,
+		  2,
+		  { 1, 2, 0, 0, 3, 4 }
+		}
 	)
 );
 
@@ -242,20 +243,20 @@ constexpr void EXPECT_MAT_NE(const Algorithms::Matrix<T>& expected, const Algori
 TEST_P(MatrixMultiplicationTestFixture, MultiplicationProvidesCorrectResult)
 {
 	// When two matrices are multiplied together
-	const auto& [matA, matB, matExpected] = GetParam();
-	auto result = matA.multiply(matB);
+	const auto& [matA, matB, matExpected, algo] = GetParam();
+	auto result = matA.multiply(matB, algo);
 
 	// Then, it matches expected result
 	EXPECT_MAT_EQ(matExpected, result);
 }
 
-TEST_P(MatrixMultiplicationTestFixture, MultiplicationIsNotCommutative) // A * B != B * A
+TEST(MatrixMultiplicationTestFixture, MultiplicationIsNotCommutative) // A * B != B * A
 {
 	// When two matrices are multiplied together
 	Algorithms::Matrix<int> matA { {{1, 2}, {3, 4}} };
 	Algorithms::Matrix<int> matB { {{4, 5}, {6, 7}} };
-	auto result1 = matA.multiply(matB);
-	auto result2 = matB.multiply(matA);
+	auto result1 = matA.multiply(matB, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE);
+	auto result2 = matB.multiply(matA, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE);
 
 	// Then, it matches expected result
 	EXPECT_MAT_NE(result1, result2);
@@ -264,8 +265,8 @@ TEST_P(MatrixMultiplicationTestFixture, MultiplicationIsNotCommutative) // A * B
 TEST_P(MatrixMultiplicationTestFixture, StaticWrapper_MultiplicationProvidesCorrectResult)
 {
 	// When two matrices are multiplied together with static wrapper
-	const auto& [matA, matB, matExpected] = GetParam();
-	auto result = Algorithms::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB);
+	const auto& [matA, matB, matExpected, algo] = GetParam();
+	auto result = Algorithms::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
 
 	// Then, it matches expected result
 	EXPECT_MAT_EQ(matExpected, result);
@@ -280,51 +281,16 @@ TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 	Algorithms::Matrix<int> matB { {{3, 2}} };
 
 	// Then, their multiplication throws an error
-	EXPECT_THROW(matA.multiply(matB), std::runtime_error);
+	EXPECT_THROW(matA.multiply(matB, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE), std::runtime_error);
 }
 
 INSTANTIATE_TEST_SUITE_P(
 	MatrixMutliplication,
 	MatrixMultiplicationTestFixture,
 	::testing::Values(
-		MatrixMultiplicationParams<int> {
-			{
-				{
-					{1, 2},
-					{ 3, 4 }
-				}
-			},
-			{
-				{
-					{5, 6},
-					{7, 8}
-				}
-			},
-			{
-				{
-					{19, 22},
-					{43, 50}
-				}
-			}
-},
-MatrixMultiplicationParams<int> {
-	{
-		{{1}, { 2 }, { 3 }}
-	},
-	{
-				{
-					{4, 5, 6}
-				}
-	},
-			{
-				{
-					{4, 8, 12},
-					{5, 10, 15},
-					{6, 12, 18}
-				}
-			}
-},
-MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{1, 0}, {0, 1}} }, { {{1, 2}, {3, 4}} }},
-MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{0, 0}, {0, 0}} }, { {{0, 0}, {0, 0}} }}
-)
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{5, 6}, {7, 8}} }, { {{19, 22}, {43, 50}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE },
+		MatrixMultiplicationParams<int> { { {{ 1 }, { 2 }, { 3 }} }, { {{4, 5, 6} } }, { { {4, 5, 6}, {8, 10, 12}, {12, 15, 18} } },Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE},
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{1, 0}, {0, 1}} }, { {{1, 2}, {3, 4}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE},
+		MatrixMultiplicationParams<int> {{{{1, 2}, { 3, 4 }}}, { {{0, 0}, {0, 0}} }, { {{0, 0}, {0, 0}} }, Algorithms::MultiplicationAlgorithmType::BRUTE_FORCE}
+	)
 );
