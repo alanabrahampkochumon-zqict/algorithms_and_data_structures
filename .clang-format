@@ -1,1 +1,23 @@
-IndentPPDirectives: AfterHash
+---
+BasedOnStyle: Microsoft
+
+Language: Cpp
+Standard: Latest
+
+MaxEmptyLinesToKeep: 2
+SeparateDefinitionBlocks: Always
+
+IndentPPDirectives: BeforeHash
+
+ColumnLimit: 120
+IndentWidth: 4
+TabWidth: 4
+UseTab: Never
+
+PointerAlignment: Left
+DerivePointerAlignment: false
+
+SpaceAfterCStyleCast: true
+SpaceBeforeRangeBasedForLoopColon: true
+
+---
