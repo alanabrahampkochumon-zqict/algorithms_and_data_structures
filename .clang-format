@@ -1,23 +1,44 @@
----
+﻿---
 BasedOnStyle: Microsoft
-
-Language: Cpp
-Standard: Latest
-
-MaxEmptyLinesToKeep: 2
-SeparateDefinitionBlocks: Always
-
+AccessModifierOffset: '0'
+AlignAfterOpenBracket: Align
+AlignConsecutiveMacros: 'true'
+AlignConsecutiveAssignments: 'false'
+AlignOperands: 'false'
+AlignTrailingComments: 'true'
+AllowShortBlocksOnASingleLine: Always
+AllowShortFunctionsOnASingleLine: All
+AllowShortLambdasOnASingleLine: All
+AlwaysBreakBeforeMultilineStrings: 'true'
+AlwaysBreakTemplateDeclarations: 'Yes'
+BreakBeforeBinaryOperators: None
+BreakBeforeTernaryOperators: 'true'
+CompactNamespaces: 'false'
+ConstructorInitializerAllOnOneLineOrOnePerLine: 'true'
+Cpp11BracedListStyle: 'false'
+IncludeBlocks: Regroup
+IndentCaseLabels: 'true'
 IndentPPDirectives: BeforeHash
-
-ColumnLimit: 120
-IndentWidth: 4
-TabWidth: 4
+IndentWidth: '4'
+Language: Cpp
+MaxEmptyLinesToKeep: '4'
+NamespaceIndentation: All
+PointerAlignment: Left
+SortIncludes: 'true'
+SortUsingDeclarations: 'true'
+SpaceAfterCStyleCast: 'true'
+SpaceAfterLogicalNot: 'false'
+SpaceAfterTemplateKeyword: 'true'
+SpaceBeforeAssignmentOperators: 'true'
+SpaceBeforeCpp11BracedList: 'false'
+SpaceBeforeCtorInitializerColon: 'false'
+SpaceBeforeInheritanceColon: 'false'
+SpaceBeforeRangeBasedForLoopColon: 'true'
+SpacesInAngles: 'false'
+SpacesInCStyleCastParentheses: 'false'
+SpacesInParentheses: 'false'
+SpacesInSquareBrackets: 'false'
+TabWidth: '4'
 UseTab: Never
 
-PointerAlignment: Left
-DerivePointerAlignment: false
-
-SpaceAfterCStyleCast: true
-SpaceBeforeRangeBasedForLoopColon: true
-
----
+...

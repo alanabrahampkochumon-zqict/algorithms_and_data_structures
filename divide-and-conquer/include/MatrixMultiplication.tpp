@@ -48,7 +48,16 @@ namespace Algorithms
 		return m_Data[row * m_Columns + col];
 	}
 
-	template <Arithmetic T, Arithmetic U>
+
+    template <Arithmetic T>
+    template <Arithmetic U>
+    auto Matrix<T>::operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
+	{
+        return Matrix(m_Rows, m_Columns);
+	}
+
+
+    template <Arithmetic T, Arithmetic U>
 	static auto bruteForce(const Matrix<T>& matA, const Matrix<U>& matB)
 	{
 		using R = std::common_type_t<T, U>;

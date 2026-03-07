@@ -43,6 +43,8 @@ namespace Algorithms
 		 */
 		const T& operator()(std::size_t row, std::size_t col) const;
 
+		template<Arithmetic U> auto operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>;
+
 
 		template<Arithmetic U>
 		auto multiply(const Matrix<U>& other, MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const -> Matrix<std::common_type_t<T, U>>;
