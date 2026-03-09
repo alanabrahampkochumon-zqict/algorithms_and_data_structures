@@ -302,27 +302,27 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
     EXPECT_THROW(matA - matB, std::runtime_error);
 }
 
-// TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
-//{
-//     // When two matrices are subtracted with -=
-//     const auto& [matA, matB, matExpected] = GetParam();
-//     Algorithms::Matrix result = matA;
-//     result -= matB;
-//
-//     // Then, the resultant matrix contains elements of both added together
-//     EXPECT_MAT_EQ(matExpected, result);
-// }
-//
-// TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
-//{
-//     // Given two matrices of different dimension
-//     Algorithms::Matrix<int> matA(5, 5);
-//     Algorithms::Matrix<int> matB(4, 3);
-//
-//     // When subtracted and assigned(-=)
-//     // Then, it throws an exception
-//     EXPECT_THROW(matA -= matB, std::runtime_error);
-// }
+ TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
+{
+     // When two matrices are subtracted with -=
+     const auto& [matA, matB, matExpected] = GetParam();
+     Algorithms::Matrix result = matA;
+     result -= matB;
+
+     // Then, the resultant matrix contains elements of both added together
+     EXPECT_MAT_EQ(matExpected, result);
+ }
+
+ TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
+{
+     // Given two matrices of different dimension
+     Algorithms::Matrix<int> matA(5, 5);
+     Algorithms::Matrix<int> matB(4, 3);
+
+     // When subtracted and assigned(-=)
+     // Then, it throws an exception
+     EXPECT_THROW(matA -= matB, std::runtime_error);
+ }
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixSubtractionTestSuite, MatrixSubtractionTests,

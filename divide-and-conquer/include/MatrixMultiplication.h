@@ -54,6 +54,8 @@ namespace Algorithms
         template <Arithmetic U>
         auto operator-(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>;
 
+        template <Arithmetic U>
+        Matrix& operator-=(const Matrix<U>& other);
 
         template <Arithmetic U>
         auto multiply(const Matrix<U>& other,
