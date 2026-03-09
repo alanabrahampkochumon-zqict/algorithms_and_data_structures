@@ -82,6 +82,23 @@ namespace Algorithms
 	}
 
 
+    template <Arithmetic T>
+    template <Arithmetic U>
+    auto Matrix<T>::operator-(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
+	{
+        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+            throw std::runtime_error("Matrices of different dimensions cannot be subtracted");
+
+        Matrix result(m_Rows, m_Columns);
+
+        for (std::size_t row = 0; row < m_Rows; ++row)
+            for (std::size_t col = 0; col < m_Columns; ++col)
+                result(row, col) = (*this)(row, col) - other(row, col);
+
+        return result;
+	}
+
+
     template <Arithmetic T, Arithmetic U>
 	static auto bruteForce(const Matrix<T>& matA, const Matrix<U>& matB)
 	{
