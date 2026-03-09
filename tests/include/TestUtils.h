@@ -1,5 +1,5 @@
 #pragma once
-#include <MatrixMultiplication.h>
+#include <Matrix.h>
 
 namespace TestUtils
 {
@@ -12,7 +12,7 @@ namespace TestUtils
 	 */
 	template <typename T, typename U>
 		requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-	constexpr void EXPECT_MAT_EQ(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<U>& actual)
+	constexpr void EXPECT_MAT_EQ(const DataStructures::Matrix<T>& expected, const DataStructures::Matrix<U>& actual)
 	{
 		assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
 		using R = std::common_type_t<T, U>;
@@ -40,7 +40,7 @@ namespace TestUtils
 	 */
 	template<typename T, typename U>
 		requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-	constexpr void EXPECT_MAT_NE(const Algorithms::Matrix<T>& expected, const Algorithms::Matrix<U>& actual)
+    constexpr void EXPECT_MAT_NE(const DataStructures::Matrix<T>& expected, const DataStructures::Matrix<U>& actual)
 	{
 		assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
 		using R = std::common_type_t<T, U>;

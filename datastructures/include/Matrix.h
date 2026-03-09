@@ -1,16 +1,4 @@
-/**
- * 
- * @file Matrix.h
- * @author Alan Abraham P Kochumon
- * @date Created on: March 09, 2026
- * @brief 
- * 
- * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
-*/
-
 #pragma once
-
-
 
 #include <concepts>
 #include <vector>
@@ -82,4 +70,4 @@ namespace DataStructures
 
 } // namespace Algorithms
 
-#include "MatrixMultiplication.tpp"
+#include "Matrix.tpp"

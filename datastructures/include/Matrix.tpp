@@ -1,28 +1,15 @@
-/**
- * 
- * @file Matrix.tpp
- * @author Alan Abraham P Kochumon
- * @date Created on: March 09, 2026
- * @brief 
- * 
- * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
-*/
-
 #pragma once
 
 #include <algorithm>
 #include <cstddef>
 
-#include "MatrixMultiplication.h"
-#include "../../vendors/googlebenchmark/src/arraysize.h"
 
-
-namespace Algorithms
+namespace DataStructures
 {
 	template <Arithmetic T>
 	Matrix<T>::Matrix(std::size_t rows, std::size_t cols) : m_Rows(rows), m_Columns(cols)
 	{
-		m_Data.reserve(rows * cols);
+		m_Data.resize(rows * cols);
 		for (std::size_t i = 0; i < m_Rows; ++i)
 			for (std::size_t j = 0; j < m_Columns; ++j)
 				m_Data[i * m_Columns + j] = T(0);
@@ -127,7 +114,7 @@ namespace Algorithms
 	static auto bruteForce(const Matrix<T>& matA, const Matrix<U>& matB)
 	{
 		using R = std::common_type_t<T, U>;
-		Algorithms::Matrix<R> result(matA.m_Rows, matB.m_Columns);
+        Matrix<R> result(matA.m_Rows, matB.m_Columns);
 		for (std::size_t i = 0; i < matA.m_Rows; ++i)
 			for (std::size_t j = 0; j < matB.m_Columns; ++j)
 			{
