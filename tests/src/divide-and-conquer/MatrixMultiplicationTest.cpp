@@ -6,6 +6,13 @@
 #include <gtest/gtest.h>
 using namespace TestUtils;
 
+
+/*********************************
+ *                               *
+ *            SETUP              *
+ *                               *
+ *********************************/
+
 template <typename T>
     requires std::integral<T> || std::floating_point<T>
 struct MatrixInitializerParams
@@ -15,10 +22,10 @@ struct MatrixInitializerParams
     std::size_t expectedCols;
     std::vector<T> expectedData;
 };
-
-class MatrixInitializationTestFixture: public ::testing::TestWithParam<MatrixInitializerParams<int>>
+class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializerParams<int>>
 {
 };
+
 
 template <typename T>
     requires std::integral<T> || std::floating_point<T>
@@ -28,10 +35,10 @@ struct MatrixAdditionParams
     Algorithms::Matrix<T> b;
     Algorithms::Matrix<T> result;
 };
-
 class MatrixAdditionTests: public ::testing::TestWithParam<MatrixAdditionParams<int>>
 {
 };
+
 
 template <typename T>
     requires std::integral<T> || std::floating_point<T>
@@ -42,12 +49,20 @@ struct MatrixMultiplicationParams
     Algorithms::Matrix<T> result;
     Algorithms::MultiplicationAlgorithmType algo;
 };
-
-class MatrixMultiplicationTestFixture: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
+class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
 {
 };
 
-TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
+
+
+
+/*********************************
+ *                               *
+ *            TESTS              *
+ *                               *
+ *********************************/
+
+TEST_P(MatrixInitializationTests, InitializesToCorrectValues)
 {
     // Given, some raw input numbers
     const auto& [inputData, expectedRows, expectedCols, expectedData] = GetParam();
@@ -77,7 +92,7 @@ TEST_P(MatrixInitializationTestFixture, InitializesToCorrectValues)
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    MatrixInitializationTest, MatrixInitializationTestFixture,
+    MatrixInitializationTestSuite, MatrixInitializationTests,
     ::testing::Values(
         MatrixInitializerParams{ std::vector<std::vector<int>>{ { 1, 2 }, { 3, 4 } }, 2, 2, { 1, 2, 3, 4 } },
         MatrixInitializerParams{ std::vector<std::vector<int>>{ { 1, 2 }, { 3, 4, 5 } }, 2, 3, { 1, 2, 0, 3, 4, 5 } },
@@ -85,6 +100,7 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixInitializerParams{ std::vector<std::vector<int>>{ { 1 }, { 2 }, { 3 } }, 3, 1, { 1, 2, 3 } },
         MatrixInitializerParams{
             std::vector<std::vector<int>>{ { 1, 2 }, {}, { 3, 4 } }, 3, 2, { 1, 2, 0, 0, 3, 4 } }));
+
 
 TEST(MatrixInitializationTest, RowColCountInitailizesZeroMatrix)
 {
@@ -102,6 +118,7 @@ TEST(MatrixInitializationTest, RowColCountInitailizesZeroMatrix)
         for (std::size_t j = 0; j < cols; ++j)
             EXPECT_EQ(0, mat.m_Data[i * cols + j]);
 }
+
 
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 {
@@ -144,6 +161,7 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
     EXPECT_THROW(mat(rows + 10, cols + 10), std::runtime_error);
 }
 
+
 TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 {
     // Given a matrix is created with rows and columns
@@ -160,7 +178,6 @@ TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
         for (std::size_t j = 0; j < cols; ++j)
             EXPECT_EQ(i == j ? 50 : 0, mat(i, j));
 }
-
 
 TEST(MatrixMutation, AtSizeThrowsError)
 {
@@ -186,6 +203,7 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
     EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::runtime_error);
 }
 
+
 TEST_P(MatrixAdditionTests, AdditionOperatorReturnsMatrixWithElementsAddedTogether)
 {
     // When two matrices are added together
@@ -196,11 +214,39 @@ TEST_P(MatrixAdditionTests, AdditionOperatorReturnsMatrixWithElementsAddedTogeth
     EXPECT_MAT_EQ(matExpected, result);
 }
 
-INSTANTIATE_TEST_SUITE_P(MatrixAdditionTestSuite, MatrixAdditionTests,
-                         ::testing::Values(MatrixAdditionParams<int>{
-                             { { { 1, 2 }, { 3, 4 } } }, { { { 5, 6 }, { 7, 8 } } }, { { { 6, 8 }, { 8, 10 } } } }));
+TEST(MatrixAddtionTests, DifferentDimensionThrowsException)
+{
+    // Given two matrices of different dimension
+    Algorithms::Matrix<int> matA(5, 5);
+    Algorithms::Matrix<int> matB(4, 3);
 
-TEST_P(MatrixMultiplicationTestFixture, MultiplicationProvidesCorrectResult)
+    // When added together
+    // Then it throws an exception
+    EXPECT_THROW(matA + matB, std::runtime_error);
+}
+
+
+INSTANTIATE_TEST_SUITE_P(
+    MatrixAdditionTestSuite, MatrixAdditionTests,
+    ::testing::Values(
+        MatrixAdditionParams<int>{
+            { { { 1, 2 }, { 3, 4 } } }, { { { 5, 6 }, { 7, 8 } } }, { { { 6, 8 }, { 10, 12} } } },
+        MatrixAdditionParams<int>{
+            { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } },
+            { { { 10, 20, 30, 40 }, { 50, 60, 70, 80 }, { 90, 100, 110, 120 }, { 130, 140, 150, 160 } } },
+            { { { 11, 22, 33, 44 }, { 55, 66, 77, 88 }, { 99, 110, 121, 132 }, { 143, 154, 165, 176 } } } },
+        MatrixAdditionParams<int>{ { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 } } },
+                                   { { { 8, 8, 8, 8 }, { 3, 1, 6, 8 } } },
+                                   { { { 9, 10, 11, 12 }, { 8, 7, 13, 16 } } } },
+        MatrixAdditionParams<int>{ { { { 1, 2 }, { 3, 4 }, { 5, 6 }, {7, 8} } },
+                                   { { {1, 2}, {4, 5}, {12, 13}, {16, 18} } },
+                                   { { { 2, 4 }, {7, 9}, {17, 19}, {23, 26} } } },
+        MatrixAdditionParams<int>{
+            { { { 1, 2, 3, 4, 5, 6, 7, 8 } } }, { { {8, 9, 10, 11, 12, 13, 14, 15} } }, { { { 9, 11, 13, 15, 17, 19, 21, 23 } } } }));
+
+
+
+TEST_P(MatrixMultiplicationTests, MultiplicationProvidesCorrectResult)
 {
     // When two matrices are multiplied together
     const auto& [matA, matB, matExpected, algo] = GetParam();
@@ -223,7 +269,7 @@ TEST(MatrixMultiplicationTestFixture,
     EXPECT_MAT_NE(result1, result2);
 }
 
-TEST_P(MatrixMultiplicationTestFixture, StaticWrapper_MultiplicationProvidesCorrectResult)
+TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectResult)
 {
     // When two matrices are multiplied together with static wrapper
     const auto& [matA, matB, matExpected, algo] = GetParam();
@@ -246,7 +292,7 @@ TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    MatrixMutliplication, MatrixMultiplicationTestFixture,
+    MatrixMutliplicationTestSuite, MatrixMultiplicationTests,
     ::testing::Values(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
