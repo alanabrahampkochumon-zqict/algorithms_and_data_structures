@@ -68,6 +68,20 @@ namespace Algorithms
 	}
 
 
+    template <Arithmetic T>
+    template <Arithmetic U>
+    Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& other)
+	{
+        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+            throw std::runtime_error("Matrices of different dimensions cannot be added together");
+
+        for (std::size_t row = 0; row < m_Rows; ++row)
+            for (std::size_t col = 0; col < m_Columns; ++col)
+                (*this)(row, col) += other(row, col);
+        return *this;
+	}
+
+
     template <Arithmetic T, Arithmetic U>
 	static auto bruteForce(const Matrix<T>& matA, const Matrix<U>& matB)
 	{

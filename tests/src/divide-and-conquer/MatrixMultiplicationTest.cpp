@@ -225,6 +225,28 @@ TEST(MatrixAddtionTests, DifferentDimensionThrowsException)
     EXPECT_THROW(matA + matB, std::runtime_error);
 }
 
+TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
+{
+    // When two matrices are added together with +=
+    const auto& [matA, matB, matExpected] = GetParam();
+    Algorithms::Matrix result = matA;
+    result += matB;
+
+    // Then, the resultant matrix contains elements of both added together
+    EXPECT_MAT_EQ(matExpected, result);
+}
+
+TEST(MatrixAddtionTests, DifferentDimensionMatrixPlusEqualsThrowsException)
+{
+    // Given two matrices of different dimension
+    Algorithms::Matrix<int> matA(5, 5);
+    Algorithms::Matrix<int> matB(4, 3);
+
+    // When added together
+    // Then it throws an exception
+    EXPECT_THROW(matA += matB, std::runtime_error);
+}
+
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixAdditionTestSuite, MatrixAdditionTests,
