@@ -13,6 +13,7 @@ add_subdirectory(searching)
 add_subdirectory(generic)
 add_subdirectory(playground)
 add_subdirectory(divide-and-conquer)
+add_subdirectory(datastructures)
 add_subdirectory(tests)
 add_subdirectory(benchmark-suite)
 

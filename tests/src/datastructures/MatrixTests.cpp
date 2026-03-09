@@ -1,11 +1,13 @@
-#include "../../include/TestUtils.h"
 
-#include <MatrixMultiplication.h>
+
+#include "TestUtils.h"
+
+#include <Matrix.h>
 #include <cassert>
 #include <concepts>
 #include <gtest/gtest.h>
-using namespace TestUtils;
 
+using namespace TestUtils;
 
 /*********************************
  *                               *

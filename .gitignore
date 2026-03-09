@@ -435,3 +435,6 @@ build/
 
 # Vendors Directory(3rd Party Libs -> FetchContent)
 vendors/
+
+# VS Code
+.vscode
