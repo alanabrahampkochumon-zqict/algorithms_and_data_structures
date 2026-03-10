@@ -1,10 +1,24 @@
 #pragma once
+/**
+ * @file Matrix.h
+ * @author Alan Abraham P Kochumon
+ * @date Created on: March 09, 2026
+ *
+ * @brief Template matrix for integral and floating point types.
+ * @note Matrix can be initialized with a row, col or using an initializer list of elements.
+ *
+ * @par Operations
+ * Addition, Subtraction, and Multiplication, with 3 implementation for multiplication. Check `MultiplicationAlgorithmType` for details.
+ *
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
 
 #include <concepts>
 #include <vector>
 
 
-namespace DataStructures
+namespace datastructures
 {
     enum class MultiplicationAlgorithmType
     {

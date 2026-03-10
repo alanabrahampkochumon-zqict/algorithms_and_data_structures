@@ -8,14 +8,14 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "TestUtils.h"
+#include "testutils.h"
 
 #include <Matrix.h>
 #include <cassert>
 #include <concepts>
 #include <gtest/gtest.h>
 
-using namespace TestUtils;
+using namespace testutils;
 
 /*********************************
  *                               *
@@ -41,9 +41,9 @@ template <typename T>
     requires std::integral<T> || std::floating_point<T>
 struct MatrixAdditionParams
 {
-    DataStructures::Matrix<T> a;
-    DataStructures::Matrix<T> b;
-    DataStructures::Matrix<T> result;
+    datastructures::Matrix<T> a;
+    datastructures::Matrix<T> b;
+    datastructures::Matrix<T> result;
 };
 class MatrixAdditionTests: public ::testing::TestWithParam<MatrixAdditionParams<int>>
 {
@@ -54,9 +54,9 @@ template <typename T>
     requires std::integral<T> || std::floating_point<T>
 struct MatrixSubtractionParams
 {
-    DataStructures::Matrix<T> a;
-    DataStructures::Matrix<T> b;
-    DataStructures::Matrix<T> result;
+    datastructures::Matrix<T> a;
+    datastructures::Matrix<T> b;
+    datastructures::Matrix<T> result;
 };
 class MatrixSubtractionTests: public ::testing::TestWithParam<MatrixSubtractionParams<int>>
 {
@@ -67,10 +67,10 @@ template <typename T>
     requires std::integral<T> || std::floating_point<T>
 struct MatrixMultiplicationParams
 {
-    DataStructures::Matrix<T> a;
-    DataStructures::Matrix<T> b;
-    DataStructures::Matrix<T> result;
-    DataStructures::MultiplicationAlgorithmType algo;
+    datastructures::Matrix<T> a;
+    datastructures::Matrix<T> b;
+    datastructures::Matrix<T> result;
+    datastructures::MultiplicationAlgorithmType algo;
 };
 class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
 {
@@ -90,7 +90,7 @@ TEST_P(MatrixInitializationTests, InitializesToCorrectValues)
     const auto& [inputData, expectedRows, expectedCols, expectedData] = GetParam();
 
     // When initialized as matrix
-    DataStructures::Matrix mat(inputData);
+    datastructures::Matrix mat(inputData);
 
     // Then the matrix is initialized with correct values and row, column size
     EXPECT_EQ(mat.m_Rows, expectedRows);
@@ -118,7 +118,7 @@ TEST(MatrixInitializationTest, RowColCountInitailizesZeroMatrix)
     // When a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    const DataStructures::Matrix<int> mat(rows, cols);
+    const datastructures::Matrix<int> mat(rows, cols);
 
     // Then, rows and columns get correctly initialized
     EXPECT_EQ(rows, mat.m_Rows);
@@ -146,7 +146,7 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    DataStructures::Matrix<int> mat(rows, cols);
+    datastructures::Matrix<int> mat(rows, cols);
 
     for (std::size_t i = 0; i < rows; ++i)
         for (std::size_t j = 0; j < cols; ++j)
@@ -163,7 +163,7 @@ TEST(MatrixAccess, AccessAtSizeThrowsError)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    const DataStructures::Matrix<int> mat(rows, cols);
+    const datastructures::Matrix<int> mat(rows, cols);
 
     // When accessed at rowsize, colsize
     // Then, it throws runtime error
@@ -175,7 +175,7 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    const DataStructures::Matrix<int> mat(rows, cols);
+    const datastructures::Matrix<int> mat(rows, cols);
 
     // When accessed at invalid index
     // Then, it throws runtime error
@@ -188,7 +188,7 @@ TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    DataStructures::Matrix<int> mat(rows, cols);
+    datastructures::Matrix<int> mat(rows, cols);
 
     // When elements are mutated
     for (std::size_t i = 0; i < rows; ++i)
@@ -205,7 +205,7 @@ TEST(MatrixMutation, AtSizeThrowsError)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    DataStructures::Matrix<int> mat(rows, cols);
+    datastructures::Matrix<int> mat(rows, cols);
 
     // When mutated at rowsize, colsize
     // Then, it throws runtime error
@@ -217,7 +217,7 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
     // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
-    DataStructures::Matrix<int> mat(rows, cols);
+    datastructures::Matrix<int> mat(rows, cols);
 
     // When mutated at invalid index
     // Then, it throws runtime error
@@ -238,8 +238,8 @@ TEST_P(MatrixAdditionTests, PlusOperatorReturnsMatrixWithElementsAddedTogether)
 TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
 {
     // Given two matrices of different dimension
-    DataStructures::Matrix<int> matA(5, 5);
-    DataStructures::Matrix<int> matB(4, 3);
+    datastructures::Matrix<int> matA(5, 5);
+    datastructures::Matrix<int> matB(4, 3);
 
     // When added together
     // Then it throws an exception
@@ -250,7 +250,7 @@ TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
 {
     // When two matrices are added together with +=
     const auto& [matA, matB, matExpected] = GetParam();
-    DataStructures::Matrix result = matA;
+    datastructures::Matrix result = matA;
     result += matB;
 
     // Then, the resultant matrix contains elements of both added together
@@ -260,8 +260,8 @@ TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
 TEST(MatrixAddtionTests, PlusEqualsOperatorDifferentDimensionThrowsException)
 {
     // Given two matrices of different dimension
-    DataStructures::Matrix<int> matA(5, 5);
-    DataStructures::Matrix<int> matB(4, 3);
+    datastructures::Matrix<int> matA(5, 5);
+    datastructures::Matrix<int> matB(4, 3);
 
     // When added and assigned (+=)
     // Then it throws an exception
@@ -303,8 +303,8 @@ TEST_P(MatrixSubtractionTests, MinusOperatorReturnsMatrixWithElementsSubtractedF
 TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
 {
     // Given two matrices of different dimension
-    DataStructures::Matrix<int> matA(5, 5);
-    DataStructures::Matrix<int> matB(4, 3);
+    datastructures::Matrix<int> matA(5, 5);
+    datastructures::Matrix<int> matB(4, 3);
 
     // When subtracted
     // Then it throws an exception
@@ -315,7 +315,7 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
 {
      // When two matrices are subtracted with -=
      const auto& [matA, matB, matExpected] = GetParam();
-     DataStructures::Matrix result = matA;
+     datastructures::Matrix result = matA;
      result -= matB;
 
      // Then, the resultant matrix contains elements of both added together
@@ -325,8 +325,8 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
  TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
 {
      // Given two matrices of different dimension
-     DataStructures::Matrix<int> matA(5, 5);
-     DataStructures::Matrix<int> matB(4, 3);
+     datastructures::Matrix<int> matA(5, 5);
+     datastructures::Matrix<int> matB(4, 3);
 
      // When subtracted and assigned(-=)
      // Then, it throws an exception
@@ -369,10 +369,10 @@ TEST(MatrixMultiplicationTestFixture,
      MultiplicationIsNotCommutative) // A * B != B * A
 {
     // When two matrices are multiplied together
-    DataStructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
-    DataStructures::Matrix<int> matB{ { { 4, 5 }, { 6, 7 } } };
-    auto result1 = matA.multiply(matB, DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE);
-    auto result2 = matB.multiply(matA, DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE);
+    datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
+    datastructures::Matrix<int> matB{ { { 4, 5 }, { 6, 7 } } };
+    auto result1 = matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
+    auto result2 = matB.multiply(matA, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
 
     // Then, it matches expected result
     EXPECT_MAT_NE(result1, result2);
@@ -382,7 +382,7 @@ TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectRes
 {
     // When two matrices are multiplied together with static wrapper
     const auto& [matA, matB, matExpected, algo] = GetParam();
-    auto result = DataStructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
+    auto result = datastructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
 
     // Then, it matches expected result
     EXPECT_MAT_EQ(matExpected, result);
@@ -393,11 +393,11 @@ TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectRes
 TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 {
     // Given two matrices that can't be multiplied
-    DataStructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
-    DataStructures::Matrix<int> matB{ { { 3, 2 } } };
+    datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
+    datastructures::Matrix<int> matB{ { { 3, 2 } } };
 
     // Then, their multiplication throws an error
-    EXPECT_THROW(matA.multiply(matB, DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::runtime_error);
+    EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::runtime_error);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -406,20 +406,20 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
-                                         DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 2x2
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 2x2
                                                                                                  // = 2x2
         MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
                                          { { { 4, 5, 6 } } },
                                          { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
-                                         DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 3x1 * 1x3
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 3x1 * 1x3
                                                                                                  // = 3x3
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 1, 0 }, { 0, 1 } } },
                                          { { { 1, 2 }, { 3, 4 } } },
-                                         DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * I2 =
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * I2 =
                                                                                                  // 2x2
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
-                                         DataStructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0)
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0)
         ));

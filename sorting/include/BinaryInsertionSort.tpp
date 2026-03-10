@@ -1,9 +1,20 @@
 #pragma once
+/**
+ * @file BinaryInsertionSort.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Binary Insertion Sort implementation.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
 
 #include <functional>
 #include <type_traits>
 
-namespace Algorithms::BinaryInsertionSort
+
+namespace algorithms
 {
 	template<typename T, typename Comparator>
 	void _sort(T* data, std::size_t size, Comparator comp)
@@ -41,29 +52,29 @@ namespace Algorithms::BinaryInsertionSort
 
 
 	template <typename T, std::size_t Size, typename Comparator>
-	void sort(T(& array)[Size], Comparator comp)
+	void binaryInsertionSort(T(& array)[Size], Comparator comp)
 	{
 		_sort(array, Size, comp);
 	}
 
 	template <typename T, std::size_t Size>
-	void sort(T(&array)[Size])
+	void binaryInsertionSort(T(&array)[Size])
 	{
 		_sort(array, Size, std::less<T>());
 	}
 
 
 	template <typename T, typename Comparator>
-	void sort(std::vector<T>& vector, Comparator comp)
+	void binaryInsertionSort(std::vector<T>& vector, Comparator comp)
 	{
 		_sort(vector.data(), vector.size(), comp);
 	}
 
 
 	template <typename T>
-	void sort(std::vector<T>& vector)
+	void binaryInsertionSort(std::vector<T>& vector)
 	{
-		sort(vector, std::less<T>());
+		binaryInsertionSort(vector, std::less<T>());
 		
 	}
 }

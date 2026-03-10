@@ -1,7 +1,21 @@
 #pragma once
+/**
+ * @file TestUtils.h
+ * @author Alan Abraham P Kochumon
+ * @date Created on: March 06, 2026
+ *
+ * @brief Utilities for testing.
+ * 
+ * @par Utilities
+ * Matrix utilities for comparing equality and inequality.
+ *
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <Matrix.h>
 
-namespace TestUtils
+namespace testutils
 {
 	/**
 	 * Compares if two matrices are equals.
@@ -12,7 +26,7 @@ namespace TestUtils
 	 */
 	template <typename T, typename U>
 		requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-	constexpr void EXPECT_MAT_EQ(const DataStructures::Matrix<T>& expected, const DataStructures::Matrix<U>& actual)
+	constexpr void EXPECT_MAT_EQ(const datastructures::Matrix<T>& expected, const datastructures::Matrix<U>& actual)
 	{
 		assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
 		using R = std::common_type_t<T, U>;
@@ -40,7 +54,7 @@ namespace TestUtils
 	 */
 	template<typename T, typename U>
 		requires (std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
-    constexpr void EXPECT_MAT_NE(const DataStructures::Matrix<T>& expected, const DataStructures::Matrix<U>& actual)
+    constexpr void EXPECT_MAT_NE(const datastructures::Matrix<T>& expected, const datastructures::Matrix<U>& actual)
 	{
 		assert(expected.m_Rows == actual.m_Rows && expected.m_Columns == actual.m_Columns && "Only matrices with same dimension(eg: 3x3) can be compared");
 		using R = std::common_type_t<T, U>;

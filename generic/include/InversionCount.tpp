@@ -1,86 +1,100 @@
 #pragma once
+/**
+ * @file InversionCount.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Inversion Count implementation.
+ *
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
 
 #include <algorithm>
 #include <functional>
 #include <type_traits>
 
-namespace Algorithms::Generic
+
+namespace algorithms
 {
 
-	template<typename T, typename Comparator>
-	std::size_t _merge(T* data, std::size_t start, std::size_t middle, std::size_t end, Comparator comp)
-	{
-		std::vector<T> temp(end - start);
+    template <typename T, typename Comparator>
+    std::size_t _merge(T* data, std::size_t start, std::size_t middle, std::size_t end, Comparator comp)
+    {
+        std::vector<T> temp(end - start);
 
-		std::size_t i = start, j = middle, k = 0, count = 0;
+        std::size_t i = start, j = middle, k = 0, count = 0;
 
-		while (i < middle && j < end)
-		{
-			if (comp(data[i], data[j]))
-				temp[k++] = data[i++];
-			else
-			{
-				// data[i] > data[j] => middle - i elements are inversion since every element from i to middle will be greater that data[j]
-				count += middle - i;
-				temp[k++] = data[j++];
-			}
-		}
+        while (i < middle && j < end)
+        {
+            if (comp(data[i], data[j]))
+                temp[k++] = data[i++];
+            else
+            {
+                // data[i] > data[j] => middle - i elements are inversion since every element from i to middle will be
+                // greater that data[j]
+                count += middle - i;
+                temp[k++] = data[j++];
+            }
+        }
 
-		while (i < middle)
-			temp[k++] = data[i++];
+        while (i < middle)
+            temp[k++] = data[i++];
 
-		while (j < end)
-			temp[k++] = data[j++];
+        while (j < end)
+            temp[k++] = data[j++];
 
-		std::copy(temp.begin(), temp.end(), data + start);
+        std::copy(temp.begin(), temp.end(), data + start);
 
 
-		return count;
-	}
+        return count;
+    }
 
-	template<typename T, typename Comparator>
-	std::size_t _mergeAndCountInversions(T* data, std::size_t start, std::size_t end, Comparator comp)
-	{
-		if (end - start < 2) return 0;
+    template <typename T, typename Comparator>
+    std::size_t _mergeAndCountInversions(T* data, std::size_t start, std::size_t end, Comparator comp)
+    {
+        if (end - start < 2)
+            return 0;
 
-		std::size_t middle = start + (end - start) / 2;
-		
-		std::size_t leftInversions = _mergeAndCountInversions(data, start, middle, comp);
-		std::size_t rightInversions = _mergeAndCountInversions(data, middle, end, comp);
-		std::size_t mergedInversions = _merge(data, start, middle, end, comp);
+        std::size_t middle = start + (end - start) / 2;
 
-		return leftInversions + rightInversions + mergedInversions;
+        std::size_t leftInversions = _mergeAndCountInversions(data, start, middle, comp);
+        std::size_t rightInversions = _mergeAndCountInversions(data, middle, end, comp);
+        std::size_t mergedInversions = _merge(data, start, middle, end, comp);
 
-	}
+        return leftInversions + rightInversions + mergedInversions;
+    }
 
-	template<typename T, std::size_t Size, typename Comparator>
-	std::size_t countInversions(const T(&array)[Size], Comparator comp)
-	{
-		static_assert(std::is_invocable_r_v<bool, Comparator, T, T>, "Comparator must be an invocable(function)(T, T) that returns a bool");
-		// Copying the array since the mergeAndCountInversion Function can mutate the array.
-		T temp[Size];
-		std::copy(std::begin(array), std::end(array), std::begin(temp));
+    template <typename T, std::size_t Size, typename Comparator>
+    std::size_t countInversions(const T (&array)[Size], Comparator comp)
+    {
+        static_assert(std::is_invocable_r_v<bool, Comparator, T, T>,
+                      "Comparator must be an invocable(function)(T, T) that returns a bool");
+        // Copying the array since the mergeAndCountInversion Function can mutate the array.
+        T temp[Size];
+        std::copy(std::begin(array), std::end(array), std::begin(temp));
 
-		return _mergeAndCountInversions(temp, 0, Size, comp);
-	}
+        return _mergeAndCountInversions(temp, 0, Size, comp);
+    }
 
-	template<typename T, std::size_t Size>
-	std::size_t countInversions(const T(&array)[Size])
-	{
-		return countInversions(array, std::less_equal<T>());
-	}
+    template <typename T, std::size_t Size>
+    std::size_t countInversions(const T (&array)[Size])
+    {
+        return countInversions(array, std::less_equal<T>());
+    }
 
-	template<typename T, typename Comparator>
-	std::size_t countInversions(std::vector<T> vector, Comparator comp)
-	{
-		static_assert(std::is_invocable_r_v<bool, Comparator, T, T>, "Comparator must be an invocable(function)(T, T) that returns a bool");
-		return _mergeAndCountInversions(vector.data(), 0, vector.size(), comp);
-	}
+    template <typename T, typename Comparator>
+    std::size_t countInversions(std::vector<T> vector, Comparator comp)
+    {
+        static_assert(std::is_invocable_r_v<bool, Comparator, T, T>,
+                      "Comparator must be an invocable(function)(T, T) that returns a bool");
+        return _mergeAndCountInversions(vector.data(), 0, vector.size(), comp);
+    }
 
-	template<typename T>
-	std::size_t countInversions(std::vector<T> vector)
-	{
-		return countInversions(vector, std::less_equal<T>());
-	}
+    template <typename T>
+    std::size_t countInversions(std::vector<T> vector)
+    {
+        return countInversions(vector, std::less_equal<T>());
+    }
 
-}
+} // namespace algorithms

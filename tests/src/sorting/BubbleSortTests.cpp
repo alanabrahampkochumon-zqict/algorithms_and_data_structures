@@ -1,3 +1,14 @@
+/**
+ * @file BubbleSortTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Bubble Sort tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
@@ -5,12 +16,12 @@
 
 using ::testing::ElementsAreArray;
 
-using namespace Algorithms::BubbleSort;
+using namespace algorithms;
 
 TEST(BubbleSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
-	sort(array);
+	bubbleSort(array);
 	EXPECT_EQ(316, array[0]);
 }
 
@@ -21,7 +32,7 @@ TEST(BubbleSort, SortsArrayOfLength10)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	bubbleSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -34,7 +45,7 @@ TEST(BubbleSort, SortsSortedArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	bubbleSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -47,7 +58,7 @@ TEST(BubbleSort, SortsReverseArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	bubbleSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -60,7 +71,7 @@ TEST(BubbleSort, SortsArrayDescendingUsingComparator)
 	const int sorted[] = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
 
 	// Act
-	sort(array, std::greater<int>());
+	bubbleSort(array, std::greater<int>());
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -73,7 +84,7 @@ TEST(BubbleSort, SortsLettersInAscendingByDefault)
 	const int sorted[] = { 'a', 'a', 'b', 'd', 'e', 'f', 'l', 'm', 'r', 't' };
 
 	// Act
-	sort(array);
+	bubbleSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -86,7 +97,7 @@ TEST(BubbleSort, SortsVectorOfLength10)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	bubbleSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -99,7 +110,7 @@ TEST(BubbleSort, SortsSortedVector)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	bubbleSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -112,7 +123,7 @@ TEST(BubbleSort, SortsReverseVector)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	bubbleSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);

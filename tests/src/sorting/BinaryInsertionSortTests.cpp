@@ -1,15 +1,26 @@
+/**
+ * @file BinaryInsertionSortTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Binary Insertion Sort tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 #include <gmock/gmock.h>
 
 #include <BinaryInsertionSort.h>
 
-using namespace Algorithms::BinaryInsertionSort;
+using namespace algorithms;
 using ::testing::ElementsAreArray;
 
 TEST(BinaryInsertionSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
-	sort(array);
+	binaryInsertionSort(array);
 	EXPECT_EQ(316, array[0]);
 }
 
@@ -20,7 +31,7 @@ TEST(BinaryInsertionSort, SortsArrayOfLength10)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	binaryInsertionSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -33,7 +44,7 @@ TEST(BinaryInsertionSort, SortsSortedArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	binaryInsertionSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -46,7 +57,7 @@ TEST(BinaryInsertionSort, SortsReverseArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	binaryInsertionSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -59,7 +70,7 @@ TEST(BinaryInsertionSort, SortsArrayDescendingUsingComparator)
 	const int sorted[] = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
 
 	// Act
-	sort(array, std::greater<int>());
+	binaryInsertionSort(array, std::greater<int>());
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -72,7 +83,7 @@ TEST(BinaryInsertionSort, SortsLettersInAscendingByDefault)
 	const int sorted[] = { 'a', 'a', 'b', 'd', 'e', 'f', 'l', 'm', 'r', 't' };
 
 	// Act
-	sort(array);
+	binaryInsertionSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -85,7 +96,7 @@ TEST(BinaryInsertionSort, SortsVectorOfLength10)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	binaryInsertionSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -98,7 +109,7 @@ TEST(BinaryInsertionSort, SortsSortedVector)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	binaryInsertionSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -111,7 +122,7 @@ TEST(BinaryInsertionSort, SortsReverseVector)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	binaryInsertionSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);

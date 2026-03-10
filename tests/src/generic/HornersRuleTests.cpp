@@ -1,8 +1,19 @@
+/**
+ * @file HornersRuleTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Horner's Rule Tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 
 #include <HornersRule.h>
 
-using namespace Algorithms::Generic;
+using namespace algorithms;
 
 TEST(HornersRule, StandardPolynomialEvaluatesToCorrectSum)
 {

@@ -1,6 +1,16 @@
 #pragma once
+/**
+ * @file InsertionSort.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Insertion Sort implementation.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
 
-namespace Algorithms::InsertionSort
+
+namespace algorithms
 {
 	template <typename T, typename Comparator>
 	void _sort(T* data, std::size_t size, Comparator comp)
@@ -19,26 +29,26 @@ namespace Algorithms::InsertionSort
 	}
 
 	template <typename T, std::size_t Size, typename Comparator>
-	void sort(T (&array)[Size], Comparator comp)
+	void insertionSort(T (&array)[Size], Comparator comp)
 	{
 		_sort(array, Size, comp);
 	}
 
 	template <typename T, std::size_t Size>
-	void sort(T (&array)[Size])
+	void insertionSort(T (&array)[Size])
 	{
-		sort(array, std::less<T>());
+		insertionSort(array, std::less<T>());
 	}
 
 	template<typename T, typename Comparator>
-	void sort(std::vector<T>& vector, Comparator comp)
+	void insertionSort(std::vector<T>& vector, Comparator comp)
 	{
 			_sort(vector.data(), vector.size(), comp);
 	}
 
 	template<typename T>
-    void sort(std::vector<T>& vector)
+    void insertionSort(std::vector<T>& vector)
 	{
-		sort(vector, std::less<T>());
+		insertionSort(vector, std::less<T>());
 	}
 }

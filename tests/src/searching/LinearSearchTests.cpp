@@ -1,8 +1,19 @@
+/**
+ * @file LinearSearchTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Linear Search tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 
 #include <LinearSearch.h>
 
-using namespace Algorithms::Searching;
+using namespace algorithms;
 
 
 TEST(LinearSearch, SearchingItemInFirstIndexReturnsZero)

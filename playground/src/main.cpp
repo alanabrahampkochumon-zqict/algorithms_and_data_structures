@@ -42,7 +42,7 @@ MenuItem mainMenuItems[] = {
 };
 
 MenuItem sortingMenuItems[2] = {
-	// {"1. Sorting", Algorithms::InsertionSort::sort<int>}
+	// {"1. Sorting", algorithms::sort<int>}
 };
 
 

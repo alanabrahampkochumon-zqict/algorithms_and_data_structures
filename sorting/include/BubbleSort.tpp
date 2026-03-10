@@ -1,9 +1,18 @@
 #pragma once
+/**
+ * @file BubbleSort.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Bubble Sort implementation.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
 
 #include <functional>
-#include <utility>
 
-namespace Algorithms::BubbleSort
+namespace algorithms
 {
 
 	template<typename T, typename Comparator>
@@ -22,27 +31,27 @@ namespace Algorithms::BubbleSort
 	}
 
 	template <typename T, std::size_t Size, typename Comparator>
-	void sort(T(&array)[Size], Comparator comp)
+	void bubbleSort(T(&array)[Size], Comparator comp)
 	{
 		_sort(array, Size, comp);
 	}
 
 	template <typename T, std::size_t Size>
-	void sort(T(&array)[Size])
+	void bubbleSort(T(&array)[Size])
 	{
 		_sort(array, Size, std::less<T>());
 	}
 
 
 	template <typename T, typename Comparator>
-	void sort(std::vector<T>& vector, Comparator comp)
+	void bubbleSort(std::vector<T>& vector, Comparator comp)
 	{
 		_sort(vector.data(), vector.size(), comp);
 	}
 
 	template <typename T>
-	void sort(std::vector<T>& vector)
+	void bubbleSort(std::vector<T>& vector)
 	{
-		sort(vector, std::less<T>());
+		bubbleSort(vector, std::less<T>());
 	}
 }

@@ -1,8 +1,19 @@
+/**
+ * @file TwoSumTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Two Sum Tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 
 #include <TwoSum.h>
 
-using namespace Algorithms::Generic;
+using namespace algorithms;
 
 TEST(TwoSum, ArrayOfPositiveIntegersWithElementsHavingSumReturnsValidPair)
 {

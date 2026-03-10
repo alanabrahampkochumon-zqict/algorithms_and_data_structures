@@ -1,8 +1,19 @@
+/**
+ * @file InversionCountTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Inversion Count Tests
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <gtest/gtest.h>
 
 #include <InversionCount.h>
 
-using namespace Algorithms::Generic;
+using namespace algorithms;
 
 TEST(InversionCount, GivenArrayOfSizeOneReturnsZero)
 {

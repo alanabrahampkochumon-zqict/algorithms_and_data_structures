@@ -1,8 +1,19 @@
 #pragma once
-#include "InsertionSort.h"
+/**
+ * @file HybridSort.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Hybrid Sort implementation.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <utility>
 
-namespace Algorithms::HybridSort
+
+namespace algorithms
 {
 	template<typename T, typename Comparator>
 	void _insertionSort(T* data, std::size_t start, std::size_t end, Comparator comp)
@@ -73,26 +84,26 @@ namespace Algorithms::HybridSort
 	}
 
 	template <typename T, std::size_t Size, typename Comparator>
-	void sort(T(& array)[Size], Comparator comp, unsigned int kValue)
+	void hybridSort(T(& array)[Size], Comparator comp, unsigned int kValue)
 	{
 		_sort(array, 0, Size, comp, kValue);
 	}
 
 	template <typename T, std::size_t Size>
-	void sort(T(& array)[Size], unsigned int kValue)
+	void hybridSort(T(& array)[Size], unsigned int kValue)
 	{
 		_sort(array, 0, Size, std::less<T>(), kValue);
 	}
 
 	template <typename T, typename Comparator>
-	void sort(std::vector<T>& vector, Comparator comp, unsigned int kValue)
+	void hybridSort(std::vector<T>& vector, Comparator comp, unsigned int kValue)
 	{
 		_sort(vector.data(), 0, vector.size(), comp, kValue);
 	}
 
 	template <typename T>
-	void sort(std::vector<T>& vector, unsigned int kValue)
+	void hybridSort(std::vector<T>& vector, unsigned int kValue)
 	{
-		sort(vector, std::less<T>(), kValue);
+		hybridSort(vector, std::less<T>(), kValue);
 	}
 }

@@ -1,6 +1,16 @@
 #pragma once
+/**
+ * @file BinarySearch.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Binary Search implementation.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
 
-namespace Algorithms::Searching
+
+namespace algorithms
 {
     template <typename T>
     std::optional<std::size_t> _binarySearch(const T *data, std::size_t size, T searchElement)

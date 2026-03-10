@@ -1,16 +1,28 @@
 #pragma once
+/**
+ * @file RecursiveInsertionSort.tpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Recursive Insertion Sort implementation.
+ *
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
 
 #include <functional>
 #include <type_traits>
 
-namespace Algorithms::RecursiveInsertionSort
+namespace algorithms
 {
-    template<typename T, typename Comparator>
+    template <typename T, typename Comparator>
     void _sort(T* data, const size_t size, Comparator comp)
     {
-        static_assert(std::is_invocable_r_v<bool, Comparator, T, T>, "Comparable must be a invocable(function)(T,T) with a bool return value.");
+        static_assert(std::is_invocable_r_v<bool, Comparator, T, T>,
+                      "Comparable must be a invocable(function)(T,T) with a bool return value.");
 
-        if (size <  2) return;
+        if (size < 2)
+            return;
 
         _sort(data, size - 1, comp);
 
@@ -18,33 +30,33 @@ namespace Algorithms::RecursiveInsertionSort
         int i = static_cast<int>(size) - 2;
         for (; i >= 0 && comp(key, data[i]); --i)
         {
-			data[i + 1] = data[i];
+            data[i + 1] = data[i];
         }
         data[i + 1] = key;
     }
 
 
     template <typename T, std::size_t Size, typename Comparator>
-    void sort(T (&array)[Size], Comparator comp)
+    void recursiveInsertionSort(T (&array)[Size], Comparator comp)
     {
         _sort(array, Size, comp);
     }
 
     template <typename T, std::size_t Size>
-    void sort(T(& array)[Size])
+    void recursiveInsertionSort(T (&array)[Size])
     {
         _sort(array, Size, std::less<T>());
     }
 
     template <typename T, typename Comparator>
-    void sort(std::vector<T>& vector, Comparator comp)
+    void recursiveInsertionSort(std::vector<T>& vector, Comparator comp)
     {
         _sort(vector.data(), vector.size(), comp);
     }
 
     template <typename T>
-    void sort(std::vector<T>& vector)
+    void recursiveInsertionSort(std::vector<T>& vector)
     {
         _sort(vector.data(), vector.size(), std::less<T>());
     }
-}
+} // namespace algorithms

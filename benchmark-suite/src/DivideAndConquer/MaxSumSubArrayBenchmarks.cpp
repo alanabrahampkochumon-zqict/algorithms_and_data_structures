@@ -6,7 +6,7 @@
 
 using namespace Helpers;
 
-using namespace Algorithms::DivideAndConquer;
+using namespace algorithms;
 
 namespace
 {

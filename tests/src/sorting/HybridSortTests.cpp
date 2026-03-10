@@ -1,3 +1,14 @@
+/**
+ * @file HybridSortTests.cpp
+ * @author Alan Abraham P Kochumon
+ * @date Created on: February 24, 2026
+ *
+ * @brief Hybrid Sort tests.
+ * 
+ * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
+ */
+
+
 #include <iterator>
 
 #include <gtest/gtest.h>
@@ -8,12 +19,12 @@
 
 using ::testing::ElementsAreArray;
 
-using namespace Algorithms::HybridSort;
+using namespace algorithms;
 
 TEST(HybridSort, SortsArrayOfLength1)
 {
 	int array[1] = { 316 };
-	sort(array);
+	hybridSort(array);
 	EXPECT_EQ(316, array[0]);
 }
 
@@ -24,7 +35,7 @@ TEST(HybridSort, SortsArrayOfLength10)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	hybridSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -37,7 +48,7 @@ TEST(HybridSort, SortsSortedArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	hybridSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -50,7 +61,7 @@ TEST(HybridSort, SortsReverseArray)
 	const int sorted[] = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(array);
+	hybridSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -63,7 +74,7 @@ TEST(HybridSort, SortsArrayDescendingUsingComparator)
 	const int sorted[] = { 329111, 3912, 316, 284, 85, 55, 22, 0, -555, -328123 };
 
 	// Act
-	sort(array, std::greater<int>());
+	hybridSort(array, std::greater<int>());
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -76,7 +87,7 @@ TEST(HybridSort, SortsLettersInAscendingByDefault)
 	const int sorted[] = { 'a', 'a', 'b', 'd', 'e', 'f', 'l', 'm', 'r', 't' };
 
 	// Act
-	sort(array);
+	hybridSort(array);
 
 	// Assert
 	EXPECT_THAT(sorted, ElementsAreArray(array));
@@ -89,7 +100,7 @@ TEST(HybridSort, SortsVectorOfLength10)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	hybridSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -102,7 +113,7 @@ TEST(HybridSort, SortsSortedVector)
 	const std::vector sorted = { -328123, -555, 0, 22, 55, 85, 284, 316, 3912, 329111 };
 
 	// Act
-	sort(vector);
+	hybridSort(vector);
 
 	// Assert
 	EXPECT_EQ(sorted, vector);
@@ -131,7 +142,7 @@ TEST(HybridSort, GivenLargeVectorTheVectorIsSortedAsExpected)
 	std::sort(sortedVector.begin(), sortedVector.end());
 
 	// Act
-	sort(randomVector);
+	hybridSort(randomVector);
 
 	// Assert
 	EXPECT_EQ(sortedVector, randomVector);
@@ -148,7 +159,7 @@ TEST(HybridSort, GivenLargeReversedVectorTheVectorIsSortsAsExpected)
 	std::sort(sortedVector.begin(), sortedVector.end());
 
 	// Act
-	sort(reverseVector);
+	hybridSort(reverseVector);
 
 	// Assert
 	EXPECT_EQ(sortedVector, reverseVector);
