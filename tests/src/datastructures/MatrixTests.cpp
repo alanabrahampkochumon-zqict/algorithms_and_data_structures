@@ -4,7 +4,7 @@
  * @date Created on: March 03, 2026
  *
  * @brief Tests for Matrix
- * 
+ *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
@@ -311,27 +311,27 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
     EXPECT_THROW(matA - matB, std::runtime_error);
 }
 
- TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
+TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
 {
-     // When two matrices are subtracted with -=
-     const auto& [matA, matB, matExpected] = GetParam();
-     datastructures::Matrix result = matA;
-     result -= matB;
+    // When two matrices are subtracted with -=
+    const auto& [matA, matB, matExpected] = GetParam();
+    datastructures::Matrix result = matA;
+    result -= matB;
 
-     // Then, the resultant matrix contains elements of both added together
-     EXPECT_MAT_EQ(matExpected, result);
- }
+    // Then, the resultant matrix contains elements of both added together
+    EXPECT_MAT_EQ(matExpected, result);
+}
 
- TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
+TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
 {
-     // Given two matrices of different dimension
-     datastructures::Matrix<int> matA(5, 5);
-     datastructures::Matrix<int> matB(4, 3);
+    // Given two matrices of different dimension
+    datastructures::Matrix<int> matA(5, 5);
+    datastructures::Matrix<int> matB(4, 3);
 
-     // When subtracted and assigned(-=)
-     // Then, it throws an exception
-     EXPECT_THROW(matA -= matB, std::runtime_error);
- }
+    // When subtracted and assigned(-=)
+    // Then, it throws an exception
+    EXPECT_THROW(matA -= matB, std::runtime_error);
+}
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixSubtractionTestSuite, MatrixSubtractionTests,
@@ -407,17 +407,17 @@ INSTANTIATE_TEST_SUITE_P(
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
                                          datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 2x2
-                                                                                                 // = 2x2
+                                                                                                     // = 2x2
         MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
                                          { { { 4, 5, 6 } } },
                                          { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
                                          datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 3x1 * 1x3
-                                                                                                 // = 3x3
+                                                                                                     // = 3x3
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 1, 0 }, { 0, 1 } } },
                                          { { { 1, 2 }, { 3, 4 } } },
                                          datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * I2 =
-                                                                                                 // 2x2
+                                                                                                     // 2x2
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },

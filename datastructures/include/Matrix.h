@@ -8,7 +8,8 @@
  * @note Matrix can be initialized with a row, col or using an initializer list of elements.
  *
  * @par Operations
- * Addition, Subtraction, and Multiplication, with 3 implementation for multiplication. Check `MultiplicationAlgorithmType` for details.
+ * Addition, Subtraction, and Multiplication, with 3 implementation for multiplication. Check
+ * `MultiplicationAlgorithmType` for details.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -82,6 +83,6 @@ namespace datastructures
             -> Matrix<std::common_type_t<T, U>>;
     };
 
-} // namespace Algorithms
+} // namespace datastructures
 
 #include "Matrix.tpp"

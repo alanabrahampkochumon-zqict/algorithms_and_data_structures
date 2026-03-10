@@ -4,7 +4,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: February 24, 2026
  *
- * @brief Sorting algorithm that sorts a data structure by "bubbling up" elements (largest or smallest depending on comparator).
+ * @brief Sorting algorithm that sorts a data structure by "bubbling up" elements (largest or smallest depending on
+ * comparator).
  * @note Only supports C-style array and std::vector.
  *
  * @par Time Complexity

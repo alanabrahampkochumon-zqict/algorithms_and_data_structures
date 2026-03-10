@@ -5,7 +5,7 @@
  * @date Created on: February 24, 2026
  *
  * @brief Binary Search implementation.
- * 
+ *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
@@ -13,7 +13,7 @@
 namespace algorithms
 {
     template <typename T>
-    std::optional<std::size_t> _binarySearch(const T *data, std::size_t size, T searchElement)
+    std::optional<std::size_t> _binarySearch(const T* data, std::size_t size, T searchElement)
     {
         std::size_t start = 0;
         std::size_t end = size;
@@ -45,8 +45,8 @@ namespace algorithms
     }
 
     template <typename T>
-    std::optional<std::size_t> binarySearch(const std::vector<T> &vector, T searchElement)
+    std::optional<std::size_t> binarySearch(const std::vector<T>& vector, T searchElement)
     {
         return _binarySearch(vector.data(), vector.size(), searchElement);
     }
-}
+} // namespace algorithms

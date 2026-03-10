@@ -6,6 +6,22 @@ set_property(GLOBAL PROPERTY USE_FOLDERS ON)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+# CLANG Formatter
+find_program(CLANG_FORMATTER NAMES clang-format)
+
+if(CLANG_FORMATTER)
+    file(GLOB_RECURSE ALL_SOURCE_FILES RELATIVE ${CMAKE_SOURCE_DIR} *.cpp *.h *.cxx *.hxx *.hpp *.cc *.hh *.tpp *.inl)
+
+    add_custom_target(format
+        COMMAND ${CLANG_FORMATTER} -i -style=file ${ALL_SOURCE_FILES}
+        VERBATIM
+        WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}
+        COMMENT "Formatting source files..."
+    )
+else()
+    message(WARNING "clang-format not found")
+endif()
+
 include(dependencies.cmake)
 
 add_subdirectory(sorting)

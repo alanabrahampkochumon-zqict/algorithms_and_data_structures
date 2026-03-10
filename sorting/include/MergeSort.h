@@ -4,7 +4,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: February 24, 2026
  *
- * @brief Sorting algorithm that sorts a data structure by dividing it into subproblems, and then, sorting and combining them.
+ * @brief Sorting algorithm that sorts a data structure by dividing it into subproblems, and then, sorting and combining
+ * them.
  * @note Only supports C-style array and std::vector.
  *
  * @par Time Complexity

@@ -14,9 +14,10 @@
 #include <MaxSumSubarray.h>
 #include <benchmark/benchmark.h>
 
-using namespace rng::helpers;
 
+using namespace rng::helpers;
 using namespace algorithms;
+
 
 namespace
 {

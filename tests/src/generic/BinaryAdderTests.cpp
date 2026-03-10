@@ -4,7 +4,7 @@
  * @date Created on: February 24, 2026
  *
  * @brief Binary Adder Tests.
- * 
+ *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
