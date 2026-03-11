@@ -31,6 +31,33 @@ namespace datastructures
     template <typename T>
     concept Arithmetic = std::integral<T> || std::floating_point<T>;
 
+
+    template <Arithmetic T>
+    struct MatrixView
+    {
+        T* data;                  ///< Pointer to the data of the original matrix
+        std::size_t rows;         ///< Rows of MatrixView
+        std::size_t columns;      ///< Columns of Matrix View
+        std::size_t rowOffset;    ///< Row offset of the Matrix View
+        std::size_t colOffset;    ///< Column offset of the Matrix View
+        std::size_t columnStride; //< Number of columns in the original Matrix
+
+        bool bitCeil; ///< Whether to virtually pad the view with zeros(when ceiling matrix nearest power of size)
+
+        MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t rowOffset, std::size_t colOffset,
+                   std::size_t columnStride, bool bitCeil = false)
+            : data(data),
+              rows(rows),
+              columns(columns),
+              rowOffset(rowOffset),
+              colOffset(colOffset),
+              columnStride(columnStride),
+              bitCeil(bitCeil)
+        {
+        }
+    };
+
+
     template <Arithmetic T>
     struct Matrix
     {
@@ -60,6 +87,13 @@ namespace datastructures
          */
         const T& operator()(std::size_t row, std::size_t col) const;
 
+
+        /**************************************
+         *                                    *
+         *       ARITHMETIC OPERATIONS        *
+         *                                    *
+         **************************************/
+
         template <Arithmetic U>
         auto operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>;
 
@@ -73,6 +107,10 @@ namespace datastructures
         Matrix& operator-=(const Matrix<U>& other);
 
         template <Arithmetic U>
+        MatrixView<T>& getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd, std::size_t colEnd,
+                               bool bitCeilMatrix = false);
+
+        template <Arithmetic U>
         auto multiply(const Matrix<U>& other,
                       MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const
             -> Matrix<std::common_type_t<T, U>>;
@@ -81,6 +119,8 @@ namespace datastructures
         static auto multiply(const Matrix& matA, const Matrix<U>& matB,
                              MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER)
             -> Matrix<std::common_type_t<T, U>>;
+
+        // TODO: *, *= op
     };
 
 } // namespace datastructures

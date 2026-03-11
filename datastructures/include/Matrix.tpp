@@ -141,6 +141,25 @@ namespace datastructures
     }
 
 
+    template <Arithmetic T>
+    template <Arithmetic U>
+    MatrixView<T>& Matrix<T>::getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd,
+        std::size_t colEnd, bool bitCeilMatrix)
+    {
+        return MatrixView()
+    }
+
+
+    //template <Arithmetic T>
+    //template <Arithmetic U>
+    //Matrix<T>& Matrix<T>::getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd, std::size_t colEnd,
+    //    bool bitCeilMatrix)
+    //{
+    //    // TODO: Stub
+    //    return Matrix(rowEnd - rowStart, colEnd - colStart);
+    //}
+
+
     template <Arithmetic T, Arithmetic U>
     static auto bruteForce(const Matrix<T>& matA, const Matrix<U>& matB)
     {

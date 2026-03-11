@@ -1,7 +1,7 @@
 add_executable(Tests)
 
 set(IncludeDirectory "include/")
-set(TestUtilFiles "testutils.h")
+set(TestUtilFiles "TestUtils.h")
 list(TRANSFORM TestUtilFiles PREPEND ${IncludeDirectory})
 
 set(SortTestFolder "src/sorting/")

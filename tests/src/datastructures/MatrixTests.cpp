@@ -8,7 +8,7 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-#include "testutils.h"
+#include "TestUtils.h"
 
 #include <Matrix.h>
 #include <cassert>
@@ -33,6 +33,24 @@ struct MatrixInitializerParams
     std::vector<T> expectedData;
 };
 class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializerParams<int>>
+{
+};
+
+
+template <typename T>
+    requires std::integral<T> || std::floating_point<T>
+struct MatrixViewParams
+{
+    datastructures::Matrix<T> mat;
+    datastructures::Matrix<T> expectedView;
+    std::size_t rowStart;
+    std::size_t colStart;
+    std::size_t rowSize;
+    std::size_t colSize;
+    bool bitCeil;
+
+};
+class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 {
 };
 
@@ -80,7 +98,7 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
 
 /*********************************
  *                               *
- *            TESTS              *
+ *  MATRIX INITIALIZATION TESTS  *
  *                               *
  *********************************/
 
@@ -141,6 +159,12 @@ INSTANTIATE_TEST_SUITE_P(
             std::vector<std::vector<int>>{ { 1, 2 }, {}, { 3, 4 } }, 3, 2, { 1, 2, 0, 0, 3, 4 } }));
 
 
+/*********************************
+ *                               *
+ *      MATRIX ACCESS TESTS      *
+ *                               *
+ *********************************/
+
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 {
     // Given a matrix is created with rows and columns
@@ -165,7 +189,7 @@ TEST(MatrixAccess, AccessAtSizeThrowsError)
     constexpr int cols = 7;
     const datastructures::Matrix<int> mat(rows, cols);
 
-    // When accessed at rowsize, colsize
+    // When accessed at rows, cols
     // Then, it throws runtime error
     EXPECT_THROW(mat(rows, cols), std::runtime_error);
 }
@@ -182,6 +206,12 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
     EXPECT_THROW(mat(rows + 10, cols + 10), std::runtime_error);
 }
 
+
+/*********************************
+ *                               *
+ *     MATRIX MUTATION TESTS     *
+ *                               *
+ *********************************/
 
 TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 {
@@ -225,6 +255,26 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
 }
 
 
+/*********************************
+ *                               *
+ *      MATRIX VIEW TESTS        *
+ *                               *
+ *********************************/
+
+TEST_P(MatrixViewTests, ViewsGenerateCorrectValues)
+{
+    // When a matrix view is requested
+    const auto& [matrix, viewMatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
+    // Then it contains the given size
+}
+
+
+/*********************************
+ *                               *
+ *     MATRIX ADDITION TESTS     *
+ *                               *
+ *********************************/
+
 TEST_P(MatrixAdditionTests, PlusOperatorReturnsMatrixWithElementsAddedTogether)
 {
     // When two matrices are added together
@@ -245,6 +295,7 @@ TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
     // Then it throws an exception
     EXPECT_THROW(matA + matB, std::runtime_error);
 }
+
 
 TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
 {
@@ -288,7 +339,11 @@ INSTANTIATE_TEST_SUITE_P(
                                    { { { 9, 11, 13, 15, 17, 19, 21, 23 } } } }));
 
 
-
+/*********************************
+ *                               *
+ *   MATRIX SUBTRACTION TESTS    *
+ *                               *
+ *********************************/
 
 TEST_P(MatrixSubtractionTests, MinusOperatorReturnsMatrixWithElementsSubtractedFromEachOther)
 {
@@ -353,7 +408,11 @@ INSTANTIATE_TEST_SUITE_P(
                                       { { { 110, 110, 110, 120, 129, 110, 109, -15 } } } }));
 
 
-
+/*********************************
+ *                               *
+ * MATRIX MULTIPLICATION TESTS   *
+ *                               *
+ *********************************/
 
 TEST_P(MatrixMultiplicationTests, MultiplicationProvidesCorrectResult)
 {
@@ -387,8 +446,6 @@ TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectRes
     // Then, it matches expected result
     EXPECT_MAT_EQ(matExpected, result);
 }
-
-// TODO: Op *, *= tests
 
 TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 {
