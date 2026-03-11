@@ -32,29 +32,49 @@ namespace datastructures
     concept Arithmetic = std::integral<T> || std::floating_point<T>;
 
 
+    // template <Arithmetic T>
+    // struct MatrixView
+    //{
+    //     T* data;                  ///< Pointer to the data of the original matrix
+    //     std::size_t rows;         ///< Rows of MatrixView
+    //     std::size_t columns;      ///< Columns of Matrix View
+    //     std::size_t rowOffset;    ///< Row offset of the Matrix View
+    //     std::size_t colOffset;    ///< Column offset of the Matrix View
+    //     std::size_t columnStride; //< Number of columns in the original Matrix
+
+    //    bool m_BitCeil; ///< Whether to virtually pad the view with zeros(when ceiling matrix nearest power of size)
+
+    //    MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t rowOffset, std::size_t colOffset,
+    //               std::size_t columnStride, bool m_BitCeil = false)
+    //        : data(data),
+    //          rows(rows),
+    //          columns(columns),
+    //          rowOffset(rowOffset),
+    //          colOffset(colOffset),
+    //          columnStride(columnStride),
+    //          m_BitCeil(m_BitCeil)
+    //    {
+    //    }
+    //};
+
     template <Arithmetic T>
     struct MatrixView
     {
-        T* data;                  ///< Pointer to the data of the original matrix
-        std::size_t rows;         ///< Rows of MatrixView
-        std::size_t columns;      ///< Columns of Matrix View
-        std::size_t rowOffset;    ///< Row offset of the Matrix View
-        std::size_t colOffset;    ///< Column offset of the Matrix View
-        std::size_t columnStride; //< Number of columns in the original Matrix
+        T* m_Data;             ///< Pointer to the data of the original matrix
+        std::size_t m_Rows;    ///< Number of rows in the MatrixView
+        std::size_t m_Columns; ///< Number of columns in the Matrix View
+        std::size_t m_Offset;  ///< Offset of first element(usually the row offset in an NxN matrix)
+        std::size_t m_Stride;  ///< Length of each strip of data(usually the column count of an NxN Matrix)
 
-        bool bitCeil; ///< Whether to virtually pad the view with zeros(when ceiling matrix nearest power of size)
+        bool m_BitCeil; ///< Flag that returns a T(0) instead of throwing runtime_exception when passed in an index larger
+                      // than the size of matrix.
 
-        MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t rowOffset, std::size_t colOffset,
-                   std::size_t columnStride, bool bitCeil = false)
-            : data(data),
-              rows(rows),
-              columns(columns),
-              rowOffset(rowOffset),
-              colOffset(colOffset),
-              columnStride(columnStride),
-              bitCeil(bitCeil)
-        {
-        }
+        MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t offset, std::size_t stride,
+                   bool bitCeil = false);
+
+        T& operator()(std::size_t i, std::size_t j);
+
+        const T& operator()(std::size_t i, std::size_t j) const;
     };
 
 

@@ -17,6 +17,31 @@
 namespace datastructures
 {
 
+    /**************************************
+     *                                    *
+     *            MATRIX VIEW             *
+     *                                    *
+     **************************************/
+    
+    template <Arithmetic T>
+    MatrixView<T>::MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t offset, std::size_t stride,
+                              bool bitCeil)
+        : m_Data(data), m_Rows(rows), m_Columns(columns), m_Offset(offset), m_Stride(stride), m_BitCeil(bitCeil)
+    {}
+
+
+    template <Arithmetic T>
+    T& MatrixView<T>::operator()(std::size_t i, std::size_t j)
+    {
+    }
+
+
+    template <Arithmetic T>
+    const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
+    {
+    }
+
+
 
     /**************************************
      *                                    *
@@ -141,13 +166,13 @@ namespace datastructures
     }
 
 
-    template <Arithmetic T>
+    /*template <Arithmetic T>
     template <Arithmetic U>
     MatrixView<T>& Matrix<T>::getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd,
         std::size_t colEnd, bool bitCeilMatrix)
     {
-        return MatrixView()
-    }
+        return MatrixView();
+    }*/
 
 
     //template <Arithmetic T>

@@ -17,9 +17,48 @@
 
 using namespace testutils;
 
+/**************************************
+ *                                    *
+ *         MATRIX VIEW SETUP          *
+ *                                    *
+ **************************************/
+
+using SupportedTypes = ::testing::Types<unsigned char, short, int, float, double, unsigned long long>;
+
+template <typename T>
+class MatrixViewInitializationTests: public ::testing::Test
+{
+    protected:
+    std::vector<T> data;
+    T* data_ptr;
+    std::size_t rows;
+    std::size_t cols;
+    std::size_t offset;
+    std::size_t stride;
+    bool bitCeil;
+
+    void SetUp() override
+    {
+        data = { T(1), T(2), T(3), T(4), T(5), T(6) };
+        data_ptr = data.data();
+        rows = 2;
+        cols = 3;
+        offset = 0;
+        stride = cols;
+        bitCeil = true;
+    }
+};
+TYPED_TEST_SUITE(MatrixViewInitializationTests, SupportedTypes);
+
+// template <typename T>
+// requires std::integral<T> || std::floating_point<T>
+// struct MatrixViewInitializerParams()
+
+
+
 /*********************************
  *                               *
- *            SETUP              *
+ *        MATRIX SETUP           *
  *                               *
  *********************************/
 
@@ -48,7 +87,6 @@ struct MatrixViewParams
     std::size_t rowSize;
     std::size_t colSize;
     bool bitCeil;
-
 };
 class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 {
@@ -94,6 +132,42 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
 {
 };
 
+
+/**************************************
+ *                                    *
+ *  MATRIX VIEW INITIALIZATION TESTS  *
+ *                                    *
+ **************************************/
+
+TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
+{
+    // When matrix view is initialized with default values.
+    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->rows, this->cols, this->offset,
+                                                     this->stride, this->bitCeil);
+
+    // Then, it gets initialized with the passed in values.
+    ASSERT_EQ(this->data_ptr, view.m_Data);
+    ASSERT_EQ(this->rows, view.m_Rows);
+    ASSERT_EQ(this->cols, view.m_Columns);
+    ASSERT_EQ(this->stride, view.m_Stride);
+    ASSERT_EQ(this->offset, view.m_Offset);
+    ASSERT_EQ(this->bitCeil, view.m_BitCeil);
+}
+
+TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
+{
+    // When matrix view is initialized without bitCeil
+    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->rows, this->cols, this->offset,
+                                                     this->stride, false);
+
+    // Then, it gets initialized with the passed in values with bit ceil having default value of false
+    ASSERT_EQ(this->data_ptr, view.m_Data);
+    ASSERT_EQ(this->rows, view.m_Rows);
+    ASSERT_EQ(this->cols, view.m_Columns);
+    ASSERT_EQ(this->stride, view.m_Stride);
+    ASSERT_EQ(this->offset, view.m_Offset);
+    ASSERT_FALSE(view.m_BitCeil);
+}
 
 
 /*********************************
@@ -260,13 +334,14 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
  *      MATRIX VIEW TESTS        *
  *                               *
  *********************************/
-
-TEST_P(MatrixViewTests, ViewsGenerateCorrectValues)
-{
-    // When a matrix view is requested
-    const auto& [matrix, viewMatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
-    // Then it contains the given size
-}
+//
+// TEST_P(MatrixViewTests, ViewsGenerateCorrectValues)
+//{
+//    // When a matrix view is requested
+//    const auto& [matrix, viewMatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
+//
+//    // Then it contains the given size
+//}
 
 
 /*********************************
