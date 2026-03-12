@@ -24,21 +24,23 @@ namespace datastructures
      **************************************/
     
     template <Arithmetic T>
-    MatrixView<T>::MatrixView(T* data, std::size_t rows, std::size_t columns, std::size_t offset, std::size_t stride,
+    MatrixView<T>::MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t columns, std::size_t offset, std::size_t stride,
                               bool bitCeil)
-        : m_Data(data), m_Rows(rows), m_Columns(columns), m_Offset(offset), m_Stride(stride), m_BitCeil(bitCeil)
+        : m_Data(data), m_Size(size), m_Rows(rows), m_Columns(columns), m_Offset(offset), m_Stride(stride), m_BitCeil(bitCeil)
     {}
 
 
     template <Arithmetic T>
     T& MatrixView<T>::operator()(std::size_t i, std::size_t j)
     {
+        return T(0);
     }
 
 
     template <Arithmetic T>
     const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
     {
+        return T(0);
     }
 
 
