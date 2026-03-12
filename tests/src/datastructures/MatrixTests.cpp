@@ -51,6 +51,13 @@ struct MatrixAccessorParams
 class MatrixAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
 {
 };
+template <typename T>
+std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
+{
+    os << "MatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
+              << "). Expected Value: " << params.expectedValue << "\n";
+    return os;
+}
 
 
 /*********************************
@@ -139,8 +146,8 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
 TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 {
     // When matrix view is initialized with default values.
-    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->rows, this->cols, this->offset,
-                                                     this->stride, this->bitCeil);
+    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
+                                                     this->offset, this->stride, this->bitCeil);
 
     // Then, it gets initialized with the passed in values.
     ASSERT_EQ(this->data_ptr, view.m_Data);
@@ -155,8 +162,8 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
 {
     // When matrix view is initialized without bitCeil
-    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->rows, this->cols, this->offset,
-                                                     this->stride, false);
+    const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
+                                                     this->offset, this->stride, false);
 
     // Then, it gets initialized with the passed in values with bit ceil having default value of false
     ASSERT_EQ(this->data_ptr, view.m_Data);
@@ -183,20 +190,20 @@ TEST_P(MatrixAccessorTests, AccessorReturnsCorrectValue)
     const auto value = matrixView(row, col);
 
     // Then, the value is as expected
-    EXPECT_EQ(expected, value);
+    EXPECT_EQ(expected, value) << "Expected: " << expected << ". Got: " << value;
 }
 
 std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-const datastructures::MatrixView matView1_0 = { data1.data(), 9, 2, 2, 0, 3, true };
-const datastructures::MatrixView matView1_1 = { data1.data(), 9, 2, 2, 2, 3, true };
-const datastructures::MatrixView matView1_2 = { data1.data(), 9, 2, 2, 4, 3, true };
-const datastructures::MatrixView matView1_3 = { data1.data(), 9, 2, 2, 6, 3, true };
+const datastructures::MatrixView matView1_0 = { data1.data(), data1.size(), 2, 2, 0, 3, true };
+const datastructures::MatrixView matView1_1 = { data1.data(), data1.size(), 2, 2, 1, 3, true };
+const datastructures::MatrixView matView1_2 = { data1.data(), data1.size(), 2, 2, 2, 3, true };
+const datastructures::MatrixView matView1_3 = { data1.data(), data1.size(), 2, 2, 3, 3, true };
 
 std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-const datastructures::MatrixView matView2_0 = { data2.data(), 16, 2, 2, 0, 4, true };
-const datastructures::MatrixView matView2_1 = { data2.data(), 16, 2, 2, 2, 4, true };
-const datastructures::MatrixView matView2_2 = { data2.data(), 16, 2, 2, 4, 4, true };
-const datastructures::MatrixView matView2_3 = { data2.data(), 16, 2, 2, 6, 4, true };
+const datastructures::MatrixView matView2_0 = { data2.data(), data2.size(), 2, 2, 0, 4, true };
+const datastructures::MatrixView matView2_1 = { data2.data(), data2.size(), 2, 2, 1, 4, true };
+const datastructures::MatrixView matView2_2 = { data2.data(), data2.size(), 2, 2, 2, 4, true };
+const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 3, 4, true };
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixAccessorTestSuite, MatrixAccessorTests,

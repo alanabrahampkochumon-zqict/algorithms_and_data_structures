@@ -12,6 +12,7 @@
 
 #include <algorithm>
 #include <cstddef>
+#include <bit>
 
 
 namespace datastructures
@@ -40,7 +41,30 @@ namespace datastructures
     template <Arithmetic T>
     const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
     {
-        return T(0);
+        // Out of bounds check for submatrix
+        if (i < 0 || i >= m_Rows || j < 0 || j >= m_Columns)
+            throw std::runtime_error("Invalid index for submatrix");
+
+        std::size_t size = m_Size, stride = m_Stride;
+        if (m_BitCeil)
+        {
+            size = std::bit_ceil(size);
+            stride = std::bit_ceil(m_Stride);
+        }
+
+
+        std::size_t globalOffset = m_Offset * stride; // How much to move per submatrix in 4x4 mat, with offset of 1 and stride of 4, it will return the data store from 4th index.
+        std::size_t index = globalOffset + (i * m_Columns) + j;
+
+        // Out of bound check for matrix
+        if (index >= size)
+            throw std::runtime_error("Invalid bit ceiling. Check your passed in stride and offset");
+
+        // Returning Zero if bit ceil is on and out of bound of original matrix
+        static const T zero = T(0);
+        if (index >= m_Size)
+            return zero;
+        return m_Data[index];
     }
 
 
@@ -230,5 +254,19 @@ namespace datastructures
         -> Matrix<std::common_type_t<T, U>>
     {
         return matA.multiply(matB, algo);
+    }
+
+
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
+    {
+        os << "Data: ";
+        for (std::size_t i = 0; i < mv.m_Size; ++i)
+            os << mv.m_Data[i] << (i < mv.m_Size - 1 ? ", " : "");
+
+        os << "\nSize: " << mv.m_Size << " Size(Row, Col): (" << mv.m_Rows << ", " << mv.m_Columns
+           << "), Offset: " << mv.m_Offset << ", Stride: " << mv.m_Stride << " BitCeil Status: " << mv.m_BitCeil << "\n";
+
+        return os;
     }
 } // namespace datastructures

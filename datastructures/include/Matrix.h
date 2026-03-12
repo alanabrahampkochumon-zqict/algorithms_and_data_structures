@@ -61,7 +61,7 @@ namespace datastructures
     struct MatrixView
     {
         T* m_Data;             ///< Pointer to the data of the original matrix
-        std::size_t m_Size;      ///< Size of matrix data(1D)
+        std::size_t m_Size;    ///< Size of matrix data(1D)
         std::size_t m_Rows;    ///< Number of rows in the MatrixView
         std::size_t m_Columns; ///< Number of columns in the Matrix View
         std::size_t m_Offset;  ///< Offset of first element(usually the row offset in an NxN matrix)
@@ -80,9 +80,11 @@ namespace datastructures
          * @param i row index of the submatrix
          * @param j column index of the submatrix
          * @return value at the index or 0 if out of bounds and `bitCeil` is true.
-         * @throws `std::runtime_error` if access is out of bounds (i < 0 or i >= m_Rows) or access is in bounds of the submatrix but out of bounds for the original matrix
+         * @throws `std::runtime_error` if access is out of bounds (i < 0 or i >= m_Rows) or access is in bounds of the
+         * submatrix but out of bounds for the original matrix
          * @par Example
-         * 3x3 matrix with offset of 6 and stride of 3 (last 2x2 submatrix) and trying to access (1, 1) -> throws `std::runtime_error` if `bitCeil = false` and 0 if `bitCeil = true`.
+         * 3x3 matrix with offset of 6 and stride of 3 (last 2x2 submatrix) and trying to access (1, 1) -> throws
+         * `std::runtime_error` if `bitCeil = false` and 0 if `bitCeil = true`.
          */
         T& operator()(std::size_t i, std::size_t j);
 
@@ -155,6 +157,10 @@ namespace datastructures
         // TODO: *, *= op
     };
 
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const datastructures::MatrixView<T>& mv);
+
 } // namespace datastructures
+
 
 #include "Matrix.tpp"
