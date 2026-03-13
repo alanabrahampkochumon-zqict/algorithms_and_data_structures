@@ -60,19 +60,21 @@ namespace datastructures
     template <Arithmetic T>
     struct MatrixView
     {
-        T* m_Data;             ///< Pointer to the data of the original matrix
-        std::size_t m_Size;    ///< Size of matrix data(1D)
-        std::size_t m_Rows;    ///< Number of rows in the MatrixView
-        std::size_t m_Columns; ///< Number of columns in the Matrix View
-        std::size_t m_Offset;  ///< Offset of first element(usually the row offset in an NxN matrix)
-        std::size_t m_Stride;  ///< Length of each strip of data(usually the column count of an NxN Matrix)
+        T* m_Data;                 ///< Pointer to the data of the original matrix
+        std::size_t m_Size;        ///< Size of matrix data(1D)
+        std::size_t m_ViewRows;    ///< Number of rows in the MatrixView
+        std::size_t m_ViewColumns; ///< Number of columns in the Matrix View
+        std::size_t
+            m_RowOffset; ///< Offset of first row(if an NxN matrix is viewed as N/2 * N/2 Matrix then, it will be 0, 1)
+        std::size_t m_ColumnOffset; ///< Offset of first column
+        std::size_t m_Stride;    ///< Length of each strip of data(usually the column count of an NxN Matrix)
 
         bool m_BitCeil; ///< Flag that returns a T(0) instead of throwing runtime_exception when passed in an index
                         ///< larger
                         // than the size of matrix.
 
 
-        MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t columns, std::size_t offset,
+        MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t columns, std::size_t rowOffset, std::size_t colOffset,
                    std::size_t stride, bool bitCeil = false);
 
         /**
