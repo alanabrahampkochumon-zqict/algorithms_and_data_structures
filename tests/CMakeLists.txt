@@ -21,7 +21,7 @@ set(DivideAndConquerTestFiles "MaxSumSubarrayTests.cpp;")
 list(TRANSFORM DivideAndConquerTestFiles PREPEND ${DivideAndConquerTestFolder})
 
 set(DataStructuresTestFolder "src/datastructures/")
-set(DataStructuresTestFiles "MatrixTests.cpp;")
+set(DataStructuresTestFiles "MatrixTests.cpp;MatrixViewTests.cpp;")
 list(TRANSFORM DataStructuresTestFiles PREPEND ${DataStructuresTestFolder})
 
 target_sources(

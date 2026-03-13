@@ -64,9 +64,10 @@ namespace datastructures
         std::size_t m_Size;        ///< Size of matrix data(1D)
         std::size_t m_ViewRows;    ///< Number of rows in the MatrixView
         std::size_t m_ViewColumns; ///< Number of columns in the Matrix View
+        std::size_t m_RowOffset; ///< Row offset of the Matrix View
+        std::size_t m_ColumnOffset; ///< Column offset of the Matrix View
         std::size_t
-            m_RowOffset; ///< Offset of first row(if an NxN matrix is viewed as N/2 * N/2 Matrix then, it will be 0, 1)
-        std::size_t m_ColumnOffset; ///< Offset of first column
+            m_Offset; ///< Calculated offset of the current view
         std::size_t m_Stride;    ///< Length of each strip of data(usually the column count of an NxN Matrix)
 
         bool m_BitCeil; ///< Flag that returns a T(0) instead of throwing runtime_exception when passed in an index
@@ -74,7 +75,7 @@ namespace datastructures
                         // than the size of matrix.
 
 
-        MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t columns, std::size_t rowOffset, std::size_t colOffset,
+        MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t cols, std::size_t rowOffset, std::size_t colOffset,
                    std::size_t stride, bool bitCeil = false);
 
         /**
