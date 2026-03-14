@@ -4,7 +4,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 09, 2026
  *
- * @brief Matrix implementation.
+ * @brief Matrix template implementation.
+ * @details This file contains the definitions of the template members declared in @ref datastructures::Matrix.h
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -17,9 +18,6 @@
 
 namespace datastructures
 {
-
-    
-
 
 
     /**************************************
@@ -54,6 +52,8 @@ namespace datastructures
     }
 
 
+
+
     /**************************************
      *                                    *
      *           MATRIX ACCESS            *
@@ -64,7 +64,7 @@ namespace datastructures
     T& Matrix<T>::operator()(std::size_t row, std::size_t col)
     {
         if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
-            throw std::runtime_error("Invalid index");
+            throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
     }
 
@@ -72,9 +72,11 @@ namespace datastructures
     const T& Matrix<T>::operator()(std::size_t row, std::size_t col) const
     {
         if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
-            throw std::runtime_error("Invalid index");
+            throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
     }
+
+
 
 
     /**************************************
@@ -88,7 +90,7 @@ namespace datastructures
     auto Matrix<T>::operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
     {
         if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
-            throw std::runtime_error("Matrices of different dimensions cannot be added together");
+            throw std::invalid_argument("Matrices of different dimensions cannot be added together");
 
         Matrix result(m_Rows, m_Columns);
 
@@ -105,7 +107,7 @@ namespace datastructures
     Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& other)
     {
         if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
-            throw std::runtime_error("Matrices of different dimensions cannot be added together");
+            throw std::invalid_argument("Matrices of different dimensions cannot be added together");
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
@@ -119,7 +121,7 @@ namespace datastructures
     auto Matrix<T>::operator-(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
     {
         if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
-            throw std::runtime_error("Matrices of different dimensions cannot be subtracted");
+            throw std::invalid_argument("Matrices of different dimensions cannot be subtracted");
 
         Matrix result(m_Rows, m_Columns);
 
@@ -136,7 +138,7 @@ namespace datastructures
     Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& other)
     {
         if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
-            throw std::runtime_error("Matrices of different dimensions cannot be subtracted");
+            throw std::invalid_argument("Matrices of different dimensions cannot be subtracted");
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
@@ -145,13 +147,13 @@ namespace datastructures
     }
 
 
-    template <Arithmetic T>
-    template <Arithmetic U>
-    MatrixView<T>& Matrix<T>::getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd,
-        std::size_t colEnd, bool bitCeilMatrix)
-    {
-        return MatrixView<int>(nullptr, 0, 0, 0, 0, 0, 0, false);
-    }
+    // template <Arithmetic T>
+    // template <Arithmetic U>
+    // MatrixView<T>& Matrix<T>::getView(std::size_t rowStart, std::size_t colStart, std::size_t rowEnd,
+    //     std::size_t colEnd, bool bitCeilMatrix)
+    //{
+    //     return MatrixView<int>(nullptr, 0, 0, 0, 0, 0, 0, false);
+    // }
 
 
     /*template <Arithmetic T>
@@ -194,7 +196,7 @@ namespace datastructures
         -> Matrix<std::common_type_t<T, U>>
     {
         if (this->m_Columns != other.m_Rows)
-            throw std::runtime_error("Invalid matrix size");
+            throw std::invalid_argument("Invalid matrix size");
 
         switch (algo)
         {
@@ -216,20 +218,5 @@ namespace datastructures
         -> Matrix<std::common_type_t<T, U>>
     {
         return matA.multiply(matB, algo);
-    }
-
-
-    template <typename T>
-    std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
-    {
-        os << "Data: ";
-        for (std::size_t i = 0; i < mv.m_Size; ++i)
-            os << mv.m_Data[i] << (i < mv.m_Size - 1 ? ", " : "");
-
-        os << "\nSize: " << mv.m_Size << " View(Row, Col): (" << mv.m_ViewRows << ", " << mv.m_ViewColumns
-           << "), Offset(Row, Col): " << mv.m_Offset << ", " << mv.m_ColumnOffset << "), Stride: " << mv.m_Stride
-           << " BitCeil Status: " << mv.m_BitCeil << "\n";
-
-        return os;
     }
 } // namespace datastructures

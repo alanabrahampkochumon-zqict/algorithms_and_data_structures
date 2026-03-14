@@ -192,8 +192,8 @@ TEST(MatrixAccess, AccessAtSizeThrowsError)
     const datastructures::Matrix<int> mat(rows, cols);
 
     // When accessed at rows, cols
-    // Then, it throws runtime error
-    EXPECT_THROW(mat(rows, cols), std::runtime_error);
+    // Then, it throws out of range error
+    EXPECT_THROW(mat(rows, cols), std::out_of_range);
 }
 
 TEST(MatrixAccess, InvalidIndexThrowsError)
@@ -204,8 +204,8 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
     const datastructures::Matrix<int> mat(rows, cols);
 
     // When accessed at invalid index
-    // Then, it throws runtime error
-    EXPECT_THROW(mat(rows + 10, cols + 10), std::runtime_error);
+    // Then, it throws out of range error
+    EXPECT_THROW(mat(rows + 10, cols + 10), std::out_of_range);
 }
 
 
@@ -241,7 +241,7 @@ TEST(MatrixMutation, AtSizeThrowsError)
 
     // When mutated at rowsize, colsize
     // Then, it throws runtime error
-    EXPECT_THROW(mat(rows, cols) = 5, std::runtime_error);
+    EXPECT_THROW(mat(rows, cols) = 5, std::invalid_argument);
 }
 
 TEST(MatrixMutation, InvalidIndexThrowsError)
@@ -253,7 +253,7 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
 
     // When mutated at invalid index
     // Then, it throws runtime error
-    EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::runtime_error);
+    EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::invalid_argument);
 }
 
 
@@ -296,7 +296,7 @@ TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
 
     // When added together
     // Then it throws an exception
-    EXPECT_THROW(matA + matB, std::runtime_error);
+    EXPECT_THROW(matA + matB, std::invalid_argument);
 }
 
 
@@ -319,7 +319,7 @@ TEST(MatrixAddtionTests, PlusEqualsOperatorDifferentDimensionThrowsException)
 
     // When added and assigned (+=)
     // Then it throws an exception
-    EXPECT_THROW(matA += matB, std::runtime_error);
+    EXPECT_THROW(matA += matB, std::invalid_argument);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -366,7 +366,7 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
 
     // When subtracted
     // Then it throws an exception
-    EXPECT_THROW(matA - matB, std::runtime_error);
+    EXPECT_THROW(matA - matB, std::invalid_argument);
 }
 
 TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
@@ -388,7 +388,7 @@ TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
 
     // When subtracted and assigned(-=)
     // Then, it throws an exception
-    EXPECT_THROW(matA -= matB, std::runtime_error);
+    EXPECT_THROW(matA -= matB, std::invalid_argument);
 }
 
 INSTANTIATE_TEST_SUITE_P(
@@ -457,7 +457,7 @@ TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
     datastructures::Matrix<int> matB{ { { 3, 2 } } };
 
     // Then, their multiplication throws an error
-    EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::runtime_error);
+    EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::invalid_argument);
 }
 
 INSTANTIATE_TEST_SUITE_P(
