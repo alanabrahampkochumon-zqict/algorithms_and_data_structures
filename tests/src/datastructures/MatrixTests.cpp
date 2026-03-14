@@ -3,7 +3,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 03, 2026
  *
- * @brief Verifies initialization, access, and arithmetic operation of @ref Matrix.
+ * @brief Unit tests for @ref datastructures::Matrix.
+ * @details Verifies initialization, bounds checking, and arithmetic operations.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -35,6 +36,7 @@ struct MatrixInitializerParams
     std::size_t expectedCols;
     std::vector<T> expectedData;
 };
+/** @brief Fixture for testing @ref datastructures::Matrix initialization with varied input shapes. */
 class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializerParams<int>>
 {
 };
@@ -52,6 +54,7 @@ struct MatrixViewParams
     std::size_t colSize;
     bool bitCeil;
 };
+/** @brief Fixture for testing element-wise addition of two matrices. */
 class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 {
 };
@@ -167,6 +170,9 @@ INSTANTIATE_TEST_SUITE_P(
  *                               *
  *********************************/
 
+/**
+ * @test Verify @ref datastructures::Matrix can be accessed as (row, column)
+ */
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 {
     // Given a matrix is created with rows and columns
@@ -240,8 +246,8 @@ TEST(MatrixMutation, AtSizeThrowsError)
     datastructures::Matrix<int> mat(rows, cols);
 
     // When mutated at rowsize, colsize
-    // Then, it throws runtime error
-    EXPECT_THROW(mat(rows, cols) = 5, std::invalid_argument);
+    // Then, it throws out of range error error
+    EXPECT_THROW(mat(rows, cols) = 5, std::out_of_range);
 }
 
 TEST(MatrixMutation, InvalidIndexThrowsError)
@@ -252,8 +258,8 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
     datastructures::Matrix<int> mat(rows, cols);
 
     // When mutated at invalid index
-    // Then, it throws runtime error
-    EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::invalid_argument);
+    // Then, it throws out of range error
+    EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::out_of_range);
 }
 
 
@@ -295,7 +301,7 @@ TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
     datastructures::Matrix<int> matB(4, 3);
 
     // When added together
-    // Then it throws an exception
+    // Then it throws a invalid argument error
     EXPECT_THROW(matA + matB, std::invalid_argument);
 }
 
@@ -318,7 +324,7 @@ TEST(MatrixAddtionTests, PlusEqualsOperatorDifferentDimensionThrowsException)
     datastructures::Matrix<int> matB(4, 3);
 
     // When added and assigned (+=)
-    // Then it throws an exception
+    // Then it throws an invalid argument error
     EXPECT_THROW(matA += matB, std::invalid_argument);
 }
 
@@ -365,7 +371,7 @@ TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
     datastructures::Matrix<int> matB(4, 3);
 
     // When subtracted
-    // Then it throws an exception
+    // Then it throws an invalid argument error
     EXPECT_THROW(matA - matB, std::invalid_argument);
 }
 
@@ -387,7 +393,7 @@ TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
     datastructures::Matrix<int> matB(4, 3);
 
     // When subtracted and assigned(-=)
-    // Then, it throws an exception
+    // Then, it throws an invalid argument error
     EXPECT_THROW(matA -= matB, std::invalid_argument);
 }
 
@@ -456,7 +462,7 @@ TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
     datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
     datastructures::Matrix<int> matB{ { { 3, 2 } } };
 
-    // Then, their multiplication throws an error
+    // Then, their multiplication invalid argument error
     EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::invalid_argument);
 }
 
