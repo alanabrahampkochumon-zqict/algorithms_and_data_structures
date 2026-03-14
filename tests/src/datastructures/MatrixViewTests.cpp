@@ -9,8 +9,7 @@
  */
 
 
-#include "Matrix.h"
-
+#include <MatrixView.h>
 
 using SupportedTypes = ::testing::Types<unsigned char, short, int, float, double, unsigned long long>;
 

@@ -8,7 +8,6 @@
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
-
 #include <BinaryAdder.h>
 #include <array>
 #include <gmock/gmock.h>

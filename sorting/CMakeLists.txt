@@ -25,8 +25,8 @@ target_sources(
 target_include_directories(
     Sorting
     INTERFACE
-    "$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>"
-    "$<INSTALL_INTERFACE:include>"
+    $<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/include>
+    $<INSTALL_INTERFACE:include>
 )
 
 source_group("Template Files" FILES ${TemplateDefinitionsFiles})

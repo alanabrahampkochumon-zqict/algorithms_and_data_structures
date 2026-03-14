@@ -57,6 +57,7 @@ target_link_libraries(
     Generic
     DivideAndConquer
     DataStructure
+    Common
     GTest::gtest_main
     GTest::gmock_main
 )
