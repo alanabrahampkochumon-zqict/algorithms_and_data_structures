@@ -108,7 +108,7 @@ namespace datastructures
         // return m_Data[index];
     }
 
-    template <typename T>
+    /*template <typename T>
     std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
     {
         for (std::size_t i = 0; i < mv.m_ViewRows; ++i)
@@ -118,6 +118,6 @@ namespace datastructures
             os << "\n";
         }
         return os;
-    }
+    }*/
 
 } // namespace datastructures

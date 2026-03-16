@@ -47,16 +47,18 @@ struct MatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
-/** @brief Test fixture for @ref MatrixView accessor, parameterized by @ref SupportedTypes */
-class MatrixAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
+/** @brief Test fixture for @ref MatrixView accessor, parameterized by @ref MatrixAccessorParams */
+class MatrixViewAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
 {};
-template <typename T>
-std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
-{
-    os << "MatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
-       << "). Expected Value: " << params.expectedValue << "\n";
-    return os;
-}
+
+// TODO: Enable
+//template <typename T>
+//std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
+//{
+//    os << "MatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
+//       << "). Expected Value: " << params.expectedValue << "\n";
+//    return os;
+//}
 
 
 
@@ -185,57 +187,59 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
  *            ACCESSOR TESTS          *
  *                                    *
  **************************************/
-// TEST_P(MatrixAccessorTests, AccessorReturnsCorrectValue)
-//{
-//     // Given a matrix view
-//     const auto& [matrixView, row, col, expected] = GetParam();
-//
-//     // When a value is accessed
-//     const auto value = matrixView(row, col);
-//
-//     // Then, the value is as expected
-//     EXPECT_EQ(expected, value) << "Expected: " << expected << ". Got: " << value;
-// }
 
-// std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-// const datastructures::MatrixView matView1_0 = { data1.data(), data1.size(), 2, 2, 0, 3, true };
-// const datastructures::MatrixView matView1_1 = { data1.data(), data1.size(), 2, 2, 1, 3, true };
-// const datastructures::MatrixView matView1_2 = { data1.data(), data1.size(), 2, 2, 2, 3, true };
-// const datastructures::MatrixView matView1_3 = { data1.data(), data1.size(), 2, 2, 3, 3, true };
-//
-// std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-// const datastructures::MatrixView matView2_0 = { data2.data(), data2.size(), 2, 2, 0, 4, true };
-// const datastructures::MatrixView matView2_1 = { data2.data(), data2.size(), 2, 2, 1, 4, true };
-// const datastructures::MatrixView matView2_2 = { data2.data(), data2.size(), 2, 2, 2, 4, true };
-// const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 3, 4, true };
+/** @test Verify @ref MatrixView accessor return correct value. */
+TEST_P(MatrixViewAccessorTests, AccessorReturnsCorrectValue)
+{
+    // Given a matrix view
+    const auto& [matrixView, row, col, expected] = GetParam();
 
-// INSTANTIATE_TEST_SUITE_P(
-//     MatrixAccessorTestSuite, MatrixAccessorTests,
-//     ::testing::Values(MatrixAccessorParams{ matView1_0, 0, 0, 1 }, MatrixAccessorParams{ matView1_0, 0, 1, 2 },
-//                       MatrixAccessorParams{ matView1_0, 1, 0, 4 }, MatrixAccessorParams{ matView1_0, 1, 1, 5 },
-//
-//                       MatrixAccessorParams{ matView1_1, 0, 0, 3 }, MatrixAccessorParams{ matView1_1, 0, 1, 0 },
-//                       MatrixAccessorParams{ matView1_1, 1, 0, 6 }, MatrixAccessorParams{ matView1_1, 1, 1, 0 },
-//
-//                       MatrixAccessorParams{ matView1_2, 0, 0, 7 }, MatrixAccessorParams{ matView1_2, 0, 1, 8 },
-//                       MatrixAccessorParams{ matView1_2, 1, 0, 0 }, MatrixAccessorParams{ matView1_2, 1, 1, 0 },
-//
-//                       MatrixAccessorParams{ matView1_3, 0, 0, 9 }, MatrixAccessorParams{ matView1_3, 0, 1, 0 },
-//                       MatrixAccessorParams{ matView1_3, 1, 0, 0 }, MatrixAccessorParams{ matView1_3, 1, 1, 0 },
-//
-//                       MatrixAccessorParams{ matView2_0, 0, 0, 1 }, MatrixAccessorParams{ matView2_0, 0, 1, 2 },
-//                       MatrixAccessorParams{ matView2_0, 1, 0, 5 }, MatrixAccessorParams{ matView2_0, 1, 1, 6 },
-//
-//                       MatrixAccessorParams{ matView2_1, 0, 0, 3 }, MatrixAccessorParams{ matView2_1, 0, 1, 4 },
-//                       MatrixAccessorParams{ matView2_1, 1, 0, 7 }, MatrixAccessorParams{ matView2_1, 1, 1, 8 },
-//
-//                       MatrixAccessorParams{ matView2_2, 0, 0, 9 }, MatrixAccessorParams{ matView2_2, 0, 1, 10 },
-//                       MatrixAccessorParams{ matView2_2, 1, 0, 13 }, MatrixAccessorParams{ matView2_2, 1, 1, 14 },
-//
-//                       MatrixAccessorParams{ matView2_3, 0, 0, 11 }, MatrixAccessorParams{ matView2_3, 0, 1, 12 },
-//                       MatrixAccessorParams{ matView2_3, 1, 0, 15 }, MatrixAccessorParams{ matView2_3, 1, 1, 16 }));
+    // When a value is accessed
+    const auto value = matrixView(row, col);
 
-// TEST(MatrixAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
+    // Then, the value is as expected
+    EXPECT_EQ(expected, value) << "Expected: " << expected << ". Got: " << value;
+}
+
+ std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+ const datastructures::MatrixView matView1_0 = { data1.data(), data1.size(), 2, 2, 0, 0, 3, true };
+ const datastructures::MatrixView matView1_1 = { data1.data(), data1.size(), 2, 2, 0, 1, 3, true };
+ const datastructures::MatrixView matView1_2 = { data1.data(), data1.size(), 2, 2, 1, 0, 3, true };
+ const datastructures::MatrixView matView1_3 = { data1.data(), data1.size(), 2, 2, 1, 1, 3, true };
+
+ std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+ const datastructures::MatrixView matView2_0 = { data2.data(), data2.size(), 2, 2, 0, 0, 4, true };
+ const datastructures::MatrixView matView2_1 = { data2.data(), data2.size(), 2, 2, 0, 1, 4, true };
+ const datastructures::MatrixView matView2_2 = { data2.data(), data2.size(), 2, 2, 1, 0, 4, true };
+ const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 1, 1, 4, true };
+
+ INSTANTIATE_TEST_SUITE_P(
+     MatrixAccessorTestSuite, MatrixViewAccessorTests,
+     ::testing::Values(MatrixAccessorParams{ matView1_0, 0, 0, 1 }, MatrixAccessorParams{ matView1_0, 0, 1, 2 },
+                       MatrixAccessorParams{ matView1_0, 1, 0, 4 }, MatrixAccessorParams{ matView1_0, 1, 1, 5 },
+
+                       MatrixAccessorParams{ matView1_1, 0, 0, 3 }, MatrixAccessorParams{ matView1_1, 0, 1, 0 },
+                       MatrixAccessorParams{ matView1_1, 1, 0, 6 }, MatrixAccessorParams{ matView1_1, 1, 1, 0 },
+
+                       MatrixAccessorParams{ matView1_2, 0, 0, 7 }, MatrixAccessorParams{ matView1_2, 0, 1, 8 },
+                       MatrixAccessorParams{ matView1_2, 1, 0, 0 }, MatrixAccessorParams{ matView1_2, 1, 1, 0 },
+
+                       MatrixAccessorParams{ matView1_3, 0, 0, 9 }, MatrixAccessorParams{ matView1_3, 0, 1, 0 },
+                       MatrixAccessorParams{ matView1_3, 1, 0, 0 }, MatrixAccessorParams{ matView1_3, 1, 1, 0 },
+
+                       MatrixAccessorParams{ matView2_0, 0, 0, 1 }, MatrixAccessorParams{ matView2_0, 0, 1, 2 },
+                       MatrixAccessorParams{ matView2_0, 1, 0, 5 }, MatrixAccessorParams{ matView2_0, 1, 1, 6 },
+
+                       MatrixAccessorParams{ matView2_1, 0, 0, 3 }, MatrixAccessorParams{ matView2_1, 0, 1, 4 },
+                       MatrixAccessorParams{ matView2_1, 1, 0, 7 }, MatrixAccessorParams{ matView2_1, 1, 1, 8 },
+
+                       MatrixAccessorParams{ matView2_2, 0, 0, 9 }, MatrixAccessorParams{ matView2_2, 0, 1, 10 },
+                       MatrixAccessorParams{ matView2_2, 1, 0, 13 }, MatrixAccessorParams{ matView2_2, 1, 1, 14 },
+
+                       MatrixAccessorParams{ matView2_3, 0, 0, 11 }, MatrixAccessorParams{ matView2_3, 0, 1, 12 },
+                       MatrixAccessorParams{ matView2_3, 1, 0, 15 }, MatrixAccessorParams{ matView2_3, 1, 1, 16 }));
+
+// TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
 //{
 //     // Given a matrix view
 //     // When accessed at out of bounds index
@@ -243,7 +247,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 //     EXPECT_THROW(matView1_0(2, 2), std::runtime_error);
 // }
 //
-// TEST(MatrixAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
+// TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
 //{
 //     // Given a matrix view without bit ceil
 //     const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 6, 3, false };

@@ -61,7 +61,8 @@ namespace datastructures
          * @param mv The matrix to be streamed.
          * @return A reference to the output stream @p os.
          */
-        friend std::ostream& operator<<(std::ostream& os, const MatrixView& mv);
+        // TODO: Enable
+        //static std::ostream& operator<<(std::ostream& os, const MatrixView& mv);
     };
 } // namespace datastructures
 

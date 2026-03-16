@@ -1,3 +1,8 @@
+---
+Checks: "clang-diagnostic-*,clang-analyzer-*,cppcoreguidelines-*,modernize-*,-modernize-use-trailing-return-type,readability-*"
+WarningsAsErrors: true
+HeaderFilterRegex: ""
+AnalyzeTemporaryDtors: false
 CheckOptions:
     - key: readability-identifier-naming.NamespaceCase
       value: lower_case
@@ -41,3 +46,4 @@ CheckOptions:
       value: UPPER_CASE
     - key: readability-identifier-naming.EnumConstantCase
       value: UPPER_CASE
+...
