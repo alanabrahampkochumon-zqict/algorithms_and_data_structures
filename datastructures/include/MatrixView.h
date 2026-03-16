@@ -61,8 +61,7 @@ namespace datastructures
          * @param mv The matrix to be streamed.
          * @return A reference to the output stream @p os.
          */
-        template <typename T>
-        friend std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv);
+        friend std::ostream& operator<<(std::ostream& os, const MatrixView& mv);
     };
 } // namespace datastructures
 

@@ -5,12 +5,14 @@
  * @date Created on: March 14, 2026
  *
  * @brief MatrixView implementation.
- * 
+ *        This file contains the implementation of member functions defined in MatrixView.h.
+ *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
 
 #include <bit>
+#include <iomanip>
 
 namespace datastructures
 {
@@ -33,20 +35,34 @@ namespace datastructures
           m_Stride(stride),
           m_BitCeil(bitCeil)
     {
+        // Size stride validation
+        if (m_Size < 1)
+            throw std::invalid_argument("Size must be greater than 0");
+
+        if (m_Stride < 1 || m_Stride > m_Size)
+            throw std::invalid_argument(std::string("Stride must be greater than 0 and less than ") + std::to_string(m_Size));
+             
+
+
         // Row Column Validation
-        std::size_t maxSize = m_BitCeil ? std::bit_ceil(m_Size) : m_Size;
-        std::size_t maxStride = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
-        if (m_ViewRows * m_ViewColumns > maxSize)
-            throw std::runtime_error(
-                "Invalid view matrix. View matrix should be initialized with rows and cols <= size of the matrix, "
-                "or nearest power of 2, if bit_Ceil is true");
+        std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
+        std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
+
+        if (m_ViewRows > maxRows || m_ViewRows < 1)
+            throw std::invalid_argument(
+                std::string("MatrixView cannot be initialized with rows greater than ") +
+                std::to_string(maxRows) + std::string(" or less than 1"));
+        if (m_ViewColumns > maxCols || m_ViewColumns < 1)
+            throw std::invalid_argument(std::string("MatrixView cannot be initialized with columns greater than ") +
+                                        std::to_string(maxCols) + std::string(" or less than 1"));
+
 
         // Offset Validation
-        if (m_ViewRows * m_RowOffset >= maxSize / maxStride)
-            throw std::runtime_error("Invalid row offset");
+        if (m_ViewRows * m_RowOffset >= maxRows)
+            throw std::invalid_argument("Invalid row offset");
 
-        if (m_ViewColumns * m_ColumnOffset >= maxStride)
-            throw std::runtime_error("Invalid column offset");
+        if (m_ViewColumns * m_ColumnOffset >= maxCols)
+            throw std::invalid_argument("Invalid column offset");
 
         // Calculating offset for the real matrix
         m_Offset = m_RowOffset * m_Stride + m_ColumnOffset;
@@ -90,6 +106,18 @@ namespace datastructures
         // if (index >= m_Size)
         //     return zero;
         // return m_Data[index];
+    }
+
+    template <typename T>
+    std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
+    {
+        for (std::size_t i = 0; i < mv.m_ViewRows; ++i)
+        {
+            for (std::size_t j = 0; j < mv.m_ViewColumns; ++j)
+                os << std::fixed << std::setprecision(2) << mv(i, j);
+            os << "\n";
+        }
+        return os;
     }
 
 } // namespace datastructures
