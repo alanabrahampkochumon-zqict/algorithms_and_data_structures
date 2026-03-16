@@ -11,6 +11,13 @@
 
 #include <MatrixView.h>
 
+
+/**************************************
+ *                                    *
+ *               SETUP                *
+ *                                    *
+ **************************************/
+
 using SupportedTypes = ::testing::Types<unsigned char, short, int, float, double, unsigned long long>;
 
 template <typename T>
@@ -28,6 +35,7 @@ class MatrixViewInitializationTests: public ::testing::Test
     std::size_t stride = 3;
     bool bitCeil = true;
 };
+/** @brief Test fixture for @ref MatrixView initialization, parameterized by @ref SupportedTypes */
 TYPED_TEST_SUITE(MatrixViewInitializationTests, SupportedTypes);
 
 
@@ -39,6 +47,7 @@ struct MatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
+/** @brief Test fixture for @ref MatrixView accessor, parameterized by @ref SupportedTypes */
 class MatrixAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
 {
 };
@@ -58,7 +67,6 @@ std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
  *                                    *
  **************************************/
 
-
 /** @tests Verify @ref MatrixView gets initialized to correct values */
 TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 {
@@ -77,7 +85,6 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->calcOffset, view.m_Offset);
     ASSERT_EQ(this->bitCeil, view.m_BitCeil);
 }
-
 
 /** @tests Verify initialization set "BitCeil" to false by default. */
 TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
@@ -107,7 +114,6 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewRowThrowsError)
                  std::invalid_argument);
 }
 
-
 /** @test Verify initialization with 0 columns throws error */
 TYPED_TEST(MatrixViewInitializationTests, ZeroViewColumnThrowsError)
 {
@@ -115,7 +121,6 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewColumnThrowsError)
                                                                   this->rowOffset, this->colOffset, this->stride, true),
                  std::invalid_argument);
 }
-
 
 /** @test Verify initialization with 0 stride throws error */
 TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
@@ -133,8 +138,6 @@ TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
                  std::invalid_argument);
 }
 
-
-
 /** @test Verify initialization with 0 size throws error */
 TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
 {
@@ -143,7 +146,6 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
                  std::invalid_argument);
 }
 
-
 /** @test Verify initialization with invalid row throws error */
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 {
@@ -151,7 +153,6 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
                                                                   this->cols, this->rowOffset, this->colOffset,
                                                                   this->stride, true), std::invalid_argument);
 }
-
 
 /** @test Verify initialization with invalid columns error */
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
@@ -162,7 +163,6 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
                  std::invalid_argument);
 }
 
-
 /** @test Verify initialization with invalid row offset throws error */
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
@@ -171,7 +171,6 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
                                                                   this->stride, true),
                  std::invalid_argument);
 }
-
 
 /** @test Verify initialization with invalid column offset throws error */
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
