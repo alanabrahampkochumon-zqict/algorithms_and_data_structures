@@ -3,8 +3,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 13, 2026
  *
- * @brief Verifies the initialization, access, and mutation of @ref MatrixView. 
- * 
+ * @brief Verifies the initialization, access, and mutation of @ref MatrixView.
+ *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
 
@@ -49,8 +49,7 @@ struct MatrixAccessorParams
 };
 /** @brief Test fixture for @ref MatrixView accessor, parameterized by @ref SupportedTypes */
 class MatrixAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
-{
-};
+{};
 template <typename T>
 std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
 {
@@ -108,9 +107,8 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
 /** @test Verify initialization with 0 rows throws error */
 TYPED_TEST(MatrixViewInitializationTests, ZeroViewRowThrowsError)
 {
-    EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, 0,
-                                                                  this->cols, this->rowOffset, this->colOffset,
-                                                                  this->stride, true),
+    EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, 0, this->cols,
+                                                                  this->rowOffset, this->colOffset, this->stride, true),
                  std::invalid_argument);
 }
 
@@ -134,7 +132,8 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                                  this->rowOffset, this->colOffset, this->size + 1, true),
+                                                                  this->rowOffset, this->colOffset, this->size + 1,
+                                                                  true),
                  std::invalid_argument);
 }
 
@@ -151,7 +150,8 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows + 10,
                                                                   this->cols, this->rowOffset, this->colOffset,
-                                                                  this->stride, true), std::invalid_argument);
+                                                                  this->stride, true),
+                 std::invalid_argument);
 }
 
 /** @test Verify initialization with invalid columns error */
@@ -166,9 +166,8 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
 /** @test Verify initialization with invalid row offset throws error */
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
-    EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows,
-                                                                  this->cols, this->rows + 1, this->colOffset,
-                                                                  this->stride, true),
+    EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
+                                                                  this->rows + 1, this->colOffset, this->stride, true),
                  std::invalid_argument);
 }
 
@@ -198,17 +197,17 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 //     EXPECT_EQ(expected, value) << "Expected: " << expected << ". Got: " << value;
 // }
 
-//std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-//const datastructures::MatrixView matView1_0 = { data1.data(), data1.size(), 2, 2, 0, 3, true };
-//const datastructures::MatrixView matView1_1 = { data1.data(), data1.size(), 2, 2, 1, 3, true };
-//const datastructures::MatrixView matView1_2 = { data1.data(), data1.size(), 2, 2, 2, 3, true };
-//const datastructures::MatrixView matView1_3 = { data1.data(), data1.size(), 2, 2, 3, 3, true };
+// std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+// const datastructures::MatrixView matView1_0 = { data1.data(), data1.size(), 2, 2, 0, 3, true };
+// const datastructures::MatrixView matView1_1 = { data1.data(), data1.size(), 2, 2, 1, 3, true };
+// const datastructures::MatrixView matView1_2 = { data1.data(), data1.size(), 2, 2, 2, 3, true };
+// const datastructures::MatrixView matView1_3 = { data1.data(), data1.size(), 2, 2, 3, 3, true };
 //
-//std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-//const datastructures::MatrixView matView2_0 = { data2.data(), data2.size(), 2, 2, 0, 4, true };
-//const datastructures::MatrixView matView2_1 = { data2.data(), data2.size(), 2, 2, 1, 4, true };
-//const datastructures::MatrixView matView2_2 = { data2.data(), data2.size(), 2, 2, 2, 4, true };
-//const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 3, 4, true };
+// std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+// const datastructures::MatrixView matView2_0 = { data2.data(), data2.size(), 2, 2, 0, 4, true };
+// const datastructures::MatrixView matView2_1 = { data2.data(), data2.size(), 2, 2, 1, 4, true };
+// const datastructures::MatrixView matView2_2 = { data2.data(), data2.size(), 2, 2, 2, 4, true };
+// const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 3, 4, true };
 
 // INSTANTIATE_TEST_SUITE_P(
 //     MatrixAccessorTestSuite, MatrixAccessorTests,
