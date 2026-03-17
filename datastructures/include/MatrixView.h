@@ -12,6 +12,7 @@
 
 #include <Concepts.h>
 #include <cstddef>
+#include <iomanip>
 
 namespace datastructures
 {
@@ -61,8 +62,16 @@ namespace datastructures
          * @param mv The matrix to be streamed.
          * @return A reference to the output stream @p os.
          */
-        // TODO: Enable
-        //static std::ostream& operator<<(std::ostream& os, const MatrixView& mv);
+        friend std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
+        {
+            for (std::size_t i = 0; i < mv.m_ViewRows; ++i)
+            {
+                for (std::size_t j = 0; j < mv.m_ViewColumns; ++j)
+                    os << std::fixed << std::setprecision(2) << mv(i, j);
+                os << "\n";
+            }
+            return os;
+        }
     };
 } // namespace datastructures
 

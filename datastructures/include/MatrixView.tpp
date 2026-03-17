@@ -12,7 +12,7 @@
 
 
 #include <bit>
-#include <iomanip>
+
 
 namespace datastructures
 {
@@ -107,17 +107,5 @@ namespace datastructures
         //     return zero;
         // return m_Data[index];
     }
-
-    /*template <typename T>
-    std::ostream& operator<<(std::ostream& os, const MatrixView<T>& mv)
-    {
-        for (std::size_t i = 0; i < mv.m_ViewRows; ++i)
-        {
-            for (std::size_t j = 0; j < mv.m_ViewColumns; ++j)
-                os << std::fixed << std::setprecision(2) << mv(i, j);
-            os << "\n";
-        }
-        return os;
-    }*/
 
 } // namespace datastructures

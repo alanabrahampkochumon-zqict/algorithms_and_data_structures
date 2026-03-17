@@ -51,14 +51,14 @@ struct MatrixAccessorParams
 class MatrixViewAccessorTests: public ::testing::TestWithParam<MatrixAccessorParams<int>>
 {};
 
-// TODO: Enable
-//template <typename T>
-//std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
-//{
-//    os << "MatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
-//       << "). Expected Value: " << params.expectedValue << "\n";
-//    return os;
-//}
+
+template <typename T>
+std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
+{
+    os << "MatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
+       << "). Expected Value: " << params.expectedValue << "\n";
+    return os;
+}
 
 
 
