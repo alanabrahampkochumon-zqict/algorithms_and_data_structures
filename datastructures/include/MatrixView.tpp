@@ -78,9 +78,22 @@ namespace datastructures
     template <Arithmetic T>
     const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
     {
-        static const T zero = T(0);
-        return zero;
-        //// Out of bounds check for submatrix
+        if (i > m_ViewColumns || j > m_ViewRows)
+            throw std::invalid_argument("Invalid row/column access");
+
+        static const T zero = T(0);       
+        std::size_t actualRow = m_RowOffset * m_ViewRows + i;
+        std::size_t maxRow = m_Size / m_Stride;
+        if (actualRow >= maxRow)
+            return zero;
+
+        std::size_t actualColumn = m_ColumnOffset * m_ViewColumns + j;
+        if (actualColumn >= m_Stride)
+            return zero;
+
+        std::size_t index = actualRow * m_Stride + actualColumn;
+        return m_Data[index];
+         //// Out of bounds check for submatrix
         // if (i < 0 || i >= m_ViewRows || j < 0 || j >= m_ViewColumns)
         //     throw std::runtime_error("Invalid index for submatrix");
 
