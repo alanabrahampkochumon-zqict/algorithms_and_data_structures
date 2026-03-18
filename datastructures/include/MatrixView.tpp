@@ -24,23 +24,23 @@ namespace datastructures
      **************************************/
 
     template <Arithmetic T>
-    MatrixView<T>::MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t cols, std::size_t rowOffset,
-                              std::size_t colOffset, std::size_t stride, bool bitCeil)
+    MatrixView<T>::MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t cols, std::size_t rowBlock,
+                              std::size_t colBlock, std::size_t stride, bool bitCeil)
         : m_Data(data),
           m_Size(size),
           m_ViewRows(rows),
           m_ViewColumns(cols),
-          m_RowBlock(rowOffset),
-          m_ColumnBlock(colOffset),
+          m_RowBlock(rowBlock),
+          m_ColumnBlock(colBlock),
           m_Stride(stride),
           m_BitCeil(bitCeil)
     {
         // Size stride validation
         if (m_Size < 1)
-            throw std::invalid_argument("Size must be greater than 0");
+            throw std::out_of_range("Size must be greater than 0");
 
         if (m_Stride < 1 || m_Stride > m_Size)
-            throw std::invalid_argument(std::string("Stride must be greater than 0 and less than ") + std::to_string(m_Size));
+            throw std::out_of_range(std::string("Stride must be greater than 0 and less than ") + std::to_string(m_Size));
              
 
 
@@ -49,20 +49,20 @@ namespace datastructures
         std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
 
         if (m_ViewRows > maxRows || m_ViewRows < 1)
-            throw std::invalid_argument(
+            throw std::out_of_range(
                 std::string("MatrixView cannot be initialized with rows greater than ") +
                 std::to_string(maxRows) + std::string(" or less than 1"));
         if (m_ViewColumns > maxCols || m_ViewColumns < 1)
-            throw std::invalid_argument(std::string("MatrixView cannot be initialized with columns greater than ") +
+            throw std::out_of_range(std::string("MatrixView cannot be initialized with columns greater than ") +
                                         std::to_string(maxCols) + std::string(" or less than 1"));
 
 
         // Offset Validation
         if (m_ViewRows * m_RowBlock >= maxRows)
-            throw std::invalid_argument("Invalid row offset");
+            throw std::out_of_range("Invalid row offset");
 
         if (m_ViewColumns * m_ColumnBlock >= maxCols)
-            throw std::invalid_argument("Invalid column offset");
+            throw std::out_of_range("Invalid column offset");
 
         // Calculating offset for the real matrix
         m_Offset = m_RowBlock * m_Stride + m_ColumnBlock;
@@ -79,17 +79,15 @@ namespace datastructures
     const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
     {
         if (i > m_ViewColumns || j > m_ViewRows)
-            throw std::invalid_argument("Invalid row/column access");
-
-        static const T zero = T(0);       
+            throw std::out_of_range("Invalid row/column access");
         std::size_t actualRow = m_RowBlock * m_ViewRows + i;
         std::size_t maxRow = m_Size / m_Stride;
         if (actualRow >= maxRow)
-            return zero;
+            return s_Zero;
 
         std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
         if (actualColumn >= m_Stride)
-            return zero;
+            return s_Zero;
 
         std::size_t index = actualRow * m_Stride + actualColumn;
         return m_Data[index];

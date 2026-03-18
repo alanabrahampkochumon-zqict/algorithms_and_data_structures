@@ -111,7 +111,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewRowThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, 0, this->cols,
                                                                   this->rowOffset, this->colOffset, this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with 0 columns throws error */
@@ -119,7 +119,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewColumnThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, 0,
                                                                   this->rowOffset, this->colOffset, this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with 0 stride throws error */
@@ -127,7 +127,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
                                                                   this->rowOffset, this->colOffset, 0, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with stride greater than size throws error */
@@ -136,7 +136,7 @@ TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
                                                                   this->rowOffset, this->colOffset, this->size + 1,
                                                                   true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with 0 size throws error */
@@ -144,7 +144,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), 0, this->rows, this->cols,
                                                                   this->rowOffset, this->colOffset, this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with invalid row throws error */
@@ -153,7 +153,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows + 10,
                                                                   this->cols, this->rowOffset, this->colOffset,
                                                                   this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with invalid columns error */
@@ -162,7 +162,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows,
                                                                   this->cols + 10, this->rowOffset, this->colOffset,
                                                                   this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with invalid row offset throws error */
@@ -170,7 +170,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
                                                                   this->rows + 1, this->colOffset, this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 /** @test Verify initialization with invalid column offset throws error */
@@ -178,7 +178,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
                                                                   this->rowOffset, this->cols + 1, this->stride, true),
-                 std::invalid_argument);
+                 std::out_of_range);
 }
 
 
