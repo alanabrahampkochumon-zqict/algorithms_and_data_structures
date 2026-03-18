@@ -68,6 +68,7 @@ namespace datastructures
         m_Offset = m_RowBlock * m_Stride + m_ColumnBlock;
     }
 
+
     template <Arithmetic T>
     T& MatrixView<T>::operator()(std::size_t i, std::size_t j)
     {
