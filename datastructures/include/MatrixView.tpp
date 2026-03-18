@@ -30,8 +30,8 @@ namespace datastructures
           m_Size(size),
           m_ViewRows(rows),
           m_ViewColumns(cols),
-          m_RowOffset(rowOffset),
-          m_ColumnOffset(colOffset),
+          m_RowBlock(rowOffset),
+          m_ColumnBlock(colOffset),
           m_Stride(stride),
           m_BitCeil(bitCeil)
     {
@@ -58,14 +58,14 @@ namespace datastructures
 
 
         // Offset Validation
-        if (m_ViewRows * m_RowOffset >= maxRows)
+        if (m_ViewRows * m_RowBlock >= maxRows)
             throw std::invalid_argument("Invalid row offset");
 
-        if (m_ViewColumns * m_ColumnOffset >= maxCols)
+        if (m_ViewColumns * m_ColumnBlock >= maxCols)
             throw std::invalid_argument("Invalid column offset");
 
         // Calculating offset for the real matrix
-        m_Offset = m_RowOffset * m_Stride + m_ColumnOffset;
+        m_Offset = m_RowBlock * m_Stride + m_ColumnBlock;
     }
 
     template <Arithmetic T>
@@ -82,43 +82,17 @@ namespace datastructures
             throw std::invalid_argument("Invalid row/column access");
 
         static const T zero = T(0);       
-        std::size_t actualRow = m_RowOffset * m_ViewRows + i;
+        std::size_t actualRow = m_RowBlock * m_ViewRows + i;
         std::size_t maxRow = m_Size / m_Stride;
         if (actualRow >= maxRow)
             return zero;
 
-        std::size_t actualColumn = m_ColumnOffset * m_ViewColumns + j;
+        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
         if (actualColumn >= m_Stride)
             return zero;
 
         std::size_t index = actualRow * m_Stride + actualColumn;
         return m_Data[index];
-         //// Out of bounds check for submatrix
-        // if (i < 0 || i >= m_ViewRows || j < 0 || j >= m_ViewColumns)
-        //     throw std::runtime_error("Invalid index for submatrix");
-
-        // std::size_t size = m_Size, stride = m_Stride;
-        // if (m_BitCeil)
-        //{
-        //     size = std::bit_ceil(size);
-        //     stride = std::bit_ceil(m_Stride);
-        // }
-
-
-        // std::size_t globalOffset = m_Offset * stride; // How much to move per submatrix in 4x4 mat, with offset of 1
-        // and
-        //                                               // stride of 4, it will return the data store from 4th index.
-        // std::size_t index = globalOffset + (i * m_ViewColumns) + j;
-
-        //// Out of bound check for matrix
-        // if (index >= size)
-        //     throw std::runtime_error("Invalid bit ceiling. Check your passed in stride and offset");
-
-        //// Returning Zero if bit ceil is on and out of bound of original matrix
-        // static const T zero = T(0);
-        // if (index >= m_Size)
-        //     return zero;
-        // return m_Data[index];
     }
 
 } // namespace datastructures

@@ -81,8 +81,8 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->rows, view.m_ViewRows);
     ASSERT_EQ(this->cols, view.m_ViewColumns);
     ASSERT_EQ(this->stride, view.m_Stride);
-    ASSERT_EQ(this->rowOffset, view.m_RowOffset);
-    ASSERT_EQ(this->colOffset, view.m_ColumnOffset);
+    ASSERT_EQ(this->rowOffset, view.m_RowBlock);
+    ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
     ASSERT_EQ(this->calcOffset, view.m_Offset);
     ASSERT_EQ(this->bitCeil, view.m_BitCeil);
 }
@@ -100,8 +100,8 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
     ASSERT_EQ(this->rows, view.m_ViewRows);
     ASSERT_EQ(this->cols, view.m_ViewColumns);
     ASSERT_EQ(this->stride, view.m_Stride);
-    ASSERT_EQ(this->rowOffset, view.m_RowOffset);
-    ASSERT_EQ(this->colOffset, view.m_ColumnOffset);
+    ASSERT_EQ(this->rowOffset, view.m_RowBlock);
+    ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
     ASSERT_EQ(this->calcOffset, view.m_Offset);
     ASSERT_FALSE(view.m_BitCeil);
 }
