@@ -24,8 +24,9 @@ namespace datastructures
      **************************************/
 
     template <Arithmetic T>
-    MatrixView<T>::MatrixView(T* data, std::size_t size, std::size_t rows, std::size_t cols, std::size_t rowBlock,
-                              std::size_t colBlock, std::size_t stride, bool bitCeil)
+    MatrixView<T>::MatrixView(T* data, const std::size_t size, const std::size_t rows, const std::size_t cols,
+                              const std::size_t rowBlock, const std::size_t colBlock, const std::size_t stride,
+                              const bool bitCeil)
         : m_Data(data),
           m_Size(size),
           m_ViewRows(rows),
@@ -40,21 +41,21 @@ namespace datastructures
             throw std::out_of_range("Size must be greater than 0");
 
         if (m_Stride < 1 || m_Stride > m_Size)
-            throw std::out_of_range(std::string("Stride must be greater than 0 and less than ") + std::to_string(m_Size));
-             
+            throw std::out_of_range(std::string("Stride must be greater than 0 and less than ") +
+                                    std::to_string(m_Size));
+
 
 
         // Row Column Validation
-        std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
-        std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
+        const std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
+        const std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
 
         if (m_ViewRows > maxRows || m_ViewRows < 1)
-            throw std::out_of_range(
-                std::string("MatrixView cannot be initialized with rows greater than ") +
-                std::to_string(maxRows) + std::string(" or less than 1"));
+            throw std::out_of_range(std::string("MatrixView cannot be initialized with rows greater than ") +
+                                    std::to_string(maxRows) + std::string(" or less than 1"));
         if (m_ViewColumns > maxCols || m_ViewColumns < 1)
             throw std::out_of_range(std::string("MatrixView cannot be initialized with columns greater than ") +
-                                        std::to_string(maxCols) + std::string(" or less than 1"));
+                                    std::to_string(maxCols) + std::string(" or less than 1"));
 
 
         // Offset Validation
@@ -63,42 +64,39 @@ namespace datastructures
 
         if (m_ViewColumns * m_ColumnBlock >= maxCols)
             throw std::out_of_range("Invalid column offset");
-
-        // Calculating offset for the real matrix
-        m_Offset = m_RowBlock * m_Stride + m_ColumnBlock;
     }
 
 
     template <Arithmetic T>
-    T& MatrixView<T>::operator()(std::size_t i, std::size_t j)
+    T& MatrixView<T>::operator()(const std::size_t i, const std::size_t j)
     {
-        if (i >= m_ViewColumns || j >= m_ViewRows)
+        if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");
 
-        std::size_t actualRow = m_RowBlock * m_ViewRows + i;
-        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
+        const std::size_t actualRow = m_RowBlock * m_ViewRows + i;
+        const std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
 
         if (actualRow >= m_Size / m_Stride || actualColumn >= m_Stride)
             throw std::out_of_range("Cannot mutate elements at out-of-bound region of the original matrix");
-        
+
         std::size_t index = actualRow * m_Stride + actualColumn;
         return m_Data[index];
     }
 
 
     template <Arithmetic T>
-    const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
+    const T& MatrixView<T>::operator()(const std::size_t i,const std::size_t j) const
     {
-        if (i >= m_ViewColumns || j >= m_ViewRows)
+        if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");
 
-        std::size_t actualRow = m_RowBlock * m_ViewRows + i;
-        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
-        std::size_t maxRow = m_Size / m_Stride;
+        const std::size_t actualRow = m_RowBlock * m_ViewRows + i;
+        const std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
+        const std::size_t maxRow = m_Size / m_Stride;
 
         if (!m_BitCeil && (actualRow >= maxRow || actualColumn >= m_Stride))
             throw std::out_of_range("Cannot access out-of-bounds region of original matrix with bitCeil = false");
-        
+
         if (actualRow >= maxRow)
             return s_Zero;
 

@@ -31,7 +31,6 @@ class MatrixViewInitializationTests: public ::testing::Test
     std::size_t cols = 2;
     std::size_t rowOffset = 0;
     std::size_t colOffset = 1;
-    std::size_t calcOffset = 1;
     std::size_t stride = 3;
     bool bitCeil = true;
 };
@@ -100,7 +99,6 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->stride, view.m_Stride);
     ASSERT_EQ(this->rowOffset, view.m_RowBlock);
     ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
-    ASSERT_EQ(this->calcOffset, view.m_Offset);
     ASSERT_EQ(this->bitCeil, view.m_BitCeil);
 }
 
@@ -119,7 +117,6 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
     ASSERT_EQ(this->stride, view.m_Stride);
     ASSERT_EQ(this->rowOffset, view.m_RowBlock);
     ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
-    ASSERT_EQ(this->calcOffset, view.m_Offset);
     ASSERT_FALSE(view.m_BitCeil);
 }
 
