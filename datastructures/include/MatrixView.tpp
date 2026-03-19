@@ -79,14 +79,19 @@ namespace datastructures
     template <Arithmetic T>
     const T& MatrixView<T>::operator()(std::size_t i, std::size_t j) const
     {
-        if (i > m_ViewColumns || j > m_ViewRows)
+        if (i >= m_ViewColumns || j >= m_ViewRows)
             throw std::out_of_range("Invalid row/column access");
+
         std::size_t actualRow = m_RowBlock * m_ViewRows + i;
+        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
         std::size_t maxRow = m_Size / m_Stride;
+
+        if (!m_BitCeil && (actualRow >= maxRow || actualColumn >= m_Stride))
+            throw std::out_of_range("Cannot access out-of-bounds region of original matrix with bitCeil = off");
+        
         if (actualRow >= maxRow)
             return s_Zero;
 
-        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
         if (actualColumn >= m_Stride)
             return s_Zero;
 

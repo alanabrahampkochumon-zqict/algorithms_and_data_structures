@@ -131,7 +131,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
 
 /**
  * @test Verify that initializing @ref datastructures::MatrixView with a stride greater than size of matrix throw
- *        std::out_of_range.
+ *       std::out_of_range.
  */
 TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 {
@@ -151,7 +151,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
 
 /**
  * @test Verify that initializing @ref datastructures::MatrixView with a row size larger than maximum support value
- *        (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws std::out_of_range.
  */
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 {
@@ -163,7 +163,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 
 /**
  * @test Verify that initializing @ref datastructures::MatrixView with a row size larger than maximum support value
- *        (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws std::out_of_range.
  */
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
 {
@@ -175,7 +175,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
 
 /**
  * @test Verify that initializing @ref datastructures::MatrixView with a row block larger than row size
- *        (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws std::out_of_range.
  */
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
@@ -186,7 +186,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 
 /**
  * @test Verify that initializing @ref datastructures::MatrixView with a column block larger than column size
- *        (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws std::out_of_range.
  */
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 {
@@ -256,19 +256,20 @@ INSTANTIATE_TEST_SUITE_P(
                       MatrixAccessorParams{ matView2_3, 0, 0, 11 }, MatrixAccessorParams{ matView2_3, 0, 1, 12 },
                       MatrixAccessorParams{ matView2_3, 1, 0, 15 }, MatrixAccessorParams{ matView2_3, 1, 1, 16 }));
 
-/** @test Verify that @ref datastructures::MatrixView accessed at (row, col) throw @ref std::out_of_range */
+
+/** @test Verify that @ref datastructures::MatrixView accessed at (rowSize, colSize) throws @ref std::out_of_range */
 TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
 {
     EXPECT_THROW(matView1_0(2, 2), std::out_of_range);
 }
 
+/** @test Verify that @ref datastructures::MatrixView configured with no bitCeil, when accessed at index out of bounds
+ *        of the original matrix, throws @ref std::out_of_range */
 TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
 {
-    // Given a matrix view without bit ceil
-    const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 6, 3, false };
-    // When accessed at out of bounds index
-    // Then it throws a runtime_error
-    EXPECT_THROW(matView1_0(1, 1), std::runtime_error);
+    // View of 3x3 matrix into the lower-end quadrant
+    const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 1, 1, 3, false };
+    EXPECT_THROW(matView(1, 1), std::out_of_range);
 }
 
 /** @} */
