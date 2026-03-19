@@ -72,7 +72,10 @@ namespace datastructures
     template <Arithmetic T>
     T& MatrixView<T>::operator()(std::size_t i, std::size_t j)
     {
-        return T(0);
+        std::size_t actualRow = m_RowBlock * m_ViewRows + i;
+        std::size_t actualColumn = m_ColumnBlock * m_ViewColumns + j;
+        std::size_t index = actualRow * m_Stride + actualColumn;
+        return m_Data[index];
     }
 
 

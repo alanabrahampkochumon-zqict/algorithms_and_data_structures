@@ -83,7 +83,7 @@ namespace datastructures
          * @note Virtual elements (enabled by bitCeil) returns T(0) when accessed.
          *
          * @throws std::out_of_range If (i, j) exceeds view dimensions, or if the mapped
-         * physical index exceeds the parent matrix storage (even if bitCeil is true).
+         * physical index exceeds the parent matrix storage (when bitCeil is false).
          *
          * @par Example
          * For a 3x3 parent, a 2x2 view starting at Block(1,1) maps its local(1,1) to parent(3,3).
