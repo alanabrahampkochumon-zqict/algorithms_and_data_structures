@@ -60,9 +60,13 @@ struct MatrixMutationParams
     std::size_t row;
     std::size_t col;
 };
-/** @brief Test fixture for @ref MatrixView mutation, parameterized by @ref MatrixMutationParams */
+/** @brief Test fixture for @ref MatrixView in-bounds mutation, parameterized by @ref MatrixMutationParams */
 class MatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
 {};
+/** @brief Test fixture for @ref MatrixView out-of-bounds mutation, parameterized by @ref MatrixMutationParams */
+class MatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+{};
+
 
 
 template <typename T>
@@ -72,6 +76,7 @@ std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
        << "). Expected Value: " << params.expectedValue << "\n";
     return os;
 }
+
 
 
 /**
@@ -229,7 +234,7 @@ TEST_P(MatrixViewAccessorTests, AccessorReturnsCorrectValue)
 }
 
 std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-const datastructures::MatrixView matView1_00 = { data1.data(), data1.size(), 2, 2, 0, 0, 3, true };
+datastructures::MatrixView matView1_00 = { data1.data(), data1.size(), 2, 2, 0, 0, 3, true };
 const datastructures::MatrixView matView1_01 = { data1.data(), data1.size(), 2, 2, 0, 1, 3, true };
 const datastructures::MatrixView matView1_10 = { data1.data(), data1.size(), 2, 2, 1, 0, 3, true };
 const datastructures::MatrixView matView1_11 = { data1.data(), data1.size(), 2, 2, 1, 1, 3, true };
@@ -292,14 +297,14 @@ TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeExcep
  * @{
  */
 
-/** @test Verify @ref MatrixView mutator allows mutation at valid indices of parent matrix. */
+/** @test Verify that @ref datastructures::MatrixView mutator allows mutation at valid indices of parent matrix. */
 TEST_P(MatrixViewMutationTests, AllowsMutationAtParentIndices)
 {
     constexpr ParamType::value_type newValue = 123456;
     const auto& [matrixView, row, col] = GetParam();
 
     auto matView = matrixView; // Create a new matrix view for mutation
-    
+
     matView(row, col) = newValue;
     const auto value = matrixView(row, col);
 
@@ -308,28 +313,123 @@ TEST_P(MatrixViewMutationTests, AllowsMutationAtParentIndices)
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixMutationTestSuite, MatrixViewMutationTests,
-    ::testing::Values(MatrixMutationParams{ matView1_00, 0, 0}, MatrixMutationParams{ matView1_00, 0, 1, },
-                      MatrixMutationParams{ matView1_00, 1, 0}, MatrixMutationParams{ matView1_00, 1, 1, },
+    ::testing::Values(MatrixMutationParams{ matView1_00, 0, 0 },
+                      MatrixMutationParams{
+                          matView1_00,
+                          0,
+                          1,
+                      },
+                      MatrixMutationParams{ matView1_00, 1, 0 },
+                      MatrixMutationParams{
+                          matView1_00,
+                          1,
+                          1,
+                      },
 
-                      MatrixMutationParams{ matView1_01, 0, 0},// MatrixMutationParams{ matView1_01, 0, 1, },
-                      MatrixMutationParams{ matView1_01, 1, 0},// MatrixMutationParams{ matView1_01, 1, 1, },
+                      MatrixMutationParams{ matView1_01, 0, 0 }, // MatrixMutationParams{ matView1_01, 0, 1, },
+                      MatrixMutationParams{ matView1_01, 1, 0 }, // MatrixMutationParams{ matView1_01, 1, 1, },
 
-                      MatrixMutationParams{ matView1_10, 0, 0}, MatrixMutationParams{ matView1_10, 0, 1, },
-                      //MatrixMutationParams{ matView1_10, 1, 0}, MatrixMutationParams{ matView1_10, 1, 1, },
+                      MatrixMutationParams{ matView1_10, 0, 0 },
+                      MatrixMutationParams{
+                          matView1_10,
+                          0,
+                          1,
+                      },
+                      // MatrixMutationParams{ matView1_10, 1, 0}, MatrixMutationParams{ matView1_10, 1, 1, },
 
-                      MatrixMutationParams{ matView1_11, 0, 0}, // MatrixMutationParams{ matView1_11, 0, 1, },
-                      //MatrixMutationParams{ matView1_11, 1, 0}, MatrixMutationParams{ matView1_11, 1, 1, },
+                      MatrixMutationParams{ matView1_11, 0, 0 }, // MatrixMutationParams{ matView1_11, 0, 1, },
+                      // MatrixMutationParams{ matView1_11, 1, 0}, MatrixMutationParams{ matView1_11, 1, 1, },
 
-                      MatrixMutationParams{ matView2_00, 0, 0}, MatrixMutationParams{ matView2_00, 0, 1, },
-                      MatrixMutationParams{ matView2_00, 1, 0}, MatrixMutationParams{ matView2_00, 1, 1, },
+                      MatrixMutationParams{ matView2_00, 0, 0 },
+                      MatrixMutationParams{
+                          matView2_00,
+                          0,
+                          1,
+                      },
+                      MatrixMutationParams{ matView2_00, 1, 0 },
+                      MatrixMutationParams{
+                          matView2_00,
+                          1,
+                          1,
+                      },
 
-                      MatrixMutationParams{ matView2_01, 0, 0}, MatrixMutationParams{ matView2_01, 0, 1, },
-                      MatrixMutationParams{ matView2_01, 1, 0}, MatrixMutationParams{ matView2_01, 1, 1, },
+                      MatrixMutationParams{ matView2_01, 0, 0 },
+                      MatrixMutationParams{
+                          matView2_01,
+                          0,
+                          1,
+                      },
+                      MatrixMutationParams{ matView2_01, 1, 0 },
+                      MatrixMutationParams{
+                          matView2_01,
+                          1,
+                          1,
+                      },
 
-                      MatrixMutationParams{ matView2_10, 0, 0}, MatrixMutationParams{ matView2_10, 0, 1 },
+                      MatrixMutationParams{ matView2_10, 0, 0 }, MatrixMutationParams{ matView2_10, 0, 1 },
                       MatrixMutationParams{ matView2_10, 1, 0 }, MatrixMutationParams{ matView2_10, 1, 1 },
 
                       MatrixMutationParams{ matView2_3, 0, 0 }, MatrixMutationParams{ matView2_3, 0, 1 },
                       MatrixMutationParams{ matView2_3, 1, 0 }, MatrixMutationParams{ matView2_3, 1, 1 }));
+
+
+/** @test Verify that @ref datastructures::MatrixView mutated at out-of-bounds indices of parent matrix throws @ref std::out_of_range. */
+TEST_P(MatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOriginalMatrixThrowsException)
+{
+    constexpr ParamType::value_type newValue = 123456;
+    const auto& [matrixView, row, col] = GetParam();
+
+    auto matView = matrixView; // Create a new matrix view for mutation
+
+    EXPECT_THROW(matView(row, col) = newValue, std::out_of_range);
+}
+
+
+INSTANTIATE_TEST_SUITE_P(MatrixMutationInvalidityTestSuite, MatrixViewMutationOutOfBoundsTests,
+                         ::testing::Values(
+                             MatrixMutationParams{
+                                 matView1_01,
+                                 0,
+                                 1,
+                             },
+                             MatrixMutationParams{
+                                 matView1_01,
+                                 1,
+                                 1,
+                             },
+                             MatrixMutationParams{ matView1_10, 1, 0 },
+                             MatrixMutationParams{
+                                 matView1_10,
+                                 1,
+                                 1,
+                             },
+
+                             MatrixMutationParams{
+                                 matView1_11,
+                                 0,
+                                 1,
+                             },
+                             MatrixMutationParams{ matView1_11, 1, 0 },
+                             MatrixMutationParams{
+                                 matView1_11,
+                                 1,
+                                 1,
+                             }));
+
+/** @test Verify that @ref datastructures::MatrixView mutation at (rowSize, colSize) throws @ref std::out_of_range */
+TEST(MatrixViewMutationOutOfBoundsTests, OutOfBoundsMutationThrowsException)
+{
+    EXPECT_THROW(matView1_00(2, 2) = 5, std::out_of_range);
+}
+
+/** @test Verify that @ref datastructures::MatrixView configured with no bitCeil, when mutated at an index out of bounds
+ *        of the original matrix, throws @ref std::out_of_range */
+TEST(MatrixViewMutationOutOfBoundsTests, WithoutBitCeil_OutOfBoundsMutationThrowsException)
+{
+    // View of 3x3 matrix into the lower-end quadrant
+    datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 1, 1, 3, false };
+    EXPECT_THROW(matView(1, 1) = 5, std::out_of_range);
+}
+
 
 /** @} */
