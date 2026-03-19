@@ -11,34 +11,6 @@
 
 #include <MatrixView.h>
 
-/**
- * @defgroup MatrixLibrary Matrix Testing Suite
- * @brief Master suite for all matrix-related validation.
- * @{
- */
-
-/**
- * @defgroup Matrix3 Mat3 Tests
- * @brief Validation for 3x3 matrices.
- * @{
- *   @defgroup Mat3Init Mat3 Initialization
- *   @defgroup Mat3Arith Mat3 Arithmetics
- *   @defgroup Mat3Logic Mat3 Logical Operations
- * @}
- */
-
-/**
- * @defgroup Matrix4 Mat4 Tests
- * @brief Validation for 4x4 matrices.
- * @{
- *   @defgroup Mat4Init Mat4 Initialization
- *   @defgroup Mat4Arith Mat4 Arithmetics
- *   @defgroup Mat4Logic Mat4 Logical Operations
- * @}
- */
-
-/** @} */ // End of MatrixLibrary
-
 
 /**************************************
  *                                    *
@@ -89,14 +61,12 @@ std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
 }
 
 
+/**
+ * @addtogroup MatView_Init
+ * @{
+ */
 
-/**************************************
- *                                    *
- *        INITIALIZATION TESTS        *
- *                                    *
- **************************************/
-
-/** @test Verify that @ref datastructures::MatrixView initialization initialize member variables with the passed in
+/** @test Verify that @ref datastructures::MatrixView initialization initializes member variables with the passed-in
  * arguments. */
 TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 {
@@ -225,12 +195,15 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
                  std::out_of_range);
 }
 
+/** @} */
 
-/**************************************
- *                                    *
- *            ACCESSOR TESTS          *
- *                                    *
- **************************************/
+
+
+
+/**
+ * @addtogroup MatView_Access
+ * @{
+ */
 
 /** @test Verify @ref MatrixView accessor return correct value. */
 TEST_P(MatrixViewAccessorTests, AccessorReturnsCorrectValue)
@@ -283,19 +256,19 @@ INSTANTIATE_TEST_SUITE_P(
                       MatrixAccessorParams{ matView2_3, 0, 0, 11 }, MatrixAccessorParams{ matView2_3, 0, 1, 12 },
                       MatrixAccessorParams{ matView2_3, 1, 0, 15 }, MatrixAccessorParams{ matView2_3, 1, 1, 16 }));
 
-// TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
-//{
-//     // Given a matrix view
-//     // When accessed at out of bounds index
-//     // Then it throws a runtime_error
-//     EXPECT_THROW(matView1_0(2, 2), std::runtime_error);
-// }
-//
-// TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
-//{
-//     // Given a matrix view without bit ceil
-//     const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 6, 3, false };
-//     // When accessed at out of bounds index
-//     // Then it throws a runtime_error
-//     EXPECT_THROW(matView1_0(1, 1), std::runtime_error);
-// }
+/** @test Verify that @ref datastructures::MatrixView accessed at (row, col) throw @ref std::out_of_range */
+TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
+{
+    EXPECT_THROW(matView1_0(2, 2), std::out_of_range);
+}
+
+TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
+{
+    // Given a matrix view without bit ceil
+    const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 6, 3, false };
+    // When accessed at out of bounds index
+    // Then it throws a runtime_error
+    EXPECT_THROW(matView1_0(1, 1), std::runtime_error);
+}
+
+/** @} */
