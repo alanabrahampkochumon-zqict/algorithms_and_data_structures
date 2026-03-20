@@ -100,6 +100,10 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
 };
 
 
+/**
+ * @addtogroup T_Mat_Init
+ * @{
+ */
 
 /*********************************
  *                               *
@@ -107,6 +111,7 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
  *                               *
  *********************************/
 
+/** @test Verify that @ref datastructures::Matrix parameterized constructor initializes with @ref std::vector input data */
 TEST_P(MatrixInitializationTests, InitializesToCorrectValues)
 {
     // Given, some raw input numbers
@@ -164,6 +169,16 @@ INSTANTIATE_TEST_SUITE_P(
             std::vector<std::vector<int>>{ { 1, 2 }, {}, { 3, 4 } }, 3, 2, { 1, 2, 0, 0, 3, 4 } }));
 
 
+/** @} */
+
+
+
+
+/**
+ * @addtogroup T_Mat_Access
+ * @{
+ */
+
 /*********************************
  *                               *
  *         ACCESS TESTS          *
@@ -214,6 +229,7 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
     EXPECT_THROW(mat(rows + 10, cols + 10), std::out_of_range);
 }
 
+/** @} */
 
 /*********************************
  *                               *

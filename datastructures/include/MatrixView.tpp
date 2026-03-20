@@ -85,7 +85,7 @@ namespace datastructures
 
 
     template <Arithmetic T>
-    const T& MatrixView<T>::operator()(const std::size_t i,const std::size_t j) const
+    const T& MatrixView<T>::operator()(const std::size_t i, const std::size_t j) const
     {
         if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");

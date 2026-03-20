@@ -22,12 +22,12 @@
      * @brief Test suite for all matrix-related validation.
      * @ingroup TestHarness
      * @{
-     *   @defgroup Mat_Init Matrix Initialization
-     *   @defgroup Mat_Access Matrix Access
-     *   @defgroup Mat_Mutation Matrix Mutation
-     *   @defgroup Mat_Add Matrix Addition
-     *   @defgroup Mat_Sub Matrix Subtraction
-     *   @defgroup Mat_Mul Matrix Multiplication
+     *   @defgroup T_Mat_Init Matrix Initialization
+     *   @defgroup T_Mat_Access Matrix Access
+     *   @defgroup T_Mat_Mutation Matrix Mutation
+     *   @defgroup T_Mat_Add Matrix Addition
+     *   @defgroup T_Mat_Sub Matrix Subtraction
+     *   @defgroup T_Mat_Mul Matrix Multiplication
      * @}
      */
 
@@ -36,11 +36,17 @@
      * @brief Test suite for all matrix view-related validation.
      * @ingroup TestHarness
      * @{
-     *   @defgroup Mat_Init Matrix Initialization
-     *   @defgroup Mat_Access Matrix Access
-     *   @defgroup Mat_Mutation Matrix Mutation
+     *   @defgroup T_Mat_Init Matrix Initialization
+     *   @defgroup T_Mat_Access Matrix Access
+     *   @defgroup T_Mat_Mutation Matrix Mutation
      * @}
      */
+    
+    /**
+     * @defgroup TestUtils Validation Utilities
+     * @brief Validation utilities to the complete DSA test suite.
+     */
+    
 
 
 /** @} */ // End of TestHarness

@@ -4,10 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 06, 2026
  *
- * @brief Utilities for testing.
- *
- * @par Utilities
- * Matrix utilities for comparing equality and inequality.
+ * @brief Validation utilities for DSA test suite.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
@@ -17,13 +14,26 @@
 
 namespace testutils
 {
+
     /**
-     * Compares if two matrices are equals.
-     * @tparam T Type of first matrix.
-     * @tparam U Type of second matrix.
-     * @param expected matrix that is compared against.
-     * @param actual matrix being compared.
+     * @addtogroup TestUtils
+     * @{
      */
+
+    /**
+     * @brief Asserts that two matrices are element-wise identical.
+     *        If any of the elements are not within the epsilon threshold, the test will fail.
+     *
+     * @tparam T Type of reference matrix.
+     * @tparam U Type of comparison matrix.
+     *
+     * @param expected Reference matrix.
+     * @param actual   Matrix to evaluate.
+     * @pre Matrices must have identical dimensions.
+     *
+     * @note Uses Google Test internally. It will fail if any of element comparison fails.
+     */
+
     template <typename T, typename U>
         requires(std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
     constexpr void EXPECT_MAT_EQ(const datastructures::Matrix<T>& expected, const datastructures::Matrix<U>& actual)
@@ -46,11 +56,18 @@ namespace testutils
     }
 
     /**
-     * Compares if two matrices are not equal. "Passes" if at least one element mismatch.
-     * @tparam T Type of first matrix.
-     * @tparam U Type of second matrix.
-     * @param expected matrix that is compared against.
-     * @param actual matrix being compared.
+     * @brief Asserts that two matrices are NOT element-wise identical.
+     *        This check passes as soon as the first mismatching element is found.
+     *        If all elements are equal, the test will fail.
+     *
+     * @tparam T Type of reference matrix.
+     * @tparam U Type of comparison matrix.
+     *
+     * @param expected Reference matrix.
+     * @param actual   Matrix to evaluate.
+     * @pre Matrices must have identical dimensions.
+     *
+     * @note Uses Google Test internally. It will fail if all the element-wise comparison succeeds.
      */
     template <typename T, typename U>
         requires(std::integral<T> || std::floating_point<T>) && (std::integral<U> || std::floating_point<U>)
@@ -64,4 +81,8 @@ namespace testutils
                 if (static_cast<R>(expected(i, j)) != static_cast<R>(actual(i, j)))
                     return SUCCEED();
     }
+
+    /** @} */
+
+
 } // namespace testutils

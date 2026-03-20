@@ -79,7 +79,7 @@ std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
 
 
 /**
- * @addtogroup MatView_Init
+ * @addtogroup T_MatView_Init
  * @{
  */
 
@@ -216,7 +216,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 
 
 /**
- * @addtogroup MatView_Access
+ * @addtogroup T_MatView_Access
  * @{
  */
 
@@ -290,7 +290,7 @@ TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeExcep
 
 
 /**
- * @addtogroup MatView_Mutation
+ * @addtogroup T_MatView_Mutation
  * @{
  */
 
