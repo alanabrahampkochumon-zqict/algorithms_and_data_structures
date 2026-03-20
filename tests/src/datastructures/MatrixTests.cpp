@@ -111,16 +111,13 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
  *                               *
  *********************************/
 
-/** @test Verify that @ref datastructures::Matrix parameterized constructor initializes with @ref std::vector input data */
+/** @test Verify that @ref datastructures::Matrix parameterized constructor can initializes with @ref std::vector input data */
 TEST_P(MatrixInitializationTests, InitializesToCorrectValues)
 {
-    // Given, some raw input numbers
     const auto& [inputData, expectedRows, expectedCols, expectedData] = GetParam();
 
-    // When initialized as matrix
     datastructures::Matrix mat(inputData);
 
-    // Then the matrix is initialized with correct values and row, column size
     EXPECT_EQ(mat.m_Rows, expectedRows);
     EXPECT_EQ(mat.m_Columns, expectedCols);
     if constexpr (std::is_floating_point_v<typename decltype(mat)::value_type>)
@@ -231,6 +228,14 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
 
 /** @} */
 
+
+
+
+/**
+ * @addtogroup T_Mat_Mutation
+ * @{
+ */
+
 /*********************************
  *                               *
  *         MUTATION TESTS        *
@@ -278,6 +283,8 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
     EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::out_of_range);
 }
 
+/** @} */
+
 
 /*********************************
  *                               *
@@ -293,6 +300,13 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
 //    // Then it contains the given size
 //}
 
+
+
+
+/**
+ * @addtogroup T_Mat_Add
+ * @{
+ */
 
 /*********************************
  *                               *
@@ -364,6 +378,17 @@ INSTANTIATE_TEST_SUITE_P(
                                    { { { 9, 11, 13, 15, 17, 19, 21, 23 } } } }));
 
 
+
+/** @} */
+
+
+
+
+/**
+ * @addtogroup T_Mat_Sub
+ * @{
+ */
+
 /*********************************
  *                               *
  *       SUBTRACTION TESTS       *
@@ -432,6 +457,15 @@ INSTANTIATE_TEST_SUITE_P(
                                       { { { 8, 9, 10, 11, 12, 13, 14, 15 } } },
                                       { { { 110, 110, 110, 120, 129, 110, 109, -15 } } } }));
 
+/** @} */
+
+
+
+
+/**
+ * @addtogroup T_Mat_Mul
+ * @{
+ */
 
 /*********************************
  *                               *
@@ -505,3 +539,5 @@ INSTANTIATE_TEST_SUITE_P(
                                          { { { 0, 0 }, { 0, 0 } } },
                                          datastructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0)
         ));
+
+/** @} */
