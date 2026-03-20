@@ -36,10 +36,10 @@ struct MatrixInitializerParams
     std::size_t expectedCols;
     std::vector<T> expectedData;
 };
-/** @brief Fixture for testing @ref datastructures::Matrix initialization with varied input shapes. */
+/** @brief Test fixture for testing @ref datastructures::Matrix initialization with varied input shapes, parameterized
+ * by @ref MatrixInitializerParams. */
 class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializerParams<int>>
-{
-};
+{};
 
 
 template <typename T>
@@ -54,10 +54,9 @@ struct MatrixViewParams
     std::size_t colSize;
     bool bitCeil;
 };
-/** @brief Fixture for testing element-wise addition of two matrices. */
+/** @brief Test fixture for verifying @ref datastructures::Matrix addition, parameterized by @ref MatrixViewParams. */
 class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
-{
-};
+{};
 
 
 template <typename T>
@@ -68,9 +67,10 @@ struct MatrixAdditionParams
     datastructures::Matrix<T> b;
     datastructures::Matrix<T> result;
 };
+/** @brief Test fixture for verifying @ref datastructures::Matrix multiplication, parameterized by @ref
+ * MatrixAdditionParams. */
 class MatrixAdditionTests: public ::testing::TestWithParam<MatrixAdditionParams<int>>
-{
-};
+{};
 
 
 template <typename T>
@@ -81,9 +81,10 @@ struct MatrixSubtractionParams
     datastructures::Matrix<T> b;
     datastructures::Matrix<T> result;
 };
+/** @brief Test fixture for verifying @ref datastructures::Matrix subtraction, parameterized by @ref
+ * MatrixSubtractionParams. */
 class MatrixSubtractionTests: public ::testing::TestWithParam<MatrixSubtractionParams<int>>
-{
-};
+{};
 
 
 template <typename T>
@@ -96,8 +97,9 @@ struct MatrixMultiplicationParams
     datastructures::MultiplicationAlgorithmType algo;
 };
 class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
-{
-};
+{};
+
+
 
 
 /**
@@ -111,7 +113,10 @@ class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplic
  *                               *
  *********************************/
 
-/** @test Verify that @ref datastructures::Matrix parameterized constructor can initializes with @ref std::vector input data */
+/**
+ * @test Verify that @ref datastructures::Matrix parameterized constructor initializes with member variables with
+ *       passed-in values.
+ */
 TEST_P(MatrixInitializationTests, InitializesToCorrectValues)
 {
     const auto& [inputData, expectedRows, expectedCols, expectedData] = GetParam();
@@ -182,9 +187,7 @@ INSTANTIATE_TEST_SUITE_P(
  *                               *
  *********************************/
 
-/**
- * @test Verify @ref datastructures::Matrix can be accessed as (row, column)
- */
+/** @test Verify that @ref datastructures::Matrix gives read access to elements with (row, column) syntax. */
 TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 {
     // Given a matrix is created with rows and columns
@@ -202,27 +205,29 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
             EXPECT_EQ(i + j, mat(i, j));
 }
 
+/**
+ * @test Verify that accessing elements of a @ref datastructures::Matrix at row, column size boundary throws
+ *        @ref std::out_of_range.
+ */
 TEST(MatrixAccess, AccessAtSizeThrowsError)
 {
-    // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
     const datastructures::Matrix<int> mat(rows, cols);
 
-    // When accessed at rows, cols
-    // Then, it throws out of range error
     EXPECT_THROW(mat(rows, cols), std::out_of_range);
 }
 
+/**
+ * @test Verify that accessing elements of a @ref datastructures::Matrix at out of range index throws
+ *        @ref std::out_of_range.
+ */
 TEST(MatrixAccess, InvalidIndexThrowsError)
 {
-    // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
     const datastructures::Matrix<int> mat(rows, cols);
 
-    // When accessed at invalid index
-    // Then, it throws out of range error
     EXPECT_THROW(mat(rows + 10, cols + 10), std::out_of_range);
 }
 
@@ -242,6 +247,7 @@ TEST(MatrixAccess, InvalidIndexThrowsError)
  *                               *
  *********************************/
 
+/** @test Verify that @ref datastructures::Matrix gives read/write access to elements with (row, column) syntax. */
 TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 {
     // Given a matrix is created with rows and columns
@@ -259,46 +265,35 @@ TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
             EXPECT_EQ(i == j ? 50 : 0, mat(i, j));
 }
 
+
+/**
+ * @test Verify that a write access to an element at the (row, col) size boundary of @ref datastructures::Matrix throws
+ *        @ref std::out_of_range.
+ */
 TEST(MatrixMutation, AtSizeThrowsError)
 {
-    // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
     datastructures::Matrix<int> mat(rows, cols);
 
-    // When mutated at rowsize, colsize
-    // Then, it throws out of range error error
     EXPECT_THROW(mat(rows, cols) = 5, std::out_of_range);
 }
 
+
+/**
+ * @test Verify that a write access to an element at an out of range index of @ref datastructures::Matrix throws
+ *        @ref std::out_of_range.
+ */
 TEST(MatrixMutation, InvalidIndexThrowsError)
 {
-    // Given a matrix is created with rows and columns
     constexpr int rows = 5;
     constexpr int cols = 7;
     datastructures::Matrix<int> mat(rows, cols);
 
-    // When mutated at invalid index
-    // Then, it throws out of range error
     EXPECT_THROW(mat(rows + 10, cols + 10) = 6, std::out_of_range);
 }
 
 /** @} */
-
-
-/*********************************
- *                               *
- *          VIEW TESTS           *
- *                               *
- *********************************/
-//
-// TEST_P(MatrixViewTests, ViewsGenerateCorrectValues)
-//{
-//    // When a matrix view is requested
-//    const auto& [matrix, viewMatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
-//
-//    // Then it contains the given size
-//}
 
 
 
@@ -314,47 +309,49 @@ TEST(MatrixMutation, InvalidIndexThrowsError)
  *                               *
  *********************************/
 
+/** @test Verify that @ref datastructures::Matrix add performs element-wise addition. */
 TEST_P(MatrixAdditionTests, PlusOperatorReturnsMatrixWithElementsAddedTogether)
 {
-    // When two matrices are added together
     const auto& [matA, matB, matExpected] = GetParam();
     auto result = matA + matB;
 
-    // Then, the resultant matrix contains elements of both added together
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/**
+ * @test Verify that adding a @ref datastructures::Matrix to another @ref datastructures::Matrix of different dimension
+ *        throws a @ref std::invalid_argument
+ */
 TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
 {
-    // Given two matrices of different dimension
     datastructures::Matrix<int> matA(5, 5);
     datastructures::Matrix<int> matB(4, 3);
 
-    // When added together
-    // Then it throws a invalid argument error
     EXPECT_THROW(matA + matB, std::invalid_argument);
 }
 
-
+/**
+ * @test Verify that the addition of @ref datastructures::Matrix using compound addition assignment operator (+=)
+ *        performs an in-place addition operation.
+ */
 TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
 {
-    // When two matrices are added together with +=
     const auto& [matA, matB, matExpected] = GetParam();
     datastructures::Matrix result = matA;
     result += matB;
 
-    // Then, the resultant matrix contains elements of both added together
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/**
+ * @test Verify that adding a @ref datastructures::Matrix to another @ref datastructures::Matrix of different dimension
+ *       using compound addition assignment (+=) throws a @ref std::invalid_argument
+ */
 TEST(MatrixAddtionTests, PlusEqualsOperatorDifferentDimensionThrowsException)
 {
-    // Given two matrices of different dimension
     datastructures::Matrix<int> matA(5, 5);
     datastructures::Matrix<int> matB(4, 3);
 
-    // When added and assigned (+=)
-    // Then it throws an invalid argument error
     EXPECT_THROW(matA += matB, std::invalid_argument);
 }
 
@@ -377,8 +374,6 @@ INSTANTIATE_TEST_SUITE_P(
                                    { { { 8, 9, 10, 11, 12, 13, 14, 15 } } },
                                    { { { 9, 11, 13, 15, 17, 19, 21, 23 } } } }));
 
-
-
 /** @} */
 
 
@@ -395,46 +390,49 @@ INSTANTIATE_TEST_SUITE_P(
  *                               *
  *********************************/
 
+/** @test Verify that @ref datastructures::Matrix subtract performs element-wise subtraction. */
 TEST_P(MatrixSubtractionTests, MinusOperatorReturnsMatrixWithElementsSubtractedFromEachOther)
 {
-    // When two matrices are subtracted
     const auto& [matA, matB, matExpected] = GetParam();
     auto result = matA - matB;
 
-    // Then, the resultant matrix contains elements of a subtracted from b
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/**
+ * @test Verify that subtracting a @ref datastructures::Matrix from another @ref datastructures::Matrix of different
+ *       dimension throws a @ref std::invalid_argument
+ */
 TEST(MatrixSubtractionTests, MinusOperatorDifferentDimensionThrowsException)
 {
-    // Given two matrices of different dimension
     datastructures::Matrix<int> matA(5, 5);
     datastructures::Matrix<int> matB(4, 3);
 
-    // When subtracted
-    // Then it throws an invalid argument error
     EXPECT_THROW(matA - matB, std::invalid_argument);
 }
 
+/**
+ * @test Verify that the subtraction of @ref datastructures::Matrix using the compound subtraction assignment
+ *       operator (-=) performs an in-place subtraction operation
+ */
 TEST_P(MatrixSubtractionTests, MinusEqualOperatorTakesSecondMatrixFromFirst)
 {
-    // When two matrices are subtracted with -=
     const auto& [matA, matB, matExpected] = GetParam();
     datastructures::Matrix result = matA;
     result -= matB;
 
-    // Then, the resultant matrix contains elements of both added together
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/**
+ * @test Verify that the subtraction of @ref datastructures::Matrix using the compound subtraction assignment (+=)
+ *       among matrices of different dimension throws a @ref std::invalid_argument
+ */
 TEST(MatrixSubtractionTests, MinusEqualsDifferentDimensionThrowsException)
 {
-    // Given two matrices of different dimension
     datastructures::Matrix<int> matA(5, 5);
     datastructures::Matrix<int> matB(4, 3);
 
-    // When subtracted and assigned(-=)
-    // Then, it throws an invalid argument error
     EXPECT_THROW(matA -= matB, std::invalid_argument);
 }
 
@@ -473,46 +471,48 @@ INSTANTIATE_TEST_SUITE_P(
  *                               *
  *********************************/
 
+/** @test Verify that @ref datastructures::Matrix multiplication performs the composition of linear transformations. */
 TEST_P(MatrixMultiplicationTests, MultiplicationProvidesCorrectResult)
 {
-    // When two matrices are multiplied together
     const auto& [matA, matB, matExpected, algo] = GetParam();
     auto result = matA.multiply(matB, algo);
 
-    // Then, it matches expected result
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/** @test Verify that @ref datastructures::Matrix multiplication is non-commutative. */
 TEST(MatrixMultiplicationTestFixture,
      MultiplicationIsNotCommutative) // A * B != B * A
 {
-    // When two matrices are multiplied together
     datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
     datastructures::Matrix<int> matB{ { { 4, 5 }, { 6, 7 } } };
     auto result1 = matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
     auto result2 = matB.multiply(matA, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
 
-    // Then, it matches expected result
     EXPECT_MAT_NE(result1, result2);
 }
 
+/**
+ * @test Verify that the static wrapper multiplication of @ref datastructures::Matrix performs the composition of
+ *       linear transformations.
+ */
 TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectResult)
 {
-    // When two matrices are multiplied together with static wrapper
     const auto& [matA, matB, matExpected, algo] = GetParam();
     auto result = datastructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
 
-    // Then, it matches expected result
     EXPECT_MAT_EQ(matExpected, result);
 }
 
+/**
+ * @test Verify that the multiplication of @ref datastructures::Matrix with another @ref datastructures::Matrix of
+ *        mismatched dimensions throws a std::invalid_argument exception.
+ */
 TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 {
-    // Given two matrices that can't be multiplied
     datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
     datastructures::Matrix<int> matB{ { { 3, 2 } } };
 
-    // Then, their multiplication invalid argument error
     EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::invalid_argument);
 }
 

@@ -83,8 +83,8 @@ std::ostream& operator<<(std::ostream& os, MatrixAccessorParams<T> params)
  * @{
  */
 
-/** @test Verify that @ref datastructures::MatrixView initialization initializes member variables with the passed-in
- * arguments. */
+/** @test Verify that @ref datastructures::MatrixView parameterized constructor initializes member variables with the
+ * passed-in arguments. */
 TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 {
     // When matrix view is initialized with default values.
@@ -102,7 +102,7 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->bitCeil, view.m_BitCeil);
 }
 
-/** @test Verify that @ref datastructures::MatrixView initialization sets m_BitCeil to false by default. */
+/** @test Verify that @ref datastructures::MatrixView parameterized constructor sets m_BitCeil to false by default. */
 TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
 {
     // When matrix view is initialized without bitCeil
@@ -370,7 +370,8 @@ INSTANTIATE_TEST_SUITE_P(
                       MatrixMutationParams{ matView2_3, 1, 0 }, MatrixMutationParams{ matView2_3, 1, 1 }));
 
 
-/** @test Verify that @ref datastructures::MatrixView mutated at out-of-bounds indices of parent matrix throws @ref std::out_of_range. */
+/** @test Verify that @ref datastructures::MatrixView mutated at out-of-bounds indices of parent matrix throws @ref
+ * std::out_of_range. */
 TEST_P(MatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOriginalMatrixThrowsException)
 {
     constexpr ParamType::value_type newValue = 123456;
