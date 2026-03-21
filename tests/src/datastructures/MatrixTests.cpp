@@ -37,7 +37,7 @@ struct MatrixInitializerParams
     std::vector<T> expectedData;
 };
 /** @brief Test fixture for testing @ref datastructures::Matrix initialization with varied input shapes, parameterized
- * by @ref MatrixInitializerParams. */
+ *         by @ref MatrixInitializerParams. */
 class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializerParams<int>>
 {};
 
@@ -68,7 +68,7 @@ struct MatrixAdditionParams
     datastructures::Matrix<T> result;
 };
 /** @brief Test fixture for verifying @ref datastructures::Matrix multiplication, parameterized by @ref
- * MatrixAdditionParams. */
+ *         MatrixAdditionParams. */
 class MatrixAdditionTests: public ::testing::TestWithParam<MatrixAdditionParams<int>>
 {};
 
@@ -82,7 +82,7 @@ struct MatrixSubtractionParams
     datastructures::Matrix<T> result;
 };
 /** @brief Test fixture for verifying @ref datastructures::Matrix subtraction, parameterized by @ref
- * MatrixSubtractionParams. */
+ *         MatrixSubtractionParams. */
 class MatrixSubtractionTests: public ::testing::TestWithParam<MatrixSubtractionParams<int>>
 {};
 
@@ -537,7 +537,7 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
-                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0),
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 0 = 2x2(0),
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
@@ -557,8 +557,7 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
-                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }
-        // 2x2 * 0 = 2x2(0)
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER } // 2x2 * 0 = 2x2(0)
         ));
 
 /** @} */
