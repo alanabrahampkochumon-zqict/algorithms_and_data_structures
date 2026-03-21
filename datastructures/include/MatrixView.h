@@ -14,6 +14,7 @@
 #include <cstddef>
 #include <iomanip>
 
+// TODO: Add move offset for moving the block view around non-linear block like rowStart of 1 and end of 3 which is technically an even view block.
 namespace datastructures
 {
     template <Arithmetic T>

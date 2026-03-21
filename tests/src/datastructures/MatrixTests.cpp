@@ -12,9 +12,9 @@
 
 #include "TestUtils.h"
 
+#include <Concepts.h>
 #include <Matrix.h>
 #include <cassert>
-#include <Concepts.h>
 #include <gtest/gtest.h>
 
 
@@ -45,11 +45,10 @@ template <Arithmetic T>
 struct MatrixViewParams
 {
     datastructures::Matrix<T> mat;
-    datastructures::Matrix<T> expectedView;
-    std::size_t rowStart;
-    std::size_t colStart;
-    std::size_t rowSize;
-    std::size_t colSize;
+    datastructures::MatrixView<T> expectedView;
+    std::size_t rowBlock;
+    std::size_t colBlock;
+    std::size_t blockSize;
     bool bitCeil;
 };
 /** @brief Test fixture for verifying @ref datastructures::Matrix addition, parameterized by @ref MatrixViewParams. */
@@ -95,18 +94,6 @@ struct MatrixMultiplicationParams
  *         MatrixMultiplicationParams. */
 class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
 {};
-
-//template <Arithmetic T>
-//struct MatrixViewParams
-//{
-//    datastructures::Matrix<T> a;
-//    std::size_t row;
-//    std::size_t column;
-//    std::size_t viewRow;
-//    std::size_t viewColumn;
-//    std::size_t view
-//};
-
 
 
 
@@ -467,6 +454,66 @@ INSTANTIATE_TEST_SUITE_P(
 
 
 
+/**
+ * @addtogroup T_Mat_View
+ * @{
+ */
+
+/**************************************
+ *                                    *
+ *         MATRIX VIEW TESTS          *
+ *                                    *
+ **************************************/
+
+/** @test Verify that @ref datastructures::Matrix getView returns a block view into the correct matrix boundaries */
+TEST_P(MatrixViewTests, ProvidesCorrectView)
+{
+    const auto& [matrix, expectedView, rowBlock, colBlock, blockSize, bitCeil] = GetParam();
+    auto matrixView = matrix.getView(blockSize, rowBlock, colBlock, bitCeil);
+
+    ASSERT_EQ(matrix.m_Data.data(), matrixView.m_Data);
+    ASSERT_EQ(matrix.m_Data.size(), matrixView.m_Size);
+    ASSERT_EQ(matrix.m_Columns, matrixView.m_Stride);
+    ASSERT_EQ(blockSize, matrixView.m_ViewRows);
+    ASSERT_EQ(blockSize, matrixView.m_ViewColumns);
+    ASSERT_EQ(rowBlock, matrixView.m_RowBlock);
+    ASSERT_EQ(colBlock, matrixView.m_ColumnBlock);
+    ASSERT_EQ(bitCeil, matrixView.m_BitCeil);
+}
+
+datastructures::Matrix<int> mat1{ { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } } };
+const datastructures::MatrixView view1_00{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 0, 0, 4, true };
+const datastructures::MatrixView view1_01{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 0, 1, 4, true };
+const datastructures::MatrixView view1_10{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 1, 0, 4, true };
+const datastructures::MatrixView view1_11{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 1, 1, 4, true };
+
+datastructures::Matrix<int> mat2{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
+const datastructures::MatrixView view2_00{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 0, 0, 3, true };
+const datastructures::MatrixView view2_01{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 0, 1, 3, true };
+const datastructures::MatrixView view2_10{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 1, 0, 3, true };
+const datastructures::MatrixView view2_11{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 1, 1, 3, true };
+
+datastructures::Matrix<int> mat3{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
+const datastructures::MatrixView view3_00{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 0, 0, 3, false };
+const datastructures::MatrixView view3_01{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 0, 1, 3, false };
+const datastructures::MatrixView view3_10{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 1, 0, 3, false };
+const datastructures::MatrixView view3_11{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 1, 1, 3, false };
+
+INSTANTIATE_TEST_CASE_P(
+    MatrixViewTestCase, MatrixViewTests,
+    ::testing::Values(
+        MatrixViewParams{ mat1, view1_00, 0, 0, 2, true }, MatrixViewParams{ mat1, view1_01, 0, 1, 2, true },
+        MatrixViewParams{ mat1, view1_10, 1, 0, 2, true }, MatrixViewParams{ mat1, view1_11, 1, 1, 2, true },
+
+        MatrixViewParams{ mat2, view2_00, 0, 0, 2, true }, MatrixViewParams{ mat2, view2_01, 0, 1, 2, true },
+        MatrixViewParams{ mat2, view2_10, 1, 0, 2, true }, MatrixViewParams{ mat2, view2_11, 1, 1, 2, true },
+
+        MatrixViewParams{ mat3, view3_00, 0, 0, 2, false }, MatrixViewParams{ mat3, view3_01, 0, 1, 2, false },
+        MatrixViewParams{ mat3, view3_10, 1, 0, 2, false }, MatrixViewParams{ mat3, view3_11, 1, 1, 2, false }));
+
+/** @} */
+
+
 
 /**
  * @addtogroup T_Mat_Mul
@@ -542,30 +589,32 @@ INSTANTIATE_TEST_SUITE_P(
                                          { { { 1, 2 }, { 3, 4 } } },
                                          datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * I2 =
                                                                                                      // 2x2
-        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
-                                         { { { 0, 0 }, { 0, 0 } } },
-                                         { { { 0, 0 }, { 0, 0 } } },
-                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 0 = 2x2(0),
+        MatrixMultiplicationParams<int>{
+            { { { 1, 2 }, { 3, 4 } } },
+            { { { 0, 0 }, { 0, 0 } } },
+            { { { 0, 0 }, { 0, 0 } } },
+            datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 0 = 2x2(0),
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
                                          datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 2x2 * 2x2
-                                                                                                     // = 2x2
+                                                                                                            // = 2x2
         MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
                                          { { { 4, 5, 6 } } },
                                          { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
                                          datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 3x1 * 1x3
-                                                                                                     // = 3x3
+                                                                                                            // = 3x3
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 1, 0 }, { 0, 1 } } },
                                          { { { 1, 2 }, { 3, 4 } } },
                                          datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 2x2 * I2
                                                                                                             // =
-                                                                                                     // 2x2
+                                                                                                            // 2x2
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
-                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER } // 2x2 * 0 = 2x2(0)
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }
+        // 2x2 * 0 = 2x2(0)
         ));
 
 /** @} */

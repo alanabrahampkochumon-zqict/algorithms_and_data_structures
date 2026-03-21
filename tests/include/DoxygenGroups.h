@@ -28,6 +28,7 @@
      *   @defgroup T_Mat_Add Matrix Addition
      *   @defgroup T_Mat_Sub Matrix Subtraction
      *   @defgroup T_Mat_Mul Matrix Multiplication
+     *   @defgroup T_Mat_View Matrix View
      * @}
      */
 

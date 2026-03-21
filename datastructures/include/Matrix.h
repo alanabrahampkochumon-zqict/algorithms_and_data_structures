@@ -141,20 +141,22 @@ namespace datastructures
 
 
         /**
-         * @brief Create a submatrix view of the current matrix.
+         * @brief Creates a submatrix view by partitioning the matrix into logical blocks.
          *
-         * @note Padding applied will be virtual zeroes.
+         * @details Facilitates Divide and Conquer operations by treating the matrix as a
+         *          grid of blocks of size @p blockSize.
          *
-         * @param rowStart      Starting row index of the view.
-         * @param colStart      Starting column index of the view.
-         * @param rowSize       Number of rows in the view.
-         * @param colSize       Number of columns in the view.
-         * @param bitCeilMatrix If true, pads the view dimensions to the next power of two.
+         * @note If @p bitCeilMatrix is `true`, out-of-bounds access within the view results in virtual zero-padding.
          *
-         * @return A @ref datastructures::MatrixView of size (@p rowSize, @p colSize) or the padded size.
+         * @param blockSize     The dimension (N) of the NxN square block to extract.
+         * @param rowBlock      The logical row index of the block (e.g., 0 or 1 for a 2x2 partition).
+         * @param colBlock      The logical column index of the block (e.g., 0 or 1 for a 2x2 partition).
+         * @param bitCeilMatrix If true, rounds the view dimensions up to the nearest power of two.
+         *
+         * @return A @ref datastructures::MatrixView representing the specified partition.
          */
-        MatrixView<T> getView(std::size_t rowStart, std::size_t colStart, std::size_t rowSize, std::size_t colSize,
-                              bool bitCeilMatrix = false);
+        MatrixView<T> getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
+                              bool bitCeilMatrix = true) const;
 
 
         /**
