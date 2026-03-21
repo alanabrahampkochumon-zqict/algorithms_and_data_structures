@@ -29,8 +29,8 @@ class MatrixViewInitializationTests: public ::testing::Test
     std::size_t size = data.size();
     std::size_t rows = 2;
     std::size_t cols = 2;
-    std::size_t rowOffset = 0;
-    std::size_t colOffset = 1;
+    std::size_t rowBlock = 0;
+    std::size_t colBlock = 1;
     std::size_t stride = 3;
     bool bitCeil = true;
 };
@@ -89,7 +89,7 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
 {
     // When matrix view is initialized with default values.
     const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                     this->rowOffset, this->colOffset, this->stride, this->bitCeil);
+                                                     this->rowBlock, this->colBlock, this->stride, this->bitCeil);
 
     // Then, it gets initialized with the passed in values.
     ASSERT_EQ(this->data_ptr, view.m_Data);
@@ -97,8 +97,8 @@ TYPED_TEST(MatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->rows, view.m_ViewRows);
     ASSERT_EQ(this->cols, view.m_ViewColumns);
     ASSERT_EQ(this->stride, view.m_Stride);
-    ASSERT_EQ(this->rowOffset, view.m_RowBlock);
-    ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
+    ASSERT_EQ(this->rowBlock, view.m_RowBlock);
+    ASSERT_EQ(this->colBlock, view.m_ColumnBlock);
     ASSERT_EQ(this->bitCeil, view.m_BitCeil);
 }
 
@@ -107,7 +107,7 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
 {
     // When matrix view is initialized without bitCeil
     const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                     this->rowOffset, this->colOffset, this->stride);
+                                                     this->rowBlock, this->colBlock, this->stride);
 
     // Then, it gets initialized with the passed in values with bit ceil having default value of false
     ASSERT_EQ(this->data_ptr, view.m_Data);
@@ -115,8 +115,8 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
     ASSERT_EQ(this->rows, view.m_ViewRows);
     ASSERT_EQ(this->cols, view.m_ViewColumns);
     ASSERT_EQ(this->stride, view.m_Stride);
-    ASSERT_EQ(this->rowOffset, view.m_RowBlock);
-    ASSERT_EQ(this->colOffset, view.m_ColumnBlock);
+    ASSERT_EQ(this->rowBlock, view.m_RowBlock);
+    ASSERT_EQ(this->colBlock, view.m_ColumnBlock);
     ASSERT_FALSE(view.m_BitCeil);
 }
 
@@ -124,7 +124,7 @@ TYPED_TEST(MatrixViewInitializationTests, BitCeilIsFalseByDefault)
 TYPED_TEST(MatrixViewInitializationTests, ZeroViewRowThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, 0, this->cols,
-                                                                  this->rowOffset, this->colOffset, this->stride, true),
+                                                                  this->rowBlock, this->colBlock, this->stride, true),
                  std::out_of_range);
 }
 
@@ -132,7 +132,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewRowThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, ZeroViewColumnThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, 0,
-                                                                  this->rowOffset, this->colOffset, this->stride, true),
+                                                                  this->rowBlock, this->colBlock, this->stride, true),
                  std::out_of_range);
 }
 
@@ -140,7 +140,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroViewColumnThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                                  this->rowOffset, this->colOffset, 0, true),
+                                                                  this->rowBlock, this->colBlock, 0, true),
                  std::out_of_range);
 }
 
@@ -151,7 +151,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroStrideThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                                  this->rowOffset, this->colOffset, this->size + 1,
+                                                                  this->rowBlock, this->colBlock, this->size + 1,
                                                                   true),
                  std::out_of_range);
 }
@@ -160,7 +160,7 @@ TYPED_TEST(MatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), 0, this->rows, this->cols,
-                                                                  this->rowOffset, this->colOffset, this->stride, true),
+                                                                  this->rowBlock, this->colBlock, this->stride, true),
                  std::out_of_range);
 }
 
@@ -171,7 +171,7 @@ TYPED_TEST(MatrixViewInitializationTests, ZeroSizeThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows + 10,
-                                                                  this->cols, this->rowOffset, this->colOffset,
+                                                                  this->cols, this->rowBlock, this->colBlock,
                                                                   this->stride, true),
                  std::out_of_range);
 }
@@ -183,7 +183,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows,
-                                                                  this->cols + 10, this->rowOffset, this->colOffset,
+                                                                  this->cols + 10, this->rowBlock, this->colBlock,
                                                                   this->stride, true),
                  std::out_of_range);
 }
@@ -195,7 +195,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidColumnThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                                  this->rows + 1, this->colOffset, this->stride, true),
+                                                                  this->rows + 1, this->colBlock, this->stride, true),
                  std::out_of_range);
 }
 
@@ -206,7 +206,7 @@ TYPED_TEST(MatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 TYPED_TEST(MatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 {
     EXPECT_THROW(const datastructures::MatrixView<TypeParam> view(this->data.data(), this->size, this->rows, this->cols,
-                                                                  this->rowOffset, this->cols + 1, this->stride, true),
+                                                                  this->rowBlock, this->cols + 1, this->stride, true),
                  std::out_of_range);
 }
 

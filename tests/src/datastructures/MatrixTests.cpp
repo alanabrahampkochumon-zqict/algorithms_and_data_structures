@@ -14,7 +14,6 @@
 
 #include <Matrix.h>
 #include <cassert>
-#include <concepts>
 #include <Concepts.h>
 #include <gtest/gtest.h>
 
