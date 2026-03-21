@@ -4,7 +4,7 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 19, 2026
  *
- * @brief Define doxygen groups for the entire test harness.
+ * @brief Categorical organization of test suite for documentation in Doxygen.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
  */
