@@ -87,16 +87,16 @@ namespace datastructures
 
     template <Arithmetic T>
     template <Arithmetic U>
-    auto Matrix<T>::operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
+    auto Matrix<T>::operator+(const Matrix<U>& rhs) const -> Matrix<std::common_type_t<T, U>>
     {
-        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+        if (m_Rows != rhs.m_Rows && m_Columns != rhs.m_Columns)
             throw std::invalid_argument("Matrices of different dimensions cannot be added together");
 
         Matrix result(m_Rows, m_Columns);
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
-                result(row, col) = (*this)(row, col) + other(row, col);
+                result(row, col) = (*this)(row, col) + rhs(row, col);
 
         return result;
     }
@@ -104,30 +104,30 @@ namespace datastructures
 
     template <Arithmetic T>
     template <Arithmetic U>
-    Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& other)
+    Matrix<T>& Matrix<T>::operator+=(const Matrix<U>& rhs)
     {
-        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+        if (m_Rows != rhs.m_Rows && m_Columns != rhs.m_Columns)
             throw std::invalid_argument("Matrices of different dimensions cannot be added together");
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
-                (*this)(row, col) += other(row, col);
+                (*this)(row, col) += rhs(row, col);
         return *this;
     }
 
 
     template <Arithmetic T>
     template <Arithmetic U>
-    auto Matrix<T>::operator-(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>
+    auto Matrix<T>::operator-(const Matrix<U>& rhs) const -> Matrix<std::common_type_t<T, U>>
     {
-        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+        if (m_Rows != rhs.m_Rows && m_Columns != rhs.m_Columns)
             throw std::invalid_argument("Matrices of different dimensions cannot be subtracted");
 
         Matrix result(m_Rows, m_Columns);
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
-                result(row, col) = (*this)(row, col) - other(row, col);
+                result(row, col) = (*this)(row, col) - rhs(row, col);
 
         return result;
     }
@@ -135,14 +135,14 @@ namespace datastructures
 
     template <Arithmetic T>
     template <Arithmetic U>
-    Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& other)
+    Matrix<T>& Matrix<T>::operator-=(const Matrix<U>& rhs)
     {
-        if (m_Rows != other.m_Rows && m_Columns != other.m_Columns)
+        if (m_Rows != rhs.m_Rows && m_Columns != rhs.m_Columns)
             throw std::invalid_argument("Matrices of different dimensions cannot be subtracted");
 
         for (std::size_t row = 0; row < m_Rows; ++row)
             for (std::size_t col = 0; col < m_Columns; ++col)
-                (*this)(row, col) -= other(row, col);
+                (*this)(row, col) -= rhs(row, col);
         return *this;
     }
 
@@ -200,16 +200,16 @@ namespace datastructures
 
     template <Arithmetic T>
     template <Arithmetic U>
-    auto Matrix<T>::multiply(const Matrix<U>& other, MultiplicationAlgorithmType algo) const
+    auto Matrix<T>::multiply(const Matrix<U>& rhs, MultiplicationAlgorithmType algo) const
         -> Matrix<std::common_type_t<T, U>>
     {
-        if (this->m_Columns != other.m_Rows)
+        if (this->m_Columns != rhs.m_Rows)
             throw std::invalid_argument("Invalid matrix size");
 
         switch (algo)
         {
             case MultiplicationAlgorithmType::BRUTE_FORCE:
-                return bruteForce(*this, other);
+                return bruteForce(*this, rhs);
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
                 break;
             case MultiplicationAlgorithmType::STRASSENS:
@@ -217,14 +217,14 @@ namespace datastructures
             default:
                 break;
         }
-        return Matrix(m_Rows, other.m_Columns); // TODO: Replace
+        return Matrix(m_Rows, rhs.m_Columns); // TODO: Replace
     }
 
     template <Arithmetic T>
     template <Arithmetic U>
-    auto Matrix<T>::multiply(const Matrix& matA, const Matrix<U>& matB, MultiplicationAlgorithmType algo)
+    auto Matrix<T>::multiply(const Matrix& lhs, const Matrix<U>& rhs, MultiplicationAlgorithmType algo)
         -> Matrix<std::common_type_t<T, U>>
     {
-        return matA.multiply(matB, algo);
+        return lhs.multiply(rhs, algo);
     }
 } // namespace datastructures

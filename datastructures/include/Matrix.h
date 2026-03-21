@@ -19,6 +19,9 @@
 #include <MatrixView.h>
 #include <vector>
 
+
+// TODO: Naive transpose multiplication to optimize cache hits(Since we are using 1D structure internally)
+
 namespace datastructures
 {
     enum class MultiplicationAlgorithmType
@@ -42,11 +45,13 @@ namespace datastructures
 
         /**
          * @brief Access the element at the specified location.
-         * Provides read-write access to the element.
+         *        Provides read-write access to the element.
          *
          * @param row The row index to access.
          * @param col The column index to access.
+         *
          * @return A reference to the element at (row, col).
+         *
          * @throws std::out_of_range If row or col is outside the matrix bounds.
          */
         T& operator()(std::size_t row, std::size_t col);
@@ -57,10 +62,14 @@ namespace datastructures
          *
          * @param row The row index to access.
          * @param col The column index to access.
+         *
          * @return A constant reference to the element at (row, col).
+         *
          * @throws std::out_of_range If row or col is outside the matrix bounds.
          */
         const T& operator()(std::size_t row, std::size_t col) const;
+
+
 
 
         /**************************************
@@ -70,81 +79,101 @@ namespace datastructures
          **************************************/
 
         /**
-         * @brief Add two matrices together.
-         * Perform element-wise addition.
+         * @brief Perform element-wise addition of two matrices.
          *
          * @tparam U Numeric type of the RHS Matrix.
-         * @param other The matrix to add.
+         *
+         * @param rhs The matrix to add.
+         *
          * @return A new matrix containing element-wise sum with promoted type.
+         *
          * @throws std::invalid_argument If matrix dimensions do not match.
          */
         template <Arithmetic U>
-        auto operator+(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>;
+        auto operator+(const Matrix<U>& rhs) const -> Matrix<std::common_type_t<T, U>>;
 
 
         /**
          * @brief Add another matrix to this matrix.
-         * Perform element-wise addition.
+         *        Perform element-wise addition in-place and returns a reference to this matrix.
          *
          * @tparam U Numeric type of the RHS Matrix.
-         * @param other The matrix to add.
-         * @return A reference to this matrix.
+         *
+         * @param rhs The matrix to add.
+         *
+         * @return A reference to this matrix (*this) after addition.
+         *
          * @throws std::invalid_argument If matrix dimensions do not match.
          */
         template <Arithmetic U>
-        Matrix& operator+=(const Matrix<U>& other);
+        Matrix& operator+=(const Matrix<U>& rhs);
 
 
         /**
-         * @brief Subtracts one matrix from another.
-         * Perform element-wise subtraction.
+         * @brief Perform element-wise subtraction of two matrices.
          *
          * @tparam U Numeric type of the RHS Matrix.
-         * @param other The matrix to subtract.
+         *
+         * @param rhs The matrix to subtract.
+         *
          * @return A new matrix containing element-wise difference with promoted type.
+         *
          * @throws std::invalid_argument If matrix dimensions do not match.
          */
         template <Arithmetic U>
-        auto operator-(const Matrix<U>& other) const -> Matrix<std::common_type_t<T, U>>;
+        auto operator-(const Matrix<U>& rhs) const -> Matrix<std::common_type_t<T, U>>;
 
 
         /**
          * @brief Subtract another matrix from this matrix.
-         * Perform element-wise subtraction.
+         *        Perform element-wise subtraction in-place and returns a reference to this matrix.
          *
          * @tparam U Numeric type of the RHS Matrix.
-         * @param other The matrix to subtract.
-         * @return A reference to this matrix.
+         *
+         * @param rhs The matrix to subtract.
+         *
+         * @return A reference to this matrix (*this) after subtraction.
+         *
          * @throws std::invalid_argument If matrix dimensions do not match.
          */
         template <Arithmetic U>
-        Matrix& operator-=(const Matrix<U>& other);
+        Matrix& operator-=(const Matrix<U>& rhs);
+
 
         /**
          * @brief Create a submatrix view of the current matrix.
+         *
          * @note Padding applied will be virtual zeroes.
          *
-         * @param rowStart Starting row index of the view.
-         * @param colStart Starting column index of the view.
-         * @param rowSize Number of rows in the view.
-         * @param colSize Number of columns in the view.
+         * @param rowStart      Starting row index of the view.
+         * @param colStart      Starting column index of the view.
+         * @param rowSize       Number of rows in the view.
+         * @param colSize       Number of columns in the view.
          * @param bitCeilMatrix If true, pads the view dimensions to the next power of two.
+         *
          * @return A @ref datastructures::MatrixView of size (@p rowSize, @p colSize) or the padded size.
          */
         MatrixView<T> getView(std::size_t rowStart, std::size_t colStart, std::size_t rowSize, std::size_t colSize,
                               bool bitCeilMatrix = false);
 
+
         /**
-         * @brief Multiply this matrix with another.
+         * @brief Compute the product of two matrices.
+         *
+         * @details Represents the composition of linear transformations.
+         *          Uses row-column multiplication (dot product) semantics.
          *
          * @tparam U Numeric type of the RHS matrix.
-         * @param other Matrix to multiply.
-         * @param algo Algorithm to use. See @ref datastructures::MultiplicationAlgorithmType
+         *
+         * @param rhs  The matrix to multiply.
+         * @param algo The multiplication algorithm to use. See @ref datastructures::MultiplicationAlgorithmType
+         *
          * @return A new matrix containing the multiplication result with promoted type.
-         * @throws std::invalid_argument If the column count of this matrix does not match the row count of @p other.
+         *
+         * @throws std::invalid_argument If the column count of this matrix does not match the row count of @p rhs.
          */
         template <Arithmetic U>
-        auto multiply(const Matrix<U>& other,
+        auto multiply(const Matrix<U>& rhs,
                       MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const
             -> Matrix<std::common_type_t<T, U>>;
 
@@ -152,14 +181,17 @@ namespace datastructures
          * @brief @copybrief multiply(const Matrix<U>&, MultiplicationAlgorithmType)
          *
          * @tparam U Numeric type of RHS matrix.
-         * @param matA First matrix.
-         * @param matB Second matrix.
-         * @param algo Algorithm to use. See @ref datastructures::MultiplicationAlgorithmType
+         *
+         * @param lhs  The left hand side matrix.
+         * @param rhs  The right hand side matrix.
+         * @param algo The multiplication algorithm to use. See @ref datastructures::MultiplicationAlgorithmType
+         *
          * @return A new matrix containing the multiplication result with promoted type.
+         *
          * @throws std::invalid_argument If the column count of @p matA does not match the row count of @p matB.
          */
         template <Arithmetic U>
-        static auto multiply(const Matrix& matA, const Matrix<U>& matB,
+        static auto multiply(const Matrix& lhs, const Matrix<U>& rhs,
                              MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER)
             -> Matrix<std::common_type_t<T, U>>;
 

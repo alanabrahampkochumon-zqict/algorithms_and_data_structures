@@ -15,6 +15,7 @@
 #include <Matrix.h>
 #include <cassert>
 #include <concepts>
+#include <Concepts.h>
 #include <gtest/gtest.h>
 
 
@@ -27,8 +28,7 @@ using namespace testutils;
  *                               *
  *********************************/
 
-template <typename T>
-    requires std::integral<T> || std::floating_point<T>
+template <Arithmetic T>
 struct MatrixInitializerParams
 {
     std::vector<std::vector<T>> inputData;
@@ -42,8 +42,7 @@ class MatrixInitializationTests: public ::testing::TestWithParam<MatrixInitializ
 {};
 
 
-template <typename T>
-    requires std::integral<T> || std::floating_point<T>
+template <Arithmetic T>
 struct MatrixViewParams
 {
     datastructures::Matrix<T> mat;
@@ -59,8 +58,7 @@ class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 {};
 
 
-template <typename T>
-    requires std::integral<T> || std::floating_point<T>
+template <Arithmetic T>
 struct MatrixAdditionParams
 {
     datastructures::Matrix<T> a;
@@ -73,8 +71,7 @@ class MatrixAdditionTests: public ::testing::TestWithParam<MatrixAdditionParams<
 {};
 
 
-template <typename T>
-    requires std::integral<T> || std::floating_point<T>
+template <Arithmetic T>
 struct MatrixSubtractionParams
 {
     datastructures::Matrix<T> a;
@@ -87,8 +84,7 @@ class MatrixSubtractionTests: public ::testing::TestWithParam<MatrixSubtractionP
 {};
 
 
-template <typename T>
-    requires std::integral<T> || std::floating_point<T>
+template <Arithmetic T>
 struct MatrixMultiplicationParams
 {
     datastructures::Matrix<T> a;
@@ -96,8 +92,21 @@ struct MatrixMultiplicationParams
     datastructures::Matrix<T> result;
     datastructures::MultiplicationAlgorithmType algo;
 };
+/** @brief Test fixture for verifying @ref datastructures::Matrix multiplication, parameterized by @ref
+ *         MatrixMultiplicationParams. */
 class MatrixMultiplicationTests: public ::testing::TestWithParam<MatrixMultiplicationParams<int>>
 {};
+
+//template <Arithmetic T>
+//struct MatrixViewParams
+//{
+//    datastructures::Matrix<T> a;
+//    std::size_t row;
+//    std::size_t column;
+//    std::size_t viewRow;
+//    std::size_t viewColumn;
+//    std::size_t view
+//};
 
 
 
@@ -207,7 +216,7 @@ TEST(MatrixAccess, ElementsCanBeAccessedAsRowColumn)
 
 /**
  * @test Verify that accessing elements of a @ref datastructures::Matrix at row, column size boundary throws
- *        @ref std::out_of_range.
+ *       @ref std::out_of_range.
  */
 TEST(MatrixAccess, AccessAtSizeThrowsError)
 {
@@ -220,7 +229,7 @@ TEST(MatrixAccess, AccessAtSizeThrowsError)
 
 /**
  * @test Verify that accessing elements of a @ref datastructures::Matrix at out of range index throws
- *        @ref std::out_of_range.
+ *       @ref std::out_of_range.
  */
 TEST(MatrixAccess, InvalidIndexThrowsError)
 {
@@ -268,7 +277,7 @@ TEST(MatrixMutation, ElementsCanBeMutatedAtRowColumn)
 
 /**
  * @test Verify that a write access to an element at the (row, col) size boundary of @ref datastructures::Matrix throws
- *        @ref std::out_of_range.
+ *       @ref std::out_of_range.
  */
 TEST(MatrixMutation, AtSizeThrowsError)
 {
@@ -282,7 +291,7 @@ TEST(MatrixMutation, AtSizeThrowsError)
 
 /**
  * @test Verify that a write access to an element at an out of range index of @ref datastructures::Matrix throws
- *        @ref std::out_of_range.
+ *       @ref std::out_of_range.
  */
 TEST(MatrixMutation, InvalidIndexThrowsError)
 {
@@ -332,7 +341,7 @@ TEST(MatrixAddtionTests, PlusOperatorDifferentDimensionThrowsException)
 
 /**
  * @test Verify that the addition of @ref datastructures::Matrix using compound addition assignment operator (+=)
- *        performs an in-place addition operation.
+ *       performs an in-place addition operation.
  */
 TEST_P(MatrixAdditionTests, PlusEqualOperatorCombinesFirstMatrixWithSecond)
 {
