@@ -149,9 +149,9 @@ namespace datastructures
 
     template <Arithmetic T>
     MatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock,
-        std::size_t colBlock, bool bitCeilMatrix) const
+        std::size_t colBlock, bool bitCeilMatrix)
     {
-        return MatrixView<int>(nullptr, 0, 0, 0, 0, 0, 0, false);
+        return MatrixView<T>(m_Data.data(), m_Data.size(), blockSize, blockSize, rowBlock, colBlock, m_Columns, bitCeilMatrix);
     }
 
 

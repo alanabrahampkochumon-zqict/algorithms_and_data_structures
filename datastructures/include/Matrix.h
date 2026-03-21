@@ -156,7 +156,7 @@ namespace datastructures
          * @return A @ref datastructures::MatrixView representing the specified partition.
          */
         MatrixView<T> getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
-                              bool bitCeilMatrix = true) const;
+                              bool bitCeilMatrix = true);
 
 
         /**

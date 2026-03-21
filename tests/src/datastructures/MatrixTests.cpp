@@ -465,15 +465,16 @@ INSTANTIATE_TEST_SUITE_P(
  *                                    *
  **************************************/
 
-/** @test Verify that @ref datastructures::Matrix getView returns a block view into the correct matrix boundaries */
+/** @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped to the correct source boundaries. */
 TEST_P(MatrixViewTests, ProvidesCorrectView)
 {
-    const auto& [matrix, expectedView, rowBlock, colBlock, blockSize, bitCeil] = GetParam();
-    auto matrixView = matrix.getView(blockSize, rowBlock, colBlock, bitCeil);
+    auto& [matrix, expectedView, rowBlock, colBlock, blockSize, bitCeil] = GetParam();
+    auto mutableMatrix = std::move(matrix);
+    auto matrixView = mutableMatrix.getView(blockSize, rowBlock, colBlock, bitCeil);
 
-    ASSERT_EQ(matrix.m_Data.data(), matrixView.m_Data);
-    ASSERT_EQ(matrix.m_Data.size(), matrixView.m_Size);
-    ASSERT_EQ(matrix.m_Columns, matrixView.m_Stride);
+    ASSERT_EQ(mutableMatrix.m_Data.data(), matrixView.m_Data);
+    ASSERT_EQ(mutableMatrix.m_Data.size(), matrixView.m_Size);
+    ASSERT_EQ(mutableMatrix.m_Columns, matrixView.m_Stride);
     ASSERT_EQ(blockSize, matrixView.m_ViewRows);
     ASSERT_EQ(blockSize, matrixView.m_ViewColumns);
     ASSERT_EQ(rowBlock, matrixView.m_RowBlock);
