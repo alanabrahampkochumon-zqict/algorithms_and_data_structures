@@ -537,7 +537,28 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
-                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0)
+                                         datastructures::MultiplicationAlgorithmType::BRUTE_FORCE } // 2x2 * 0 = 2x2(0),
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 5, 6 }, { 7, 8 } } },
+                                         { { { 19, 22 }, { 43, 50 } } },
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 2x2 * 2x2
+                                                                                                     // = 2x2
+        MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
+                                         { { { 4, 5, 6 } } },
+                                         { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 3x1 * 1x3
+                                                                                                     // = 3x3
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 1, 0 }, { 0, 1 } } },
+                                         { { { 1, 2 }, { 3, 4 } } },
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 2x2 * I2
+                                                                                                            // =
+                                                                                                     // 2x2
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 0, 0 }, { 0, 0 } } },
+                                         { { { 0, 0 }, { 0, 0 } } },
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }
+        // 2x2 * 0 = 2x2(0)
         ));
 
 /** @} */
