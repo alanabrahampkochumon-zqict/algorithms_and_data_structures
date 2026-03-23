@@ -147,11 +147,13 @@ namespace datastructures
     }
 
 
+    // TODO: Make this function const
     template <Arithmetic T>
-    MatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock,
-        std::size_t colBlock, bool bitCeilMatrix)
+    MatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
+                                     bool bitCeilMatrix)
     {
-        return MatrixView<T>(m_Data.data(), m_Data.size(), blockSize, blockSize, rowBlock, colBlock, m_Columns, bitCeilMatrix);
+        return MatrixView<T>(m_Data.data(), m_Data.size(), blockSize, blockSize, rowBlock, colBlock, m_Columns,
+                             bitCeilMatrix);
     }
 
 
@@ -198,6 +200,46 @@ namespace datastructures
         return result;
     }
 
+
+    template <Arithmetic T, Arithmetic U>
+    static Matrix<std::common_type_t<T, U>> divideAndConquer(const MatrixView<T>& lhs, const MatrixView<U>& rhs)
+    {
+        // 1x1 view row matrix then return 1
+        if (lhs.m_ViewColumns == 1 && lhs.m_ViewRows == 1)
+            return Matrix({ lhs(0, 0) * rhs(0, 0) });
+
+        const std::size_t halfRows = std::bit_ceil(lhs.m_RowBlock / 2);
+        const std::size_t halfCols = std::bit_ceil(lhs.m_ColumnBlock / 2);
+
+        // clang-format off
+        // c00 = a00 * b00 + a01 * b10
+        const auto c00 = divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 0,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 0,rhs.m_Stride, true)) + 
+                         divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 1,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true));
+        // c01 = a00 * b01 + a01 * b11
+        const auto c01 = divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 0,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 1,rhs.m_Stride, true)) + 
+                         divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 1,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 1,rhs.m_Stride, true));
+        // c10 = a10 * b00 + a11 * b10
+        const auto c10 = divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 0,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 0,rhs.m_Stride, true)) + 
+                         divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 1,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true));
+        // c11 = a10 * b10 + a11 * b11
+        const auto c11 = divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 0,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true)) + 
+                         divideAndConquer(MatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 1,lhs.m_Stride, true),
+                                          MatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 1,rhs.m_Stride, true));
+        // clang-format on
+
+
+        return Matrix<T>(lhs.m_Size / lhs.m_Stride, lhs.m_Stride);
+        // return result;
+    }
+
+
     template <Arithmetic T>
     template <Arithmetic U>
     auto Matrix<T>::multiply(const Matrix<U>& rhs, MultiplicationAlgorithmType algo) const
@@ -211,6 +253,9 @@ namespace datastructures
             case MultiplicationAlgorithmType::BRUTE_FORCE:
                 return bruteForce(*this, rhs);
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
+                //TODO: Add const initializer for matrixview
+                //return divideAndConquer(getView(std::max(m_Rows, m_Columns), 0, 0, true),
+                //                 rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));
                 break;
             case MultiplicationAlgorithmType::STRASSENS:
                 break;
