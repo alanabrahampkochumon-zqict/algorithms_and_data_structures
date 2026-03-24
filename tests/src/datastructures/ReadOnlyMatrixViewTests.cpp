@@ -62,21 +62,6 @@ struct MatrixMutationParams
 /** @brief Test fixture for @ref ReadOnlyMatrixView in-bounds mutation, parameterized by @ref MatrixMutationParams */
 class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
 {};
-/** @brief Test fixture for @ref ReadOnlyMatrixView out-of-bounds mutation, parameterized by @ref MatrixMutationParams
- */
-class ReadOnlyMatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
-{};
-
-
-
-template <typename T>
-static std::ostream& operator<<(std::ostream& os, ReadOnlyMatrixAccessorParams<T> params)
-{
-    os << "ReadOnlyMatrixView: " << params.matrixView << "\n(Rows, Columns): (" << params.row << ", " << params.col
-       << "). Expected Value: " << params.expectedValue << "\n";
-    return os;
-}
-
 
 
 /**
