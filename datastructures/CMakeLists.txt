@@ -3,10 +3,10 @@ add_library(DataStructure INTERFACE)
 target_compile_features(DataStructure INTERFACE cxx_std_20)
 
 set(IncludeDirectory "include/")
-set(HeaderFiles "Matrix.h;MatrixView.h")
+set(HeaderFiles "Matrix.h;MatrixView.h;ReadOnlyMatrixView.h")
 list(TRANSFORM HeaderFiles PREPEND ${IncludeDirectory})
 
-set(TemplateFiles "Matrix.tpp;MatrixView.tpp")
+set(TemplateFiles "Matrix.tpp;MatrixView.tpp;ReadOnlyMatrixView.tpp")
 list(TRANSFORM TemplateFiles PREPEND ${IncludeDirectory})
 
 target_sources(

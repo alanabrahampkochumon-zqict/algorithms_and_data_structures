@@ -179,6 +179,7 @@ namespace datastructures
                       MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER) const
             -> Matrix<std::common_type_t<T, U>>;
 
+
         /**
          * @brief @copybrief multiply(const Matrix<U>&, MultiplicationAlgorithmType)
          *

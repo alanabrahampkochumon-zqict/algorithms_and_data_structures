@@ -34,12 +34,22 @@
 
     /**
      * @defgroup MatrixViewTests Matrix View Test Suite
-     * @brief Test suite for all matrix view-related validation.
+     * @brief Test suite for all MatrixView-related validation.
      * @ingroup TestHarness
      * @{
      *   @defgroup T_Mat_Init Matrix Initialization
      *   @defgroup T_Mat_Access Matrix Access
      *   @defgroup T_Mat_Mutation Matrix Mutation
+     * @}
+     */
+
+    /**
+     * @defgroup RO_MatrixViewTests Read Only Matrix View Test Suite
+     * @brief Test suite for all Readonly MatrixView-related validation.
+     * @ingroup TestHarness
+     * @{
+     *   @defgroup T_RO_Mat_Init Matrix Initialization
+     *   @defgroup T_RO_Mat_Access Matrix Access
      * @}
      */
     

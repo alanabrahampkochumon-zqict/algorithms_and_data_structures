@@ -60,10 +60,10 @@ struct MatrixMutationParams
     std::size_t col;
 };
 /** @brief Test fixture for @ref MatrixView in-bounds mutation, parameterized by @ref MatrixMutationParams */
-class MatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
 {};
 /** @brief Test fixture for @ref MatrixView out-of-bounds mutation, parameterized by @ref MatrixMutationParams */
-class MatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+class ReadOnlyMatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
 {};
 
 
@@ -230,11 +230,11 @@ TEST_P(MatrixViewAccessorTests, AccessorReturnsCorrectValue)
     EXPECT_EQ(expected, value);
 }
 
-std::vector data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-datastructures::MatrixView matView1_00 = { data1.data(), data1.size(), 2, 2, 0, 0, 3, true };
-const datastructures::MatrixView matView1_01 = { data1.data(), data1.size(), 2, 2, 0, 1, 3, true };
-const datastructures::MatrixView matView1_10 = { data1.data(), data1.size(), 2, 2, 1, 0, 3, true };
-const datastructures::MatrixView matView1_11 = { data1.data(), data1.size(), 2, 2, 1, 1, 3, true };
+std::vector g_firstData = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+datastructures::MatrixView matView1_00 = { g_firstData.data(), g_firstData.size(), 2, 2, 0, 0, 3, true };
+const datastructures::MatrixView matView1_01 = { g_firstData.data(), g_firstData.size(), 2, 2, 0, 1, 3, true };
+const datastructures::MatrixView matView1_10 = { g_firstData.data(), g_firstData.size(), 2, 2, 1, 0, 3, true };
+const datastructures::MatrixView matView1_11 = { g_firstData.data(), g_firstData.size(), 2, 2, 1, 1, 3, true };
 
 std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
 const datastructures::MatrixView matView2_00 = { data2.data(), data2.size(), 2, 2, 0, 0, 4, true };
@@ -280,7 +280,7 @@ TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
 TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
 {
     // View of 3x3 matrix into the lower-end quadrant
-    const datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 1, 1, 3, false };
+    const datastructures::MatrixView matView = { g_firstData.data(), 9, 2, 2, 1, 1, 3, false };
     EXPECT_THROW(matView(1, 1), std::out_of_range);
 }
 
@@ -295,7 +295,7 @@ TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeExcep
  */
 
 /** @test Verify that @ref datastructures::MatrixView mutator allows mutation at valid indices of parent matrix. */
-TEST_P(MatrixViewMutationTests, AllowsMutationAtParentIndices)
+TEST_P(ReadOnlyMatrixViewMutationTests, AllowsMutationAtParentIndices)
 {
     constexpr ParamType::value_type newValue = 123456;
     const auto& [matrixView, row, col] = GetParam();
@@ -309,7 +309,7 @@ TEST_P(MatrixViewMutationTests, AllowsMutationAtParentIndices)
 }
 
 INSTANTIATE_TEST_SUITE_P(
-    MatrixMutationTestSuite, MatrixViewMutationTests,
+    MatrixMutationTestSuite, ReadOnlyMatrixViewMutationTests,
     ::testing::Values(MatrixMutationParams{ matView1_00, 0, 0 },
                       MatrixMutationParams{
                           matView1_00,
@@ -372,7 +372,7 @@ INSTANTIATE_TEST_SUITE_P(
 
 /** @test Verify that @ref datastructures::MatrixView mutated at out-of-bounds indices of parent matrix throws @ref
  * std::out_of_range. */
-TEST_P(MatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOriginalMatrixThrowsException)
+TEST_P(ReadOnlyMatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOriginalMatrixThrowsException)
 {
     constexpr ParamType::value_type newValue = 123456;
     const auto& [matrixView, row, col] = GetParam();
@@ -383,7 +383,7 @@ TEST_P(MatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOriginalMatrix
 }
 
 
-INSTANTIATE_TEST_SUITE_P(MatrixMutationInvalidityTestSuite, MatrixViewMutationOutOfBoundsTests,
+INSTANTIATE_TEST_SUITE_P(MatrixMutationInvalidityTestSuite, ReadOnlyMatrixViewMutationOutOfBoundsTests,
                          ::testing::Values(
                              MatrixMutationParams{
                                  matView1_01,
@@ -425,7 +425,7 @@ TEST(MatrixViewMutationOutOfBoundsTests, OutOfBoundsMutationThrowsException)
 TEST(MatrixViewMutationOutOfBoundsTests, WithoutBitCeil_OutOfBoundsMutationThrowsException)
 {
     // View of 3x3 matrix into the lower-end quadrant
-    datastructures::MatrixView matView = { data1.data(), 9, 2, 2, 1, 1, 3, false };
+    datastructures::MatrixView matView = { g_firstData.data(), 9, 2, 2, 1, 1, 3, false };
     EXPECT_THROW(matView(1, 1) = 5, std::out_of_range);
 }
 
