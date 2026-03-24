@@ -531,7 +531,7 @@ INSTANTIATE_TEST_CASE_P(
 TEST_P(MatrixMultiplicationTests, MultiplicationProvidesCorrectResult)
 {
     const auto& [matA, matB, matExpected, algo] = GetParam();
-    auto result = matA.multiply(matB, algo);
+    const auto result = matA.multiply(matB, algo);
 
     EXPECT_MAT_EQ(matExpected, result);
 }
@@ -540,10 +540,10 @@ TEST_P(MatrixMultiplicationTests, MultiplicationProvidesCorrectResult)
 TEST(MatrixMultiplicationTestFixture,
      MultiplicationIsNotCommutative) // A * B != B * A
 {
-    datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
-    datastructures::Matrix<int> matB{ { { 4, 5 }, { 6, 7 } } };
-    auto result1 = matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
-    auto result2 = matB.multiply(matA, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
+    const datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
+    const datastructures::Matrix<int> matB{ { { 4, 5 }, { 6, 7 } } };
+    const auto result1 = matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
+    const auto result2 = matB.multiply(matA, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE);
 
     EXPECT_MAT_NE(result1, result2);
 }
@@ -555,7 +555,7 @@ TEST(MatrixMultiplicationTestFixture,
 TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectResult)
 {
     const auto& [matA, matB, matExpected, algo] = GetParam();
-    auto result = datastructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
+    const auto result = datastructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
 
     EXPECT_MAT_EQ(matExpected, result);
 }
@@ -566,8 +566,8 @@ TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectRes
  */
 TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 {
-    datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
-    datastructures::Matrix<int> matB{ { { 3, 2 } } };
+    const datastructures::Matrix<int> matA{ { { 1, 2 }, { 3, 4 } } };
+    const datastructures::Matrix<int> matB{ { { 3, 2 } } };
 
     EXPECT_THROW(matA.multiply(matB, datastructures::MultiplicationAlgorithmType::BRUTE_FORCE), std::invalid_argument);
 }
@@ -614,6 +614,10 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER },
+        MatrixMultiplicationParams<int>{ { { { 3 } } },
+                                         { { { 4 } } },
+                                         { { { 12 } } },
                                          datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }
         // 2x2 * 0 = 2x2(0)
         ));

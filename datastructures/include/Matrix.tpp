@@ -147,7 +147,6 @@ namespace datastructures
     }
 
 
-    // TODO: Make this function const
     template <Arithmetic T>
     ReadOnlyMatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
                                      bool bitCeilMatrix) const
@@ -192,10 +191,8 @@ namespace datastructures
         Matrix<R> result(matA.m_Rows, matB.m_Columns);
         for (std::size_t i = 0; i < matA.m_Rows; ++i)
             for (std::size_t j = 0; j < matB.m_Columns; ++j)
-            {
                 for (std::size_t k = 0; k < matB.m_Rows; ++k)
                     result(i, j) += matA(i, k) * matB(k, j);
-            }
 
         return result;
     }
@@ -206,7 +203,8 @@ namespace datastructures
     {
         // 1x1 view row matrix then return 1
         if (lhs.m_ViewColumns == 1 && lhs.m_ViewRows == 1)
-            return Matrix({ lhs(0, 0) * rhs(0, 0) });
+            return Matrix<T>({ { lhs(0, 0) * rhs(0, 0) } });
+
 
         const std::size_t halfRows = std::bit_ceil(lhs.m_RowBlock / 2);
         const std::size_t halfCols = std::bit_ceil(lhs.m_ColumnBlock / 2);
@@ -253,9 +251,8 @@ namespace datastructures
             case MultiplicationAlgorithmType::BRUTE_FORCE:
                 return bruteForce(*this, rhs);
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
-                //TODO: Add const initializer for matrixview
-                //return divideAndConquer(getView(std::max(m_Rows, m_Columns), 0, 0, true),
-                //                 rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));
+                return divideAndConquer(getView(std::max(m_Rows, m_Columns), 0, 0, true),
+                                 rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));
                 break;
             case MultiplicationAlgorithmType::STRASSENS:
                 break;
