@@ -64,6 +64,7 @@ class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMut
 {};
 
 
+
 /**
  * @addtogroup T_RO_MatView_Init
  * @{
