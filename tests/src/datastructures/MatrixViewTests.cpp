@@ -230,17 +230,17 @@ TEST_P(MatrixViewAccessorTests, AccessorReturnsCorrectValue)
     EXPECT_EQ(expected, value);
 }
 
-std::vector g_firstData = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
-datastructures::MatrixView matView1_00 = { g_firstData.data(), g_firstData.size(), 2, 2, 0, 0, 3, true };
-const datastructures::MatrixView matView1_01 = { g_firstData.data(), g_firstData.size(), 2, 2, 0, 1, 3, true };
-const datastructures::MatrixView matView1_10 = { g_firstData.data(), g_firstData.size(), 2, 2, 1, 0, 3, true };
-const datastructures::MatrixView matView1_11 = { g_firstData.data(), g_firstData.size(), 2, 2, 1, 1, 3, true };
+std::vector g_data1 = { 1, 2, 3, 4, 5, 6, 7, 8, 9 };
+datastructures::MatrixView matView1_00 = { g_data1.data(), g_data1.size(), 2, 2, 0, 0, 3, true };
+const datastructures::MatrixView matView1_01 = { g_data1.data(), g_data1.size(), 2, 2, 0, 1, 3, true };
+const datastructures::MatrixView matView1_10 = { g_data1.data(), g_data1.size(), 2, 2, 1, 0, 3, true };
+const datastructures::MatrixView matView1_11 = { g_data1.data(), g_data1.size(), 2, 2, 1, 1, 3, true };
 
-std::vector data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
-const datastructures::MatrixView matView2_00 = { data2.data(), data2.size(), 2, 2, 0, 0, 4, true };
-const datastructures::MatrixView matView2_01 = { data2.data(), data2.size(), 2, 2, 0, 1, 4, true };
-const datastructures::MatrixView matView2_10 = { data2.data(), data2.size(), 2, 2, 1, 0, 4, true };
-const datastructures::MatrixView matView2_3 = { data2.data(), data2.size(), 2, 2, 1, 1, 4, true };
+std::vector g_data2 = { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16 };
+const datastructures::MatrixView matView2_00 = { g_data2.data(), g_data2.size(), 2, 2, 0, 0, 4, true };
+const datastructures::MatrixView matView2_01 = { g_data2.data(), g_data2.size(), 2, 2, 0, 1, 4, true };
+const datastructures::MatrixView matView2_10 = { g_data2.data(), g_data2.size(), 2, 2, 1, 0, 4, true };
+const datastructures::MatrixView matView2_3 = { g_data2.data(), g_data2.size(), 2, 2, 1, 1, 4, true };
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixAccessorTestSuite, MatrixViewAccessorTests,
@@ -280,7 +280,7 @@ TEST(MatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
 TEST(MatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
 {
     // View of 3x3 matrix into the lower-end quadrant
-    const datastructures::MatrixView matView = { g_firstData.data(), 9, 2, 2, 1, 1, 3, false };
+    const datastructures::MatrixView matView = { g_data1.data(), 9, 2, 2, 1, 1, 3, false };
     EXPECT_THROW(matView(1, 1), std::out_of_range);
 }
 
@@ -323,8 +323,8 @@ INSTANTIATE_TEST_SUITE_P(
                           1,
                       },
 
-                      MatrixMutationParams{ matView1_01, 0, 0 }, // MatrixMutationParams{ matView1_01, 0, 1, },
-                      MatrixMutationParams{ matView1_01, 1, 0 }, // MatrixMutationParams{ matView1_01, 1, 1, },
+                      MatrixMutationParams{ matView1_01, 0, 0 }, // MatrixMutationParams{ MATVIEW1_01, 0, 1, },
+                      MatrixMutationParams{ matView1_01, 1, 0 }, // MatrixMutationParams{ MATVIEW1_01, 1, 1, },
 
                       MatrixMutationParams{ matView1_10, 0, 0 },
                       MatrixMutationParams{
@@ -332,10 +332,10 @@ INSTANTIATE_TEST_SUITE_P(
                           0,
                           1,
                       },
-                      // MatrixMutationParams{ matView1_10, 1, 0}, MatrixMutationParams{ matView1_10, 1, 1, },
+                      // MatrixMutationParams{ MAT_VIEW1_10, 1, 0}, MatrixMutationParams{ MAT_VIEW1_10, 1, 1, },
 
-                      MatrixMutationParams{ matView1_11, 0, 0 }, // MatrixMutationParams{ matView1_11, 0, 1, },
-                      // MatrixMutationParams{ matView1_11, 1, 0}, MatrixMutationParams{ matView1_11, 1, 1, },
+                      MatrixMutationParams{ matView1_11, 0, 0 }, // MatrixMutationParams{ MAT_VIEW1_11, 0, 1, },
+                      // MatrixMutationParams{ MAT_VIEW1_11, 1, 0}, MatrixMutationParams{ MAT_VIEW1_11, 1, 1, },
 
                       MatrixMutationParams{ matView2_00, 0, 0 },
                       MatrixMutationParams{
@@ -425,7 +425,7 @@ TEST(MatrixViewMutationOutOfBoundsTests, OutOfBoundsMutationThrowsException)
 TEST(MatrixViewMutationOutOfBoundsTests, WithoutBitCeil_OutOfBoundsMutationThrowsException)
 {
     // View of 3x3 matrix into the lower-end quadrant
-    datastructures::MatrixView matView = { g_firstData.data(), 9, 2, 2, 1, 1, 3, false };
+    datastructures::MatrixView matView = { g_data1.data(), 9, 2, 2, 1, 1, 3, false };
     EXPECT_THROW(matView(1, 1) = 5, std::out_of_range);
 }
 
