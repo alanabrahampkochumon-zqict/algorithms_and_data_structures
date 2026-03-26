@@ -153,6 +153,7 @@ namespace datastructures
     ReadOnlyMatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
                                              bool bitCeilMatrix) const
     {
+        std::cout << m_Data.size() << "flat size \n";
         return ReadOnlyMatrixView<T>(m_Data.data(), m_Data.size(), blockSize, blockSize, rowBlock, colBlock, m_Columns,
                                      bitCeilMatrix);
     }
@@ -204,7 +205,6 @@ namespace datastructures
     static Matrix<std::common_type_t<T, U>> divideAndConquer(const ReadOnlyMatrixView<T>& lhs,
                                                              const ReadOnlyMatrixView<U>& rhs)
     {
-
         using R = std::common_type_t<T, U>;
 
         // 1x1 view row matrix then return 1
@@ -212,58 +212,80 @@ namespace datastructures
             return Matrix<T>({ { lhs(0, 0) * rhs(0, 0) } });
 
 
-        const std::size_t halfRows = std::bit_ceil(lhs.m_ViewRows / 2);
-        const std::size_t halfCols = std::bit_ceil(lhs.m_ViewColumns / 2);
+        const std::size_t leftHalfRows = lhs.m_ViewRows / 2;
+        const std::size_t leftHalfCols = lhs.m_ViewColumns / 2;
+        const std::size_t rightHalfRows = rhs.m_ViewRows / 2;
+        const std::size_t rightHalfCols = rhs.m_ViewColumns / 2;
 
         // clang-format off
         // c00 = a00 * b00 + a01 * b10
-        const Matrix<R> c00 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 0,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 0,rhs.m_Stride, true)) + 
-                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 1,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true));
+        // TODO: Add getView to matrix view
+        const Matrix<R> c00 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, leftHalfRows,                   leftHalfCols,                      0, 0,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rightHalfRows,                  rightHalfCols,                     0, 0,rhs.m_Stride, true)) + 
+                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, leftHalfRows,                   lhs.m_ViewColumns - leftHalfCols,  0, 1,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rhs.m_ViewRows - rightHalfRows, rightHalfCols,                     1, 0,rhs.m_Stride, true));
         // c01 = a00 * b01 + a01 * b11
-        const Matrix<R> c01 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 0,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 1,rhs.m_Stride, true)) + 
-                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 0, 1,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 1,rhs.m_Stride, true));
+        const Matrix<R> c01 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, leftHalfRows,                   leftHalfCols,                      0, 0,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rightHalfRows,                  rhs.m_ViewColumns - rightHalfCols, 0, 1,rhs.m_Stride, true)) + 
+                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, leftHalfRows,                   lhs.m_ViewColumns - leftHalfCols,  0, 1,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rhs.m_ViewRows - rightHalfRows, rhs.m_ViewColumns - rightHalfCols, 1, 1,rhs.m_Stride, true));
         // c10 = a10 * b00 + a11 * b10
-        const Matrix<R> c10 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 0,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 0, 0,rhs.m_Stride, true)) + 
-                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 1,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true));
-        // c11 = a10 * b10 + a11 * b11
-        const Matrix<R> c11 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 0,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 0,rhs.m_Stride, true)) + 
-                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 1,lhs.m_Stride, true),
-                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 1,rhs.m_Stride, true));
+        const Matrix<R> c10 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, lhs.m_ViewRows - leftHalfRows,  leftHalfCols,                      1, 0,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rightHalfRows,                  rightHalfCols,                     0, 0,rhs.m_Stride, true)) + 
+                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, lhs.m_ViewRows - leftHalfRows,  lhs.m_ViewColumns - leftHalfCols,  1, 1,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rhs.m_ViewRows - rightHalfRows, rightHalfCols,                     1, 0,rhs.m_Stride, true));
+        // c11 = a10 * b01 + a11 * b11
+        const Matrix<R> c11 = divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, lhs.m_ViewRows - leftHalfRows,  leftHalfCols,                      1, 0,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rightHalfRows,                  rhs.m_ViewColumns - rightHalfCols, 0, 1,rhs.m_Stride, true)) + 
+                              divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, lhs.m_ViewRows - leftHalfRows,  lhs.m_ViewColumns -leftHalfCols,   1, 1,lhs.m_Stride, true),
+                                               ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, rhs.m_ViewRows - rightHalfRows, rhs.m_ViewColumns - rightHalfCols, 1, 1,rhs.m_Stride, true));
         // clang-format on
 
-        std::vector<std::vector<R>> rows(lhs.m_ViewRows);
+        Matrix<R> mat(lhs.m_ViewRows, rhs.m_ViewColumns);
+        // TODO: Refactor into merge matrix function
+        for (std::size_t i = 0; i < c00.m_Rows; ++i)
+            for (std::size_t j = 0; j < c00.m_Columns; ++j)
+                mat(i, j) = c00(i, j);
+        
+        for (std::size_t i = 0; i < c01.m_Rows; ++i)
+            for (std::size_t j = 0; j < c01.m_Columns; ++j)
+                mat(i , j + leftHalfCols) = c01(i, j);
 
-        for (std::size_t i = 0; i < lhs.m_ViewColumns; ++i)
-        {
-            const Matrix<R>* currentHalfBlockOne = &c00;
-            const Matrix<R>* currentHalfBlockTwo = &c01;
-            int colOffset = 0;
+        for (std::size_t i = 0; i < c10.m_Rows; ++i)
+            for (std::size_t j = 0; j < c10.m_Columns; ++j)
+                mat(leftHalfRows + i, j) = c10(i, j);
+        
+        for (std::size_t i = 0; i < c11.m_Rows; ++i)
+            for (std::size_t j = 0; j < c11.m_Columns; ++j)
+                mat(leftHalfRows + i, leftHalfCols + j) = c11(i, j);
 
-            if (i >= halfRows)
-            {
-                currentHalfBlockOne = &c10;
-                currentHalfBlockTwo = &c11;
-                colOffset = 1;
-            }
+        //std::vector<std::vector<R>> rows(lhs.m_ViewRows);
 
-            std::vector<R> row(lhs.m_ViewColumns);
-            for (std::size_t j = 0; j < lhs.m_ViewColumns; ++j)
-            {
-                if (j < halfCols)
-                    row[j] = (*currentHalfBlockOne)(i - (colOffset * halfCols), j);
-                else
-                    row[j] = (*currentHalfBlockTwo)(i - (colOffset * halfCols), j - halfRows);
-            }
-        }
+        //for (std::size_t i = 0; i < lhs.m_ViewColumns; ++i)
+        //{
+        //    const Matrix<R>* currentHalfBlockOne = &c00;
+        //    const Matrix<R>* currentHalfBlockTwo = &c01;
+        //    int colOffset = 0;
 
-        return Matrix<T>(std::move(rows));
+        //    if (i >= halfRows)
+        //    {
+        //        currentHalfBlockOne = &c10;
+        //        currentHalfBlockTwo = &c11;
+        //        colOffset = 1;
+        //    }
+
+        //    std::vector<R> row(lhs.m_ViewColumns);
+        //    for (std::size_t j = 0; j < lhs.m_ViewColumns; ++j)
+        //    {
+        //        if (j < halfCols)
+        //            row[j] = (*currentHalfBlockOne)(i - (colOffset * halfCols), j);
+        //        else
+        //            row[j] = (*currentHalfBlockTwo)(i - (colOffset * halfCols), j - halfRows);
+        //    }
+        //}
+
+        
+        return mat;
         // return result;
     }
 
@@ -280,6 +302,7 @@ namespace datastructures
         {
             case MultiplicationAlgorithmType::BRUTE_FORCE:
                 return bruteForce(*this, rhs);
+                // TODO:Fixme block size for uneven matrices
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
                 return divideAndConquer(getView(std::max(m_Rows, m_Columns), 0, 0, true),
                                         rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));

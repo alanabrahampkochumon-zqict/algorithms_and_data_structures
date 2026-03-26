@@ -595,6 +595,7 @@ INSTANTIATE_TEST_SUITE_P(
             { { { 0, 0 }, { 0, 0 } } },
             { { { 0, 0 }, { 0, 0 } } },
             datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 0 = 2x2(0),
+
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
