@@ -63,6 +63,7 @@ namespace datastructures
     template <Arithmetic T>
     T& Matrix<T>::operator()(std::size_t row, std::size_t col)
     {
+        std::cout << "Matrix Access (" << m_Rows << ", " << m_Columns << ")\nAccessed (" << row << ", " << col << ")\n";
         if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
             throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
@@ -71,6 +72,7 @@ namespace datastructures
     template <Arithmetic T>
     const T& Matrix<T>::operator()(std::size_t row, std::size_t col) const
     {
+        std::cout << "Matrix Modify (" << m_Rows << ", " << m_Columns << ")\nAccessed (" << row << ", " << col << ")\n";
         if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
             throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
@@ -149,10 +151,10 @@ namespace datastructures
 
     template <Arithmetic T>
     ReadOnlyMatrixView<T> Matrix<T>::getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
-                                     bool bitCeilMatrix) const
+                                             bool bitCeilMatrix) const
     {
         return ReadOnlyMatrixView<T>(m_Data.data(), m_Data.size(), blockSize, blockSize, rowBlock, colBlock, m_Columns,
-                             bitCeilMatrix);
+                                     bitCeilMatrix);
     }
 
 
@@ -199,7 +201,8 @@ namespace datastructures
 
 
     template <Arithmetic T, Arithmetic U>
-    static Matrix<std::common_type_t<T, U>> divideAndConquer(const ReadOnlyMatrixView<T>& lhs, const ReadOnlyMatrixView<U>& rhs)
+    static Matrix<std::common_type_t<T, U>> divideAndConquer(const ReadOnlyMatrixView<T>& lhs,
+                                                             const ReadOnlyMatrixView<U>& rhs)
     {
 
         using R = std::common_type_t<T, U>;
@@ -234,31 +237,33 @@ namespace datastructures
                               divideAndConquer(ReadOnlyMatrixView(lhs.m_Data, lhs.m_Size, halfRows, halfCols, 1, 1,lhs.m_Stride, true),
                                                ReadOnlyMatrixView(rhs.m_Data, rhs.m_Size, halfRows, halfCols, 1, 1,rhs.m_Stride, true));
         // clang-format on
-        
+
         std::vector<std::vector<R>> rows(lhs.m_ViewRows);
 
         for (std::size_t i = 0; i < lhs.m_ViewColumns; ++i)
         {
             const Matrix<R>* currentHalfBlockOne = &c00;
             const Matrix<R>* currentHalfBlockTwo = &c01;
+            int colOffset = 0;
 
-            if (i>= halfRows)
+            if (i >= halfRows)
             {
                 currentHalfBlockOne = &c10;
                 currentHalfBlockTwo = &c11;
+                colOffset = 1;
             }
 
             std::vector<R> row(lhs.m_ViewColumns);
             for (std::size_t j = 0; j < lhs.m_ViewColumns; ++j)
             {
                 if (j < halfCols)
-                    row[j] = (*currentHalfBlockOne) (i, j);
+                    row[j] = (*currentHalfBlockOne)(i - (colOffset * halfCols), j);
                 else
-                    row[j] = (*currentHalfBlockTwo) (i, j);
+                    row[j] = (*currentHalfBlockTwo)(i - (colOffset * halfCols), j - halfRows);
             }
         }
 
-        return Matrix<T>(rows);
+        return Matrix<T>(std::move(rows));
         // return result;
     }
 
@@ -277,7 +282,7 @@ namespace datastructures
                 return bruteForce(*this, rhs);
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
                 return divideAndConquer(getView(std::max(m_Rows, m_Columns), 0, 0, true),
-                                 rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));
+                                        rhs.getView(std::max(rhs.m_Rows, rhs.m_Columns), 0, 0, true));
                 break;
             case MultiplicationAlgorithmType::STRASSENS:
                 break;

@@ -25,9 +25,9 @@ namespace datastructures
      **************************************/
 
     template <Arithmetic T>
-    ReadOnlyMatrixView<T>::ReadOnlyMatrixView(const T* data, const std::size_t size, const std::size_t rows, const std::size_t cols,
-                              const std::size_t rowBlock, const std::size_t colBlock, const std::size_t stride,
-                              const bool bitCeil)
+    ReadOnlyMatrixView<T>::ReadOnlyMatrixView(const T* data, const std::size_t size, const std::size_t rows,
+                                              const std::size_t cols, const std::size_t rowBlock,
+                                              const std::size_t colBlock, const std::size_t stride, const bool bitCeil)
         : m_Data(data),
           m_Size(size),
           m_ViewRows(rows),
@@ -51,6 +51,9 @@ namespace datastructures
         const std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
         const std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
 
+        std::cout << "Rows: " << m_ViewRows << ", Columns: " << m_ViewColumns << '\n';
+        std::cout << "Size: " << m_Size << ", Stride: " << m_Stride << '\n';
+
         if (m_ViewRows > maxRows || m_ViewRows < 1)
             throw std::out_of_range(std::string("ReadOnlyMatrixView cannot be initialized with rows greater than ") +
                                     std::to_string(maxRows) + std::string(" or less than 1"));
@@ -71,6 +74,8 @@ namespace datastructures
     template <Arithmetic T>
     const T& ReadOnlyMatrixView<T>::operator()(const std::size_t i, const std::size_t j) const
     {
+        std::cout << "MatrixView (Rows, Cols): (" << m_ViewRows << ", " << m_ViewColumns << ")\n Accessed (i, j): (" << i
+                  << ", " << j << ")\n";
         if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");
 
