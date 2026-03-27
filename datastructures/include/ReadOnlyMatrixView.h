@@ -88,7 +88,7 @@ namespace datastructures
             for (std::size_t i = 0; i < mv.m_ViewRows; ++i)
             {
                 for (std::size_t j = 0; j < mv.m_ViewColumns; ++j)
-                    os << std::fixed << std::setprecision(2) << mv(i, j);
+                    os << std::fixed << std::setprecision(2) << mv(i, j) << "  ";
                 os << "\n";
             }
             return os;
