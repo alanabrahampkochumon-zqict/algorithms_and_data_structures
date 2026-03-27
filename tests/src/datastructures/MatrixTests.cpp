@@ -556,7 +556,7 @@ TEST_P(MatrixMultiplicationTests, StaticWrapper_MultiplicationProvidesCorrectRes
 {
     const auto& [matA, matB, matExpected, algo] = GetParam();
     const auto result = datastructures::Matrix<decltype(matExpected)::value_type>::multiply(matA, matB, algo);
-
+    std::cout << result.getView(std::max(result.m_Rows, result.m_Columns), 0, 0, true) << '\n';
     EXPECT_MAT_EQ(matExpected, result);
 }
 
