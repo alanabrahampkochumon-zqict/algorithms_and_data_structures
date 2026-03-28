@@ -87,14 +87,15 @@ namespace datastructures
 
         if (!m_BitCeil && (actualRow >= maxRow || actualColumn >= m_Stride))
             throw std::out_of_range("Cannot access out-of-bounds region of original matrix with bitCeil = false");
+        
 
         if (actualRow >= maxRow)
             return s_Zero;
 
         if (actualColumn >= m_Stride)
             return s_Zero;
-
         std::size_t index = actualRow * m_Stride + actualColumn;
+        std::cout << "\nData Index: " << index <<"\n\n";
         return m_Data[index];
     }
 
