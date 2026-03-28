@@ -465,7 +465,8 @@ INSTANTIATE_TEST_SUITE_P(
  *                                    *
  **************************************/
 
-/** @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped to the correct source boundaries. */
+/** @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped to the correct source
+ * boundaries. */
 TEST_P(MatrixViewTests, ProvidesCorrectView)
 {
     auto& [matrix, expectedView, rowBlock, colBlock, blockSize, bitCeil] = GetParam();
@@ -595,6 +596,15 @@ INSTANTIATE_TEST_SUITE_P(
             { { { 0, 0 }, { 0, 0 } } },
             { { { 0, 0 }, { 0, 0 } } },
             datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 2x2 * 0 = 2x2(0),
+        MatrixMultiplicationParams<int>{
+            { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } },
+            { { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, { 25, 26, 27, 28 }, { 29, 30, 31, 32 } } },
+            { { { 250, 260, 270, 280 },
+                { 618, 644, 670, 696 },
+                { 986, 1028, 1070, 1112 },
+                { 1354, 1412, 1470, 1528 } } },
+            datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 4x4
+
 
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
@@ -612,6 +622,14 @@ INSTANTIATE_TEST_SUITE_P(
                                          datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 2x2 * I2
                                                                                                             // =
                                                                                                             // 2x2
+        MatrixMultiplicationParams<int>{
+            { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } },
+            { { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, { 25, 26, 27, 28 }, { 29, 30, 31, 32 } } },
+            { { { 250, 260, 270, 280 },
+                { 618, 644, 670, 696 },
+                { 986, 1028, 1070, 1112 },
+                { 1354, 1412, 1470, 1528 } } },
+            datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }, // 4x4
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
