@@ -198,6 +198,19 @@ namespace datastructures
                              MultiplicationAlgorithmType algo = MultiplicationAlgorithmType::DIVIDE_AND_CONQUER)
             -> Matrix<std::common_type_t<T, U>>;
 
+
+        friend std::ostream& operator<<(std::ostream& os, const Matrix& mat)
+        {
+            for (std::size_t row = 0; row < mat.m_Rows;++row)
+            {
+                for (std::size_t col = 0; col < mat.m_Columns; ++col)
+                    os << mat(row, col) << " ";
+                os << '\n';
+            }
+
+            return os;
+        }
+
         // TODO: *, *= op
     };
 
