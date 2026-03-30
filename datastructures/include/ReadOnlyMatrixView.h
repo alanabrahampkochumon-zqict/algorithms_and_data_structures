@@ -79,7 +79,7 @@ namespace datastructures
 
 
         /**
-         * @brief Return a submatrix view on the current view matrix.
+         * @brief Return a read-only submatrix view of the current view matrix.
          *
          * @param[in] rowBlock     The submatrix's row block.
          * @param[in] colBlock     The submatrix's column block.
@@ -88,8 +88,8 @@ namespace datastructures
          *
          * @return A readonly submatrix view of the current MatrixView.
          */
-        constexpr ReadOnlyMatrixView<T> getSubView(std::size_t rowBlock, std::size_t colBlock,
-                                                   std::size_t rowBlockSize, std::size_t colBlockSize);
+        constexpr ReadOnlyMatrixView getSubview(std::size_t rowBlock, std::size_t colBlock, std::size_t rowBlockSize,
+                                                std::size_t colBlockSize) const;
 
 
         /**
@@ -118,11 +118,6 @@ namespace datastructures
     };
 
 
-    template <Arithmetic T>
-    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubView(std::size_t rowBlock, std::size_t colBlock, std::size_t rowBlockSize, std::size_t colBlockSize)
-    {
-        return *this;
-    }
 } // namespace datastructures
 
 

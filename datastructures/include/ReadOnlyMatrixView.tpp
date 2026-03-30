@@ -51,33 +51,35 @@ namespace datastructures
         const std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
         const std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
 
-        //std::cout << "Rows: " << m_ViewRows << ", Columns: " << m_ViewColumns << '\n';
-        //std::cout << "Max Rows: " << maxRows << ", Max Columns: " << maxCols << '\n';
-        //std::cout << "Row Block: " << rowBlock << ", Column Block: " << colBlock << '\n';
-        //std::cout << "Size: " << m_Size << ", Stride: " << m_Stride << "\n\n\n";
+        // std::cout << "Rows: " << m_ViewRows << ", Columns: " << m_ViewColumns << '\n';
+        // std::cout << "Max Rows: " << maxRows << ", Max Columns: " << maxCols << '\n';
+        // std::cout << "Row Block: " << rowBlock << ", Column Block: " << colBlock << '\n';
+        // std::cout << "Size: " << m_Size << ", Stride: " << m_Stride << "\n\n\n";
 
-        //if (m_ViewRows > maxRows || m_ViewRows < 1)
-        //    throw std::out_of_range(std::string("ReadOnlyMatrixView cannot be initialized with rows greater than ") +
-        //                            std::to_string(maxRows) + std::string(" or less than 1"));
-        //if (m_ViewColumns > maxCols || m_ViewColumns < 1)
-        //    throw std::out_of_range(std::string("ReadOnlyMatrixView cannot be initialized with columns greater than ") +
-        //                            std::to_string(maxCols) + std::string(" or less than 1"));
+        // if (m_ViewRows > maxRows || m_ViewRows < 1)
+        //     throw std::out_of_range(std::string("ReadOnlyMatrixView cannot be initialized with rows greater than ") +
+        //                             std::to_string(maxRows) + std::string(" or less than 1"));
+        // if (m_ViewColumns > maxCols || m_ViewColumns < 1)
+        //     throw std::out_of_range(std::string("ReadOnlyMatrixView cannot be initialized with columns greater than
+        //     ") +
+        //                             std::to_string(maxCols) + std::string(" or less than 1"));
 
 
         // Offset Validation
-        //if (m_ViewRows * m_RowBlock > maxRows)
+        // if (m_ViewRows * m_RowBlock > maxRows)
         //    throw std::out_of_range("Invalid row offset");
 
-        //if (m_ViewColumns * m_ColumnBlock > maxCols)
-        //    throw std::out_of_range("Invalid column offset");
+        // if (m_ViewColumns * m_ColumnBlock > maxCols)
+        //     throw std::out_of_range("Invalid column offset");
     }
 
 
     template <Arithmetic T>
     const T& ReadOnlyMatrixView<T>::operator()(const std::size_t i, const std::size_t j) const
     {
-        //std::cout << "MatrixView (Rows, Cols): (" << m_ViewRows << ", " << m_ViewColumns << ")\n Accessed (i, j): (" << i
-        //          << ", " << j << ")\n";
+        // std::cout << "MatrixView (Rows, Cols): (" << m_ViewRows << ", " << m_ViewColumns << ")\n Accessed (i, j): ("
+        // << i
+        //           << ", " << j << ")\n";
         if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");
 
@@ -87,7 +89,7 @@ namespace datastructures
 
         if (!m_BitCeil && (actualRow >= maxRow || actualColumn >= m_Stride))
             throw std::out_of_range("Cannot access out-of-bounds region of original matrix with bitCeil = false");
-        
+
 
         if (actualRow >= maxRow)
             return s_Zero;
@@ -95,8 +97,17 @@ namespace datastructures
         if (actualColumn >= m_Stride)
             return s_Zero;
         std::size_t index = actualRow * m_Stride + actualColumn;
-        std::cout << "\nData Index: " << index <<"\n\n";
+        std::cout << "\nData Index: " << index << "\n\n";
         return m_Data[index];
+    }
+
+
+    template <Arithmetic T>
+    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubview(std::size_t rowBlock, std::size_t colBlock,
+                                                                      std::size_t rowBlockSize,
+                                                                      std::size_t colBlockSize) const
+    {
+        return *this;
     }
 
 } // namespace datastructures

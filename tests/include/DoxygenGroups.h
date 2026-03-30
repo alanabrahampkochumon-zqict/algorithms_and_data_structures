@@ -50,6 +50,7 @@
      * @{
      *   @defgroup T_RO_Mat_Init Matrix Initialization
      *   @defgroup T_RO_Mat_Access Matrix Access
+     *   @defgroup T_RO_Mat_Subview Matrix Subview
      * @}
      */
     

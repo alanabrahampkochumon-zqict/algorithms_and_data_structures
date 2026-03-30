@@ -23,7 +23,7 @@ using SupportedTypes = ::testing::Types<unsigned char, short, int, float, double
 template <typename T>
 class ReadOnlyMatrixViewInitializationTests: public ::testing::Test
 {
-protected:
+    protected:
     std::vector<T> _data{ T(1), T(2), T(3), T(4), T(5), T(6) };
     T* _dataPtr = _data.data();
     std::size_t _size = _data.size();
@@ -34,7 +34,8 @@ protected:
     std::size_t _stride = 3;
     bool _bitCeil = true;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, parameterized by @ref SupportedTypes */
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, parameterized by @ref SupportedTypes
+ */
 TYPED_TEST_SUITE(ReadOnlyMatrixViewInitializationTests, SupportedTypes);
 
 
@@ -46,7 +47,8 @@ struct ReadOnlyMatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor, parameterized by @ref MatrixAccessorParams */
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor, parameterized by @ref MatrixAccessorParams
+ */
 class ReadOnlyMatrixViewAccessorTests: public ::testing::TestWithParam<ReadOnlyMatrixAccessorParams<int>>
 {};
 
@@ -57,7 +59,8 @@ struct MatrixSubviewParams
     datastructures::ReadOnlyMatrixView<T> matrixView, expectedSubmatrixView;
     std::size_t rowBlock, colBlock, rowBlockSize, colBlockSize;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView subview tests, parameterized by @ref MatrixSubviewParams */
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView subview tests, parameterized by @ref
+ * MatrixSubviewParams */
 class ReadOnlyMatrixSubviewTests: public ::testing::TestWithParam<MatrixSubviewParams<int>>
 {};
 
@@ -91,8 +94,8 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InitializesToCorrectValues)
 }
 
 
-/** 
- * @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor sets 
+/**
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor sets
  *       m_BitCeil to false by default.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
@@ -114,7 +117,7 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 
 
 /**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0 
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0
  *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
@@ -126,8 +129,8 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
 }
 
 
-/** 
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0 
+/**
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0
  *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
@@ -139,14 +142,15 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
 }
 
 
-/** 
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0 
+/**
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0
  *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
 {
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(
-                     this->_data.data(), this->_size, this->_rows, this->_cols, this->_rowBlock, this->_colBlock, 0, true),
+    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+                                                                          this->_cols, this->_rowBlock, this->_colBlock,
+                                                                          0, true),
                  std::out_of_range);
 }
 
@@ -164,7 +168,8 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsErr
 }
 
 
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`. */
+/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`.
+ */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), 0, this->_rows,
@@ -180,9 +185,9 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
 {
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
-                                                                          this->_rows + 10, this->_cols, this->_rowBlock,
-                                                                          this->_colBlock, this->_stride, true),
+    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(
+                     this->_data.data(), this->_size, this->_rows + 10, this->_cols, this->_rowBlock, this->_colBlock,
+                     this->_stride, true),
                  std::out_of_range);
 }
 
@@ -234,7 +239,7 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError
  * @{
  */
 
-/** @test Verify @ref ReadOnlyMatrixView accessor return correct value. */
+/** @test Verify that the read only matrix view accessor return correct value. */
 TEST_P(ReadOnlyMatrixViewAccessorTests, AccessorReturnsCorrectValue)
 {
     const auto& [matrixView, row, col, expected] = GetParam();
@@ -281,11 +286,12 @@ INSTANTIATE_TEST_SUITE_P(
         ReadOnlyMatrixAccessorParams{ MAT_VIEW2_10, 1, 0, 13 }, ReadOnlyMatrixAccessorParams{ MAT_VIEW2_10, 1, 1, 14 },
 
         ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 0, 0, 11 }, ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 0, 1, 12 },
-        ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 0, 15 }, ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 1, 16 }));
+        ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 0, 15 },
+        ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 1, 16 }));
 
 
 /**
- * @test Verify that @ref datastructures::ReadOnlyMatrixView accessed at (rowSize, colSize) 
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView accessed at (rowSize, colSize)
  *       throws `std::out_of_range`.
  */
 TEST(ReadOnlyMatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
@@ -293,7 +299,7 @@ TEST(ReadOnlyMatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeExce
     EXPECT_THROW(MAT_VIEW1_00(2, 2), std::out_of_range);
 }
 
-/** 
+/**
  * @test Verify that @ref datastructures::ReadOnlyMatrixView configured with no bitCeil, when accessed at index out of
  *       bounds of the original matrix, throws `std::out_of_range`.
  */
@@ -303,5 +309,55 @@ TEST(ReadOnlyMatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRunt
     const datastructures::ReadOnlyMatrixView matView = { DATA1.data(), 9, 2, 2, 1, 1, 3, false };
     EXPECT_THROW(matView(1, 1), std::out_of_range);
 }
+
+/** @} */
+
+
+/**
+ * @addtogroup T_RO_Mat_Subview
+ * @{
+ */
+
+/** @test Verify that the read only matrix subview returns correct matrix view. */
+TEST_P(ReadOnlyMatrixSubviewTests, ReturnsSubview)
+{
+    const auto& [matrixView, expectedSubview, rowBlock, colBlock, rowSize, colSize] = GetParam();
+
+    const auto subView = matrixView.getSubview(rowBlock, colBlock, rowSize, colSize);
+
+    EXPECT_EQ(subView.m_Data, expectedSubview.m_Data);
+    EXPECT_EQ(subView.m_Size, expectedSubview.m_Size);
+    EXPECT_EQ(subView.m_ViewRows, expectedSubview.m_ViewRows);
+    EXPECT_EQ(subView.m_ViewColumns, expectedSubview.m_ViewColumns);
+    EXPECT_EQ(subView.m_Stride, expectedSubview.m_Stride);
+    EXPECT_EQ(subView.m_RowBlock, expectedSubview.m_RowBlock);
+    EXPECT_EQ(subView.m_ColumnBlock, expectedSubview.m_ColumnBlock);
+    EXPECT_EQ(subView.m_BitCeil, expectedSubview.m_BitCeil);
+}
+
+
+const datastructures::ReadOnlyMatrixView MAT_VIEW_1 = { DATA1.data(), DATA1.size(), 4, 4, 0, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00 = { DATA1.data(), DATA1.size(), 2, 2, 0, 0, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01 = { DATA1.data(), DATA1.size(), 2, 2, 0, 1, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10 = { DATA1.data(), DATA1.size(), 2, 2, 1, 0, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11 = { DATA1.data(), DATA1.size(), 2, 2, 1, 1, 2, true };
+
+const datastructures::ReadOnlyMatrixView MAT_VIEW_2 = { DATA2.data(), DATA2.size(), 4, 4, 0, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_00 = { DATA2.data(), DATA2.size(), 2, 2, 0, 0, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_01 = { DATA2.data(), DATA2.size(), 2, 2, 0, 1, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_10 = { DATA2.data(), DATA2.size(), 2, 2, 1, 0, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_11 = { DATA2.data(), DATA2.size(), 2, 2, 1, 1, 2, true };
+
+
+INSTANTIATE_TEST_SUITE_P(ReadOnlyMatrixSubViewTestSuite, ReadOnlyMatrixSubviewTests,
+                         ::testing::Values(MatrixSubviewParams{ MAT_VIEW_1, MAT_SUBVIEW_1_00, 0, 0, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_1, MAT_SUBVIEW_1_01, 0, 1, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_1, MAT_SUBVIEW_1_10, 1, 0, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_1, MAT_SUBVIEW_1_11, 1, 1, 2, 2 },
+
+                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_00, 0, 0, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_01, 0, 1, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_10, 1, 0, 2, 2 },
+                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_11, 1, 1, 2, 2 }));
 
 /** @} */
