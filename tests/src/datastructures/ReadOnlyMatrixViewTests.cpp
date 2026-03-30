@@ -34,7 +34,7 @@ protected:
     std::size_t _stride = 3;
     bool _bitCeil = true;
 };
-/** @brief Test fixture for @ref ReadOnlyMatrixView initialization, parameterized by @ref SupportedTypes */
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, parameterized by @ref SupportedTypes */
 TYPED_TEST_SUITE(ReadOnlyMatrixViewInitializationTests, SupportedTypes);
 
 
@@ -46,21 +46,19 @@ struct ReadOnlyMatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
-/** @brief Test fixture for @ref ReadOnlyMatrixView accessor, parameterized by @ref MatrixAccessorParams */
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor, parameterized by @ref MatrixAccessorParams */
 class ReadOnlyMatrixViewAccessorTests: public ::testing::TestWithParam<ReadOnlyMatrixAccessorParams<int>>
 {};
 
 
 template <typename T>
-struct MatrixMutationParams
+struct MatrixSubviewParams
 {
-    using value_type = T;
-    datastructures::ReadOnlyMatrixView<T> matrixView;
-    std::size_t row;
-    std::size_t col;
+    datastructures::ReadOnlyMatrixView<T> matrixView, expectedSubmatrixView;
+    std::size_t rowBlock, colBlock, rowBlockSize, colBlockSize;
 };
-/** @brief Test fixture for @ref ReadOnlyMatrixView in-bounds mutation, parameterized by @ref MatrixMutationParams */
-class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView subview tests, parameterized by @ref MatrixSubviewParams */
+class ReadOnlyMatrixSubviewTests: public ::testing::TestWithParam<MatrixSubviewParams<int>>
 {};
 
 
@@ -70,8 +68,10 @@ class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMut
  * @{
  */
 
-/** @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor initializes member variables
- * with the passed-in arguments. */
+/**
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor initializes member variables
+ *       with the passed-in arguments.
+ */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InitializesToCorrectValues)
 {
     // When matrix view is initialized with default values.
@@ -90,8 +90,11 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InitializesToCorrectValues)
     ASSERT_EQ(this->_bitCeil, view.m_BitCeil);
 }
 
-/** @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor sets m_BitCeil to false by
- * default. */
+
+/** 
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView parameterized constructor sets 
+ *       m_BitCeil to false by default.
+ */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 {
     // When matrix view is initialized without bitCeil
@@ -109,7 +112,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
     ASSERT_FALSE(view.m_BitCeil);
 }
 
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0 throw std::out_of_range.
+
+/**
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0 
+ *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
 {
@@ -119,8 +125,11 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
                  std::out_of_range);
 }
 
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0 throw
- * std::out_of_range. */
+
+/** 
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0 
+ *       throws `std::out_of_range`.
+ */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
 {
     EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
@@ -129,7 +138,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
                  std::out_of_range);
 }
 
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0 throw std::out_of_range.
+
+/** 
+ * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0 
+ *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
 {
@@ -138,9 +150,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
                  std::out_of_range);
 }
 
+
 /**
  * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride greater than size of matrix
- * throw std::out_of_range.
+ *       throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 {
@@ -150,7 +163,8 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsErr
                  std::out_of_range);
 }
 
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws std::out_of_range. */
+
+/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`. */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
 {
     EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), 0, this->_rows,
@@ -159,9 +173,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
                  std::out_of_range);
 }
 
+
 /**
  * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
- * value (nearest power of 2) throws std::out_of_range.
+ *       value (nearest power of 2) throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
 {
@@ -171,9 +186,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
                  std::out_of_range);
 }
 
+
 /**
  * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
- * value (nearest power of 2) throws std::out_of_range.
+ *       value (nearest power of 2) throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
 {
@@ -183,9 +199,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
                  std::out_of_range);
 }
 
+
 /**
  * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row block larger than row size
- *       (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 {
@@ -195,9 +212,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
                  std::out_of_range);
 }
 
+
 /**
  * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a column block larger than column size
- *       (nearest power of 2) throws std::out_of_range.
+ *       (nearest power of 2) throws `std::out_of_range`.
  */
 TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 {
@@ -208,7 +226,6 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError
 }
 
 /** @} */
-
 
 
 
@@ -267,15 +284,19 @@ INSTANTIATE_TEST_SUITE_P(
         ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 0, 15 }, ReadOnlyMatrixAccessorParams{ MAT_VIEW2_11, 1, 1, 16 }));
 
 
-/** @test Verify that @ref datastructures::ReadOnlyMatrixView accessed at (rowSize, colSize) throws @ref
- *        std::out_of_range */
+/**
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView accessed at (rowSize, colSize) 
+ *       throws `std::out_of_range`.
+ */
 TEST(ReadOnlyMatrixViewAccessorTests, OutOfBoundsSubindexAccessThrowsRuntimeException)
 {
     EXPECT_THROW(MAT_VIEW1_00(2, 2), std::out_of_range);
 }
 
-/** @test Verify that @ref datastructures::ReadOnlyMatrixView configured with no bitCeil, when accessed at index out of
- *        bounds of the original matrix, throws @ref std::out_of_range */
+/** 
+ * @test Verify that @ref datastructures::ReadOnlyMatrixView configured with no bitCeil, when accessed at index out of
+ *       bounds of the original matrix, throws `std::out_of_range`.
+ */
 TEST(ReadOnlyMatrixViewAccessorTests, WithoutBitCeil_OutOfBoundsAccessThrowsRuntimeException)
 {
     // View of 3x3 matrix into the lower-end quadrant

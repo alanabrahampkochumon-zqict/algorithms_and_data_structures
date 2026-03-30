@@ -4,8 +4,9 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 24, 2026
  *
- * @brief A non-owning read-only view to enable viewing and performing operations on a subset of @ref datastructures::Matrix.
- * 
+ * @brief A non-owning read-only view to enable viewing and performing operations on a subset of @ref
+ * datastructures::Matrix.
+ *
  * @note For a view that supports both read-write operations see @ref datastructures::MatrixView.
  *
  * @copyright Copyright (c) 2026 Alan Abraham P Kochumon
@@ -16,13 +17,14 @@
 #include <cstddef>
 #include <iomanip>
 
-// TODO: Add move offset for moving the block view around non-linear block like rowStart of 1 and end of 3 which is technically an even view block.
+// TODO: Add move offset for moving the block view around non-linear block like rowStart of 1 and end of 3 which is
+// technically an even view block.
 namespace datastructures
 {
     template <Arithmetic T>
     struct ReadOnlyMatrixView
     {
-        const T* m_Data;                       ///< Pointer to the data of the original matrix
+        const T* m_Data;                 ///< Pointer to the data of the original matrix
         const std::size_t m_Size;        ///< Size of matrix data(1D)
         const std::size_t m_ViewRows;    ///< Number of rows in the MatrixView
         const std::size_t m_ViewColumns; ///< Number of columns in the Matrix View
@@ -33,6 +35,7 @@ namespace datastructures
         const bool m_BitCeil; ///< Flag that returns a T(0) instead of throwing runtime_exception when passed in an
                               ///< index larger
                               // than the size of matrix.
+        // TODO: Update docs
 
         /**
          * @brief Construct a non-owning view into a subset of a Matrix.
@@ -51,12 +54,13 @@ namespace datastructures
          * @throw std::out_of_range If the calculated physical offset exceeds the parent's size.
          */
         ReadOnlyMatrixView(const T* data, std::size_t size, std::size_t rows, std::size_t cols, std::size_t rowBlock,
-                   std::size_t colBlock, std::size_t stride, bool bitCeil = false);
+                           std::size_t colBlock, std::size_t stride, bool bitCeil = false);
+
 
         /**
          * @brief Access the element at (i, j) within the view for mutation.
-         * Provides an immutable reference to the underlying matrix data. This operation
-         * requires the indices to map to a physical memory location within the parent matrix.
+         *        Provides an immutable reference to the underlying matrix data.
+         *        This operation requires the indices to map to a physical memory location within the parent matrix.
          *
          * @param[in] i Local row index relative to the start of the view.
          * @param[in] j Local column index relative to the start of the view.
@@ -75,8 +79,22 @@ namespace datastructures
 
 
         /**
+         * @brief Return a submatrix view on the current view matrix.
+         *
+         * @param[in] rowBlock     The submatrix's row block.
+         * @param[in] colBlock     The submatrix's column block.
+         * @param[in] rowBlockSize The submatrix's row span.
+         * @param[in] colBlockSize The submatrix's column span.
+         *
+         * @return A readonly submatrix view of the current MatrixView.
+         */
+        constexpr ReadOnlyMatrixView<T> getSubView(std::size_t rowBlock, std::size_t colBlock,
+                                                   std::size_t rowBlockSize, std::size_t colBlockSize);
+
+
+        /**
          * @brief Write the @ref MatrixView to an output stream.
-         * Formats the matrix view as a string representation for debugging or logging.
+         *        Formats the matrix view as a string representation for debugging or logging.
          *
          * @tparam T Numeric type of the matrix.
          * @param[in,out] os The output stream to write to.
@@ -98,6 +116,13 @@ namespace datastructures
         private:
         static inline const T s_Zero = T(0); ///< Shared null object for BitCeil
     };
+
+
+    template <Arithmetic T>
+    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubView(std::size_t rowBlock, std::size_t colBlock, std::size_t rowBlockSize, std::size_t colBlockSize)
+    {
+        return *this;
+    }
 } // namespace datastructures
 
 

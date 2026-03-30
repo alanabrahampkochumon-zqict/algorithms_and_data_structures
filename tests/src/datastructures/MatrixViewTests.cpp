@@ -52,7 +52,7 @@ class MatrixViewAccessorTests: public ::testing::TestWithParam<MatrixAccessorPar
 
 
 template <typename T>
-struct MatrixMutationParams
+struct MatrixSubViewParams
 {
     using value_type = T;
     datastructures::MatrixView<T> matrixView;
@@ -60,10 +60,10 @@ struct MatrixMutationParams
     std::size_t col;
 };
 /** @brief Test fixture for @ref MatrixView in-bounds mutation, parameterized by @ref MatrixMutationParams */
-class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+class ReadOnlyMatrixViewMutationTests: public ::testing::TestWithParam<MatrixSubViewParams<int>>
 {};
 /** @brief Test fixture for @ref MatrixView out-of-bounds mutation, parameterized by @ref MatrixMutationParams */
-class ReadOnlyMatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixMutationParams<int>>
+class ReadOnlyMatrixViewMutationOutOfBoundsTests: public ::testing::TestWithParam<MatrixSubViewParams<int>>
 {};
 
 
@@ -310,64 +310,64 @@ TEST_P(ReadOnlyMatrixViewMutationTests, AllowsMutationAtParentIndices)
 
 INSTANTIATE_TEST_SUITE_P(
     MatrixMutationTestSuite, ReadOnlyMatrixViewMutationTests,
-    ::testing::Values(MatrixMutationParams{ matView1_00, 0, 0 },
-                      MatrixMutationParams{
+    ::testing::Values(MatrixSubViewParams{ matView1_00, 0, 0 },
+                      MatrixSubViewParams{
                           matView1_00,
                           0,
                           1,
                       },
-                      MatrixMutationParams{ matView1_00, 1, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView1_00, 1, 0 },
+                      MatrixSubViewParams{
                           matView1_00,
                           1,
                           1,
                       },
 
-                      MatrixMutationParams{ matView1_01, 0, 0 }, // MatrixMutationParams{ MATVIEW1_01, 0, 1, },
-                      MatrixMutationParams{ matView1_01, 1, 0 }, // MatrixMutationParams{ MATVIEW1_01, 1, 1, },
+                      MatrixSubViewParams{ matView1_01, 0, 0 }, // MatrixSubViewParams{ MATVIEW1_01, 0, 1, },
+                      MatrixSubViewParams{ matView1_01, 1, 0 }, // MatrixSubViewParams{ MATVIEW1_01, 1, 1, },
 
-                      MatrixMutationParams{ matView1_10, 0, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView1_10, 0, 0 },
+                      MatrixSubViewParams{
                           matView1_10,
                           0,
                           1,
                       },
-                      // MatrixMutationParams{ MAT_VIEW1_10, 1, 0}, MatrixMutationParams{ MAT_VIEW1_10, 1, 1, },
+                      // MatrixSubViewParams{ MAT_VIEW1_10, 1, 0}, MatrixSubViewParams{ MAT_VIEW1_10, 1, 1, },
 
-                      MatrixMutationParams{ matView1_11, 0, 0 }, // MatrixMutationParams{ MAT_VIEW1_11, 0, 1, },
-                      // MatrixMutationParams{ MAT_VIEW1_11, 1, 0}, MatrixMutationParams{ MAT_VIEW1_11, 1, 1, },
+                      MatrixSubViewParams{ matView1_11, 0, 0 }, // MatrixSubViewParams{ MAT_VIEW1_11, 0, 1, },
+                      // MatrixSubViewParams{ MAT_VIEW1_11, 1, 0}, MatrixSubViewParams{ MAT_VIEW1_11, 1, 1, },
 
-                      MatrixMutationParams{ matView2_00, 0, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView2_00, 0, 0 },
+                      MatrixSubViewParams{
                           matView2_00,
                           0,
                           1,
                       },
-                      MatrixMutationParams{ matView2_00, 1, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView2_00, 1, 0 },
+                      MatrixSubViewParams{
                           matView2_00,
                           1,
                           1,
                       },
 
-                      MatrixMutationParams{ matView2_01, 0, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView2_01, 0, 0 },
+                      MatrixSubViewParams{
                           matView2_01,
                           0,
                           1,
                       },
-                      MatrixMutationParams{ matView2_01, 1, 0 },
-                      MatrixMutationParams{
+                      MatrixSubViewParams{ matView2_01, 1, 0 },
+                      MatrixSubViewParams{
                           matView2_01,
                           1,
                           1,
                       },
 
-                      MatrixMutationParams{ matView2_10, 0, 0 }, MatrixMutationParams{ matView2_10, 0, 1 },
-                      MatrixMutationParams{ matView2_10, 1, 0 }, MatrixMutationParams{ matView2_10, 1, 1 },
+                      MatrixSubViewParams{ matView2_10, 0, 0 }, MatrixSubViewParams{ matView2_10, 0, 1 },
+                      MatrixSubViewParams{ matView2_10, 1, 0 }, MatrixSubViewParams{ matView2_10, 1, 1 },
 
-                      MatrixMutationParams{ matView2_3, 0, 0 }, MatrixMutationParams{ matView2_3, 0, 1 },
-                      MatrixMutationParams{ matView2_3, 1, 0 }, MatrixMutationParams{ matView2_3, 1, 1 }));
+                      MatrixSubViewParams{ matView2_3, 0, 0 }, MatrixSubViewParams{ matView2_3, 0, 1 },
+                      MatrixSubViewParams{ matView2_3, 1, 0 }, MatrixSubViewParams{ matView2_3, 1, 1 }));
 
 
 /** @test Verify that @ref datastructures::MatrixView mutated at out-of-bounds indices of parent matrix throws @ref
@@ -385,30 +385,30 @@ TEST_P(ReadOnlyMatrixViewMutationOutOfBoundsTests, MutationAtIndicesBeyondOrigin
 
 INSTANTIATE_TEST_SUITE_P(MatrixMutationInvalidityTestSuite, ReadOnlyMatrixViewMutationOutOfBoundsTests,
                          ::testing::Values(
-                             MatrixMutationParams{
+                             MatrixSubViewParams{
                                  matView1_01,
                                  0,
                                  1,
                              },
-                             MatrixMutationParams{
+                             MatrixSubViewParams{
                                  matView1_01,
                                  1,
                                  1,
                              },
-                             MatrixMutationParams{ matView1_10, 1, 0 },
-                             MatrixMutationParams{
+                             MatrixSubViewParams{ matView1_10, 1, 0 },
+                             MatrixSubViewParams{
                                  matView1_10,
                                  1,
                                  1,
                              },
 
-                             MatrixMutationParams{
+                             MatrixSubViewParams{
                                  matView1_11,
                                  0,
                                  1,
                              },
-                             MatrixMutationParams{ matView1_11, 1, 0 },
-                             MatrixMutationParams{
+                             MatrixSubViewParams{ matView1_11, 1, 0 },
+                             MatrixSubViewParams{
                                  matView1_11,
                                  1,
                                  1,
