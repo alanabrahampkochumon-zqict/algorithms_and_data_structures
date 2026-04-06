@@ -11,7 +11,8 @@
 
 #include <ReadOnlyMatrixView.h>
 
-
+// TODO: Add subview of subview tests.
+// TODO: Add subview access tests.
 /**************************************
  *                                    *
  *               SETUP                *
@@ -34,7 +35,9 @@ class ReadOnlyMatrixViewInitializationTests: public ::testing::Test
     std::size_t _stride = 3;
     bool _bitCeil = true;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, parameterized by @ref SupportedTypes
+/** 
+ * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, 
+ *        parameterized by @ref SupportedTypes.
  */
 TYPED_TEST_SUITE(ReadOnlyMatrixViewInitializationTests, SupportedTypes);
 
@@ -47,7 +50,9 @@ struct ReadOnlyMatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor, parameterized by @ref MatrixAccessorParams
+/** 
+ * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor,
+ *        parameterized by @ref MatrixAccessorParams.
  */
 class ReadOnlyMatrixViewAccessorTests: public ::testing::TestWithParam<ReadOnlyMatrixAccessorParams<int>>
 {};
@@ -59,8 +64,10 @@ struct MatrixSubviewParams
     datastructures::ReadOnlyMatrixView<T> matrixView, expectedSubmatrixView;
     std::size_t rowBlock, colBlock, rowBlockSize, colBlockSize;
 };
-/** @brief Test fixture for @ref datastructures::ReadOnlyMatrixView subview tests, parameterized by @ref
- * MatrixSubviewParams */
+/**
+ * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView subview tests,
+ *        parameterized by @ref MatrixSubviewParams
+ */
 class ReadOnlyMatrixSubviewTests: public ::testing::TestWithParam<MatrixSubviewParams<int>>
 {};
 
