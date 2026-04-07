@@ -11,6 +11,8 @@
  */
 
 
+#include "ReadOnlyMatrixView.h"
+
 #include <bit>
 #include <cstddef>
 
@@ -101,13 +103,15 @@ namespace datastructures
         return m_Data[index];
     }
 
-
     template <Arithmetic T>
-    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubview(std::size_t rowBlock, std::size_t colBlock,
+    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubview(std::size_t rowBlock,
+                                                                      std::size_t colBlock,
                                                                       std::size_t rowBlockSize,
                                                                       std::size_t colBlockSize) const
     {
-        return *this;
+        const std::size_t realRowBlock = m_RowBlock * m_ViewRows + rowBlock;
+        const std::size_t realColBlock = m_ColumnBlock * m_ViewColumns + colBlock;
+        return ReadOnlyMatrixView(m_Data, m_Size, realRowBlock, realColBlock, rowBlockSize, colBlockSize, m_Stride, m_BitCeil);
     }
 
 } // namespace datastructures
