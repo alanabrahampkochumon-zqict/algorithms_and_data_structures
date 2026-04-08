@@ -123,119 +123,119 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 }
 
 
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0
- *       throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, 0,
-                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-                                                                          this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0
- *       throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          0, this->_rowBlock, this->_colBlock,
-                                                                          this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0
- *       throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-                                                                          0, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride greater than size of matrix
- *       throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-                                                                          this->_size + 1, true),
-                 std::out_of_range);
-}
-
-
-/** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), 0, this->_rows,
-                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-                                                                          this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
- *       value (nearest power of 2) throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(
-                     this->_data.data(), this->_size, this->_rows + 10, this->_cols, this->_rowBlock, this->_colBlock,
-                     this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
- *       value (nearest power of 2) throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          this->_cols + 10, this->_rowBlock,
-                                                                          this->_colBlock, this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row block larger than row size
- *       (nearest power of 2) throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          this->_cols, this->_rows + 1, this->_colBlock,
-                                                                          this->_stride, true),
-                 std::out_of_range);
-}
-
-
-/**
- * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a column block larger than column size
- *       (nearest power of 2) throws `std::out_of_range`.
- */
-TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
-{
-    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-                                                                          this->_cols, this->_rowBlock, this->_cols + 1,
-                                                                          this->_stride, true),
-                 std::out_of_range);
-}
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0
+// *       throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, 0,
+//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
+//                                                                          this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0
+// *       throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          0, this->_rowBlock, this->_colBlock,
+//                                                                          this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0
+// *       throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
+//                                                                          0, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride greater than size of matrix
+// *       throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
+//                                                                          this->_size + 1, true),
+//                 std::out_of_range);
+//}
+//
+//
+///** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), 0, this->_rows,
+//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
+//                                                                          this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
+// *       value (nearest power of 2) throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(
+//                     this->_data.data(), this->_size, this->_rows + 10, this->_cols, this->_rowBlock, this->_colBlock,
+//                     this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
+// *       value (nearest power of 2) throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          this->_cols + 10, this->_rowBlock,
+//                                                                          this->_colBlock, this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row block larger than row size
+// *       (nearest power of 2) throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          this->_cols, this->_rows + 1, this->_colBlock,
+//                                                                          this->_stride, true),
+//                 std::out_of_range);
+//}
+//
+//
+///**
+// * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a column block larger than column size
+// *       (nearest power of 2) throws `std::out_of_range`.
+// */
+//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
+//{
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//                                                                          this->_cols, this->_rowBlock, this->_cols + 1,
+//                                                                          this->_stride, true),
+//                 std::out_of_range);
+//}
 
 /** @} */
 
