@@ -71,6 +71,18 @@ struct MatrixSubviewParams
 class ReadOnlyMatrixSubviewTests: public ::testing::TestWithParam<MatrixSubviewParams<int>>
 {};
 
+template <typename T>
+static std::ostream& operator<<(std::ostream& os, const MatrixSubviewParams<T>& matViewParam)
+{
+    os << "\nMatrix View\n" << matViewParam.matrixView << '\n';
+    os << "Matrix Subview\n" << matViewParam.expectedSubmatrixView << '\n';
+    os << "Row Block: " << matViewParam.rowBlock << "\nCol Block: " << matViewParam.colBlock
+       << "\nRow Block Size: " << matViewParam.rowBlockSize << "\nCol Block Size: " << matViewParam.colBlockSize
+       << '\n';
+    return os;
+}
+
+
 
 
 /**
@@ -331,6 +343,7 @@ TEST_P(ReadOnlyMatrixSubviewTests, ReturnsSubview)
     const auto& [matrixView, expectedSubview, rowBlock, colBlock, rowSize, colSize] = GetParam();
 
     const auto subView = matrixView.getSubview(rowBlock, colBlock, rowSize, colSize);
+    std::cout << "\nGotten Subview\n" << subView << '\n';
 
     EXPECT_EQ(subView.m_Data, expectedSubview.m_Data);
     EXPECT_EQ(subView.m_Size, expectedSubview.m_Size);
@@ -344,16 +357,16 @@ TEST_P(ReadOnlyMatrixSubviewTests, ReturnsSubview)
 
 
 const datastructures::ReadOnlyMatrixView MAT_VIEW_1 = { DATA1.data(), DATA1.size(), 4, 4, 0, 0, 3, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00 = { DATA1.data(), DATA1.size(), 2, 2, 0, 0, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01 = { DATA1.data(), DATA1.size(), 2, 2, 0, 1, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10 = { DATA1.data(), DATA1.size(), 2, 2, 1, 0, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11 = { DATA1.data(), DATA1.size(), 2, 2, 1, 1, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00 = { DATA1.data(), DATA1.size(), 2, 2, 0, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01 = { DATA1.data(), DATA1.size(), 2, 2, 0, 1, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10 = { DATA1.data(), DATA1.size(), 2, 2, 1, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11 = { DATA1.data(), DATA1.size(), 2, 2, 1, 1, 3, true };
 
-const datastructures::ReadOnlyMatrixView MAT_VIEW_2 = { DATA2.data(), DATA2.size(), 4, 4, 0, 0, 3, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_00 = { DATA2.data(), DATA2.size(), 2, 2, 0, 0, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_01 = { DATA2.data(), DATA2.size(), 2, 2, 0, 1, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_10 = { DATA2.data(), DATA2.size(), 2, 2, 1, 0, 2, true };
-const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_11 = { DATA2.data(), DATA2.size(), 2, 2, 1, 1, 2, true };
+const datastructures::ReadOnlyMatrixView MAT_VIEW_2 = { DATA2.data(), DATA2.size(), 4, 4, 0, 0, 4, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_00 = { DATA2.data(), DATA2.size(), 2, 2, 0, 0, 4, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_01 = { DATA2.data(), DATA2.size(), 2, 2, 0, 1, 4, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_10 = { DATA2.data(), DATA2.size(), 2, 2, 1, 0, 4, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_11 = { DATA2.data(), DATA2.size(), 2, 2, 1, 1, 4, true };
 
 
 INSTANTIATE_TEST_SUITE_P(ReadOnlyMatrixSubViewTestSuite, ReadOnlyMatrixSubviewTests,

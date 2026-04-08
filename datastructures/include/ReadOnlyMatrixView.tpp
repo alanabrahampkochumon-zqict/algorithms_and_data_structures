@@ -104,14 +104,19 @@ namespace datastructures
     }
 
     template <Arithmetic T>
-    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubview(std::size_t rowBlock,
-                                                                      std::size_t colBlock,
+    constexpr ReadOnlyMatrixView<T> ReadOnlyMatrixView<T>::getSubview(const std::size_t rowBlock,
+                                                                      const std::size_t colBlock,
                                                                       std::size_t rowBlockSize,
                                                                       std::size_t colBlockSize) const
     {
         const std::size_t realRowBlock = m_RowBlock * m_ViewRows + rowBlock;
         const std::size_t realColBlock = m_ColumnBlock * m_ViewColumns + colBlock;
-        return ReadOnlyMatrixView(m_Data, m_Size, realRowBlock, realColBlock, rowBlockSize, colBlockSize, m_Stride, m_BitCeil);
+        std::cout << "Current Row Block: " << m_RowBlock << "\tCurrent View Rows: " << m_ViewRows << '\n';
+        std::cout << "Current Col Block: " << m_ColumnBlock << "\tCurrent View Cols: " << m_ViewColumns << '\n';
+        std::cout << "Real Row Block: " << realRowBlock << "\nReal Col Block: " << realColBlock << '\n';
+        std::cout << "Stride: " << m_Stride << '\n';
+        return ReadOnlyMatrixView(m_Data, m_Size, rowBlockSize, colBlockSize, realRowBlock, realColBlock, m_Stride,
+                                  m_BitCeil);
     }
 
 } // namespace datastructures
