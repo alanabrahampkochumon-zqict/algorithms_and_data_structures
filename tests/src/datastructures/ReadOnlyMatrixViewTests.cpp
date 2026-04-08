@@ -343,7 +343,6 @@ TEST_P(ReadOnlyMatrixSubviewTests, ReturnsSubview)
     const auto& [matrixView, expectedSubview, rowBlock, colBlock, rowSize, colSize] = GetParam();
 
     const auto subView = matrixView.getSubview(rowBlock, colBlock, rowSize, colSize);
-    std::cout << "\nGotten Subview\n" << subView << '\n';
 
     EXPECT_EQ(subView.m_Data, expectedSubview.m_Data);
     EXPECT_EQ(subView.m_Size, expectedSubview.m_Size);
