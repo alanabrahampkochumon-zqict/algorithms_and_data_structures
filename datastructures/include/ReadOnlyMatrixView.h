@@ -4,8 +4,8 @@
  * @author Alan Abraham P Kochumon
  * @date Created on: March 24, 2026
  *
- * @brief A non-owning read-only view to enable viewing and performing operations on a subset of @ref
- * datastructures::Matrix.
+ * @brief A non-owning read-only view to enable viewing and performing operations on a subset of
+ *        @ref datastructures::Matrix.
  *
  * @note For a view that supports both read-write operations see @ref datastructures::MatrixView.
  *
@@ -62,14 +62,15 @@ namespace datastructures
          *        Provides an immutable reference to the underlying matrix data.
          *        This operation requires the indices to map to a physical memory location within the parent matrix.
          *
-         * @param[in] i Local row index relative to the start of the view.
-         * @param[in] j Local column index relative to the start of the view.
-         * @return A const reference to the element at the mapped physical location.
-         *
          * @note Virtual elements (enabled by bitCeil) returns T(0) when accessed.
          *
+         * @param[in] i Local row index relative to the start of the view.
+         * @param[in] j Local column index relative to the start of the view.
+         *
+         * @return A const reference to the element at the mapped physical location.
+         *
          * @throws std::out_of_range If (i, j) exceeds view dimensions, or if the mapped
-         * physical index exceeds the parent matrix storage (when bitCeil is false).
+         *         physical index exceeds the parent matrix storage (when bitCeil is false).
          *
          * @par Example
          * For a 3x3 parent, a 2x2 view starting at Block(1,1) maps its local(1,1) to parent(3,3).
@@ -83,8 +84,8 @@ namespace datastructures
          *
          * @param[in] rowBlock     The submatrix's row block.
          * @param[in] colBlock     The submatrix's column block.
-         * @param[in] rowBlockSize The submatrix's row span.
-         * @param[in] colBlockSize The submatrix's column span.
+         * @param[in] rowBlockSize The submatrix's row size.
+         * @param[in] colBlockSize The submatrix's column size.
          *
          * @return A readonly submatrix view of the current MatrixView.
          */

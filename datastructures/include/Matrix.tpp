@@ -172,11 +172,12 @@ namespace datastructures
 
     /**
      * @brief Combine the four quadrants of a matrix to form a matrix of the passed-in size.
+     *        Ideally, all the quadrants needs to be of the same dimension.
      * 
      * @tparam T The numeric type of the matrix elements.
      * 
      * @param rows   The total number of rows in the resulting matrix.
-     * @param cols   The total columns in the resulting matrix.
+     * @param cols   The total number of columns in the resulting matrix.
      * @param quad00 The top-left quadrant of the matrix.
      * @param quad01 The top-right quadrant of the matrix.
      * @param quad10 The bottom-left quadrant of the matrix.
@@ -188,6 +189,7 @@ namespace datastructures
     static Matrix<T> mergeQuadrantsAndFlatten(const std::size_t rows, const std::size_t cols, const Matrix<T>& quad00, const Matrix<T>& quad01, const Matrix<T>& quad10, const Matrix<T>& quad11)
     {
         // TODO: Add size checking to ensure the quads are mergeable when exposing as an API
+        // TODO: Add tests when exposed as API
         Matrix<T> mat(rows, cols);
         for (std::size_t i = 0; i < quad00.m_Rows; ++i)
             for (std::size_t j = 0; j < quad00.m_Columns; ++j)
@@ -244,23 +246,6 @@ namespace datastructures
 
         const auto realRows = std::min(lhs.m_Size / lhs.m_Stride, lhs.m_ViewRows);
         const auto realCols = std::min(rhs.m_Stride, rhs.m_ViewColumns);
-        //Matrix<R> mat(realRows, realCols);
-        //// TODO: Refactor into merge matrix function
-        //for (std::size_t i = 0; i < halfRows; ++i)
-        //    for (std::size_t j = 0; j < halfColumns; ++j)
-        //        mat(i, j) = c00(i, j);
-
-        //for (std::size_t i = 0; i < halfRows; ++i)
-        //    for (std::size_t j = 0; j < (realCols - halfColumns); ++j)
-        //        mat(i, j + halfColumns) = c01(i, j);
-
-        //for (std::size_t i = 0; i < (realRows - halfRows); ++i)
-        //    for (std::size_t j = 0; j < halfColumns; ++j)
-        //        mat(halfRows + i, j) = c10(i, j);
-
-        //for (std::size_t i = 0; i < (realRows - halfRows); ++i)
-        //    for (std::size_t j = 0; j < (realCols - halfColumns); ++j)
-        //        mat(halfRows + i, halfColumns + j) = c11(i, j);
 
         return mergeQuadrantsAndFlatten(realRows, realCols, c00, c01, c10, c11);
     }
