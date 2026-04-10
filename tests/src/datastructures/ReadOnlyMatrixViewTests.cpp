@@ -35,8 +35,8 @@ class ReadOnlyMatrixViewInitializationTests: public ::testing::Test
     std::size_t _stride = 3;
     bool _bitCeil = true;
 };
-/** 
- * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization, 
+/**
+ * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView initialization,
  *        parameterized by @ref SupportedTypes.
  */
 TYPED_TEST_SUITE(ReadOnlyMatrixViewInitializationTests, SupportedTypes);
@@ -50,7 +50,7 @@ struct ReadOnlyMatrixAccessorParams
     std::size_t col;
     T expectedValue;
 };
-/** 
+/**
  * @brief Test fixture for @ref datastructures::ReadOnlyMatrixView accessor,
  *        parameterized by @ref MatrixAccessorParams.
  */
@@ -139,11 +139,11 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view rows of 0
 // *       throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewRowThrowsError)
 //{
 //    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, 0,
-//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-//                                                                          this->_stride, true),
+//                                                                          this->_cols, this->_rowBlock,
+//                                                                          this->_colBlock, this->_stride, true),
 //                 std::out_of_range);
 //}
 //
@@ -152,9 +152,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with view columns of 0
 // *       throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroViewColumnThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
 //                                                                          0, this->_rowBlock, this->_colBlock,
 //                                                                          this->_stride, true),
 //                 std::out_of_range);
@@ -165,11 +166,12 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride of 0
 // *       throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroStrideThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-//                                                                          0, true),
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
+//                                                                          this->_cols, this->_rowBlock,
+//                                                                          this->_colBlock, 0, true),
 //                 std::out_of_range);
 //}
 //
@@ -178,22 +180,24 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a stride greater than size of matrix
 // *       throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, StrideGreaterThanSizeThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-//                                                                          this->_size + 1, true),
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
+//                                                                          this->_cols, this->_rowBlock,
+//                                                                          this->_colBlock, this->_size + 1, true),
 //                 std::out_of_range);
 //}
 //
 //
-///** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws `std::out_of_range`.
+///** @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a size of 0 throws
+///`std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, ZeroSizeThrowsError)
 //{
 //    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), 0, this->_rows,
-//                                                                          this->_cols, this->_rowBlock, this->_colBlock,
-//                                                                          this->_stride, true),
+//                                                                          this->_cols, this->_rowBlock,
+//                                                                          this->_colBlock, this->_stride, true),
 //                 std::out_of_range);
 //}
 //
@@ -202,7 +206,7 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
 // *       value (nearest power of 2) throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowThrowsError)
 //{
 //    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(
 //                     this->_data.data(), this->_size, this->_rows + 10, this->_cols, this->_rowBlock, this->_colBlock,
@@ -215,9 +219,10 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row size larger than maximum support
 // *       value (nearest power of 2) throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
 //                                                                          this->_cols + 10, this->_rowBlock,
 //                                                                          this->_colBlock, this->_stride, true),
 //                 std::out_of_range);
@@ -228,11 +233,12 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a row block larger than row size
 // *       (nearest power of 2) throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidRowOffsetThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-//                                                                          this->_cols, this->_rows + 1, this->_colBlock,
-//                                                                          this->_stride, true),
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
+//                                                                          this->_cols, this->_rows + 1,
+//                                                                          this->_colBlock, this->_stride, true),
 //                 std::out_of_range);
 //}
 //
@@ -241,11 +247,12 @@ TYPED_TEST(ReadOnlyMatrixViewInitializationTests, BitCeilIsFalseByDefault)
 // * @test Verify that initializing @ref datastructures::ReadOnlyMatrixView with a column block larger than column size
 // *       (nearest power of 2) throws `std::out_of_range`.
 // */
-//TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
+// TYPED_TEST(ReadOnlyMatrixViewInitializationTests, InvalidColumnOffsetThrowsError)
 //{
-//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size, this->_rows,
-//                                                                          this->_cols, this->_rowBlock, this->_cols + 1,
-//                                                                          this->_stride, true),
+//    EXPECT_THROW(const datastructures::ReadOnlyMatrixView<TypeParam> view(this->_data.data(), this->_size,
+//    this->_rows,
+//                                                                          this->_cols, this->_rowBlock, this->_cols +
+//                                                                          1, this->_stride, true),
 //                 std::out_of_range);
 //}
 
@@ -361,6 +368,26 @@ const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01 = { DATA1.data(), DATA
 const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10 = { DATA1.data(), DATA1.size(), 2, 2, 1, 0, 3, true };
 const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11 = { DATA1.data(), DATA1.size(), 2, 2, 1, 1, 3, true };
 
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00_00 = { DATA1.data(), DATA1.size(), 1, 1, 0, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00_01 = { DATA1.data(), DATA1.size(), 1, 1, 0, 1, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00_10 = { DATA1.data(), DATA1.size(), 1, 1, 1, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_00_11 = { DATA1.data(), DATA1.size(), 1, 1, 1, 1, 3, true };
+
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01_00 = { DATA1.data(), DATA1.size(), 1, 1, 0, 2, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01_01 = { DATA1.data(), DATA1.size(), 1, 1, 0, 3, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01_10 = { DATA1.data(), DATA1.size(), 1, 1, 1, 2, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_01_11 = { DATA1.data(), DATA1.size(), 1, 1, 1, 3, 3, true };
+
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10_00 = { DATA1.data(), DATA1.size(), 1, 1, 2, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10_01 = { DATA1.data(), DATA1.size(), 1, 1, 2, 1, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10_10 = { DATA1.data(), DATA1.size(), 1, 1, 3, 0, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_10_11 = { DATA1.data(), DATA1.size(), 1, 1, 3, 1, 3, true };
+
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11_00 = { DATA1.data(), DATA1.size(), 1, 1, 2, 2, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11_01 = { DATA1.data(), DATA1.size(), 1, 1, 2, 3, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11_10 = { DATA1.data(), DATA1.size(), 1, 1, 3, 2, 3, true };
+const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_1_11_11 = { DATA1.data(), DATA1.size(), 1, 1, 3, 3, 3, true };
+
 const datastructures::ReadOnlyMatrixView MAT_VIEW_2 = { DATA2.data(), DATA2.size(), 4, 4, 0, 0, 4, true };
 const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_00 = { DATA2.data(), DATA2.size(), 2, 2, 0, 0, 4, true };
 const datastructures::ReadOnlyMatrixView MAT_SUBVIEW_2_01 = { DATA2.data(), DATA2.size(), 2, 2, 0, 1, 4, true };
@@ -377,6 +404,26 @@ INSTANTIATE_TEST_SUITE_P(ReadOnlyMatrixSubViewTestSuite, ReadOnlyMatrixSubviewTe
                                            MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_00, 0, 0, 2, 2 },
                                            MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_01, 0, 1, 2, 2 },
                                            MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_10, 1, 0, 2, 2 },
-                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_11, 1, 1, 2, 2 }));
+                                           MatrixSubviewParams{ MAT_VIEW_2, MAT_SUBVIEW_2_11, 1, 1, 2, 2 },
+
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_00, MAT_SUBVIEW_1_00_00, 0, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_00, MAT_SUBVIEW_1_00_01, 0, 1, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_00, MAT_SUBVIEW_1_00_10, 1, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_00, MAT_SUBVIEW_1_00_11, 1, 1, 1, 1 },
+
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_01, MAT_SUBVIEW_1_01_00, 0, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_01, MAT_SUBVIEW_1_01_01, 0, 1, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_01, MAT_SUBVIEW_1_01_10, 1, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_01, MAT_SUBVIEW_1_01_11, 1, 1, 1, 1 },
+
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_10, MAT_SUBVIEW_1_10_00, 0, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_10, MAT_SUBVIEW_1_10_01, 0, 1, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_10, MAT_SUBVIEW_1_10_10, 1, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_10, MAT_SUBVIEW_1_10_11, 1, 1, 1, 1 },
+
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_11, MAT_SUBVIEW_1_11_00, 0, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_11, MAT_SUBVIEW_1_11_01, 0, 1, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_11, MAT_SUBVIEW_1_11_10, 1, 0, 1, 1 },
+                                           MatrixSubviewParams{ MAT_SUBVIEW_1_11, MAT_SUBVIEW_1_11_11, 1, 1, 1, 1 }));
 
 /** @} */
