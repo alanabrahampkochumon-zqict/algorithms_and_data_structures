@@ -173,9 +173,9 @@ namespace datastructures
     /**
      * @brief Combine the four quadrants of a matrix to form a matrix of the passed-in size.
      *        Ideally, all the quadrants needs to be of the same dimension.
-     * 
+     *
      * @tparam T The numeric type of the matrix elements.
-     * 
+     *
      * @param rows   The total number of rows in the resulting matrix.
      * @param cols   The total number of columns in the resulting matrix.
      * @param quad00 The top-left quadrant of the matrix.
@@ -185,8 +185,9 @@ namespace datastructures
      *
      * @return A new matrix of size @p rows by @p cols with elements combined from the four quadrants.
      */
-    template<Arithmetic T>
-    static Matrix<T> mergeQuadrantsAndFlatten(const std::size_t rows, const std::size_t cols, const Matrix<T>& quad00, const Matrix<T>& quad01, const Matrix<T>& quad10, const Matrix<T>& quad11)
+    template <Arithmetic T>
+    static Matrix<T> mergeQuadrantsAndFlatten(const std::size_t rows, const std::size_t cols, const Matrix<T>& quad00,
+                                              const Matrix<T>& quad01, const Matrix<T>& quad10, const Matrix<T>& quad11)
     {
         // TODO: Add size checking to ensure the quads are mergeable when exposing as an API
         // TODO: Add tests when exposed as API
@@ -217,37 +218,82 @@ namespace datastructures
         using R = std::common_type_t<T, U>;
         if (lhs.m_ViewColumns == 1 && lhs.m_ViewRows == 1)
             return Matrix<T>({ { lhs(0, 0) * rhs(0, 0) } });
-        
 
-        const auto halfRows = lhs.m_ViewRows / 2; // Symmetric
+
+        const auto halfRows = lhs.m_ViewRows / 2;       // Symmetric
         const auto halfColumns = lhs.m_ViewColumns / 2; // Symmetric
 
         // c00 = a00 * b00 + a01 * b10
-        const Matrix<R> c00 = divideAndConquer(lhs.getSubview(0, 0, halfRows, halfColumns),
-                                               rhs.getSubview(0, 0, halfRows, halfColumns)) + 
-                              divideAndConquer(lhs.getSubview(0, 1, halfRows, halfColumns),
-                                               rhs.getSubview(1, 0, halfRows, halfColumns));
+        const Matrix<R> c00 =
+            divideAndConquer(lhs.getSubview(0, 0, halfRows, halfColumns), rhs.getSubview(0, 0, halfRows, halfColumns)) +
+            divideAndConquer(lhs.getSubview(0, 1, halfRows, halfColumns), rhs.getSubview(1, 0, halfRows, halfColumns));
         // c01 = a00 * b01 + a01 * b11
-        const Matrix<R> c01 = divideAndConquer(lhs.getSubview(0, 0, halfRows, halfColumns),
-                                               rhs.getSubview(0, 1, halfRows, halfColumns)) + 
-                              divideAndConquer(lhs.getSubview(0, 1, halfRows, halfColumns),
-                                               rhs.getSubview(1, 1, halfRows, halfColumns));
+        const Matrix<R> c01 =
+            divideAndConquer(lhs.getSubview(0, 0, halfRows, halfColumns), rhs.getSubview(0, 1, halfRows, halfColumns)) +
+            divideAndConquer(lhs.getSubview(0, 1, halfRows, halfColumns), rhs.getSubview(1, 1, halfRows, halfColumns));
         // c10 = a10 * b00 + a11 * b10
-        const Matrix<R> c10 = divideAndConquer(lhs.getSubview(1, 0, halfRows, halfColumns),
-                                               rhs.getSubview(0, 0, halfRows, halfColumns)) + 
-                              divideAndConquer(lhs.getSubview(1, 1, halfRows, halfColumns),
-                                               rhs.getSubview(1, 0, halfRows, halfColumns));
+        const Matrix<R> c10 =
+            divideAndConquer(lhs.getSubview(1, 0, halfRows, halfColumns), rhs.getSubview(0, 0, halfRows, halfColumns)) +
+            divideAndConquer(lhs.getSubview(1, 1, halfRows, halfColumns), rhs.getSubview(1, 0, halfRows, halfColumns));
         // c11 = a10 * b01 + a11 * b11
-        const Matrix<R> c11 = divideAndConquer(lhs.getSubview(1, 0, halfRows, halfColumns),
-                                               rhs.getSubview(0, 1, halfRows, halfColumns)) + 
-                              divideAndConquer(lhs.getSubview(1, 1, halfRows, halfColumns),
-                                               rhs.getSubview(1, 1, halfRows, halfColumns));
+        const Matrix<R> c11 =
+            divideAndConquer(lhs.getSubview(1, 0, halfRows, halfColumns), rhs.getSubview(0, 1, halfRows, halfColumns)) +
+            divideAndConquer(lhs.getSubview(1, 1, halfRows, halfColumns), rhs.getSubview(1, 1, halfRows, halfColumns));
         // clang-format on
 
         const auto realRows = std::min(lhs.m_Size / lhs.m_Stride, lhs.m_ViewRows);
         const auto realCols = std::min(rhs.m_Stride, rhs.m_ViewColumns);
 
         return mergeQuadrantsAndFlatten(realRows, realCols, c00, c01, c10, c11);
+    }
+
+    template <Arithmetic T, Arithmetic U>
+    static Matrix<std::common_type_t<T, U>> strassens(const ReadOnlyMatrixView<T>& lhs,
+                                                      const ReadOnlyMatrixView<U>& rhs)
+    {
+        using R = std::common_type_t<T, U>;
+        if (lhs.m_ViewColumns == 1 && lhs.m_ViewRows == 1)
+            return Matrix<T>({ { lhs(0, 0) * rhs(0, 0) } });
+
+        const auto halfRows = lhs.m_ViewRows / 2;       // Symmetric
+        const auto halfColumns = lhs.m_ViewColumns / 2; // Symmetric
+
+        // Using 1-based indexing to be inline with CLRS
+        //const auto A11 = lhs.getSubview(0, 0, halfRows, halfColumns);
+        //const auto A12 = lhs.getSubview(0, 1, halfRows, halfColumns);
+        //const auto A21 = lhs.getSubview(1, 0, halfRows, halfColumns);
+        //const auto A22 = lhs.getSubview(1, 1, halfRows, halfColumns);
+
+        //const auto B11 = rhs.getSubview(0, 0, halfRows, halfColumns);
+        //const auto B12 = rhs.getSubview(0, 1, halfRows, halfColumns);
+        //const auto B21 = rhs.getSubview(1, 0, halfRows, halfColumns);
+        //const auto B22 = rhs.getSubview(1, 1, halfRows, halfColumns);
+        //
+        //const auto S1 = B12 - B22;
+        //const auto S2 = A11 + A12;
+        //const auto S3 = A21 + A22;
+        //const auto S4 = B21 - B11;
+        //const auto S5 = A11 + A22;
+        //const auto S6 = B11 + B22;
+        //const auto S7 = A12 - A22;
+        //const auto S8 = B21 - B22;
+        //const auto S9 = A11 - A21;
+        //const auto S10 = B11 + B12;
+
+        //const auto P1 = A11 * S1;
+        //const auto P2 = S2 * B22;
+        //const auto P3 = S3 * B11;
+        //const auto P4 = A22 * S4;
+        //const auto P5 = S5 * S6;
+        //const auto P6 = S7 * S8;
+        //const auto P7 = S9 * S10;
+
+        //const auto C11 = P5 + P4 - P2 + P6;
+        //const auto C12 = P1 + P2;
+        //const auto C21 = P3 + P4;
+        //const auto C22 = P5 + P1 - P3 - P7;
+        // COMBINE TODO
+        return Matrix<R>();
     }
 
 
@@ -267,7 +313,8 @@ namespace datastructures
                 return divideAndConquer(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
                                         rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
             case MultiplicationAlgorithmType::STRASSENS:
-                break;
+                return strassens(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
+                                 rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
             default:
                 break;
         }
