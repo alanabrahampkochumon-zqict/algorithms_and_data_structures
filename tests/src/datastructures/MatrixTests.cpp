@@ -576,6 +576,7 @@ TEST(MatrixMutliplication, MatricesWithIncorrectRowColumnsThrowsException)
 INSTANTIATE_TEST_SUITE_P(
     MatrixMutliplicationTestSuite, MatrixMultiplicationTests,
     ::testing::Values(
+        ///////////////// BRUTE FORCE
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
@@ -605,7 +606,7 @@ INSTANTIATE_TEST_SUITE_P(
                 { 1354, 1412, 1470, 1528 } } },
             datastructures::MultiplicationAlgorithmType::BRUTE_FORCE }, // 4x4
 
-
+        ///////////////// DIVIDE AND CONQUER
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
@@ -637,7 +638,40 @@ INSTANTIATE_TEST_SUITE_P(
         MatrixMultiplicationParams<int>{ { { { 3 } } },
                                          { { { 4 } } },
                                          { { { 12 } } },
-                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER }
+                                         datastructures::MultiplicationAlgorithmType::DIVIDE_AND_CONQUER },
+
+        ///////////////// STRASSENS
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 5, 6 }, { 7, 8 } } },
+                                         { { { 19, 22 }, { 43, 50 } } },
+                                         datastructures::MultiplicationAlgorithmType::STRASSENS }, // 2x2 * 2x2
+                                                                                                            // = 2x2
+        MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
+                                         { { { 4, 5, 6 } } },
+                                         { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
+                                         datastructures::MultiplicationAlgorithmType::STRASSENS }, // 3x1 * 1x3
+                                                                                                            // = 3x3
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 1, 0 }, { 0, 1 } } },
+                                         { { { 1, 2 }, { 3, 4 } } },
+                                         datastructures::MultiplicationAlgorithmType::STRASSENS }, // 2x2 * I2
+                                                                                                            // =
+                                                                                                            // 2x2
+        MatrixMultiplicationParams<int>{
+            { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } },
+            { { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, { 25, 26, 27, 28 }, { 29, 30, 31, 32 } } },
+            { { { 250, 260, 270, 280 },
+                { 618, 644, 670, 696 },
+                { 986, 1028, 1070, 1112 },
+                { 1354, 1412, 1470, 1528 } } },
+            datastructures::MultiplicationAlgorithmType::STRASSENS }, // 4x4
+        MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
+                                         { { { 0, 0 }, { 0, 0 } } },
+                                         { { { 0, 0 }, { 0, 0 } } },
+                                         datastructures::MultiplicationAlgorithmType::STRASSENS },
+        MatrixMultiplicationParams<int>{ { { { 3 } } },
+                                         { { { 4 } } },
+                                         { { { 12 } } }, datastructures::MultiplicationAlgorithmType::STRASSENS }
         // 2x2 * 0 = 2x2(0)
         ));
 

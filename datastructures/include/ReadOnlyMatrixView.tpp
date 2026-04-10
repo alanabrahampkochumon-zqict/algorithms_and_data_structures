@@ -48,7 +48,8 @@ namespace datastructures
                                     std::to_string(m_Size));
 
 
-
+        // TODO: Fix Validation
+        // TODO: Add get matrix subview to MatrixView
         // Row Column Validation
         const std::size_t maxRows = m_BitCeil ? std::bit_ceil(m_Size / m_Stride) : m_Size / m_Stride;
         const std::size_t maxCols = m_BitCeil ? std::bit_ceil(m_Stride) : m_Stride;
@@ -68,11 +69,11 @@ namespace datastructures
 
 
         // Offset Validation
-        // if (m_ViewRows * m_RowBlock > maxRows)
-        //    throw std::out_of_range("Invalid row offset");
+        //if (m_ViewRows * m_RowBlock > maxRows)
+        //   throw std::out_of_range("Invalid row offset");
 
-        // if (m_ViewColumns * m_ColumnBlock > maxCols)
-        //     throw std::out_of_range("Invalid column offset");
+        //if (m_ViewColumns * m_ColumnBlock > maxCols)
+        //    throw std::out_of_range("Invalid column offset");
     }
 
 
