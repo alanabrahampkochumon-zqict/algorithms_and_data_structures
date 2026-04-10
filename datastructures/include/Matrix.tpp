@@ -294,11 +294,6 @@ namespace datastructures
                                                rhs.getSubview(1, 1, halfRows, halfColumns));
         // clang-format on
 
-        //std::cout << "First Quadrant" << '\n' << c00 << '\n';
-        //std::cout << "Second Quadrant" << '\n' << c01 << '\n';
-        //std::cout << "Third Quadrant" << '\n' << c10 << '\n';
-        //std::cout << "Fourth Quadrant" << '\n' << c11 << '\n';
-        //std::cout << "----------------------------------------------" << '\n';
         const auto realRows = std::min(lhs.m_Size / lhs.m_Stride, lhs.m_ViewRows);
         const auto realCols = std::min(rhs.m_Stride, rhs.m_ViewColumns);
         Matrix<R> mat(realRows, realCols);
@@ -319,43 +314,13 @@ namespace datastructures
             for (std::size_t j = 0; j < (realCols - halfColumns); ++j)
                 mat(halfRows + i, halfColumns + j) = c11(i, j);
 
-        
-        //std::cout << "After combine" << '\n' << mat << '\n';
-        std::cout << "----------------------------------------------" << '\n';
-        // std::vector<std::vector<R>> rows(lhs.m_ViewRows);
-
-        // for (std::size_t i = 0; i < lhs.m_ViewColumns; ++i)
-        //{
-        //     const Matrix<R>* currentHalfBlockOne = &c00;
-        //     const Matrix<R>* currentHalfBlockTwo = &c01;
-        //     int colOffset = 0;
-
-        //    if (i >= halfRows)
-        //    {
-        //        currentHalfBlockOne = &c10;
-        //        currentHalfBlockTwo = &c11;
-        //        colOffset = 1;
-        //    }
-
-        //    std::vector<R> row(lhs.m_ViewColumns);
-        //    for (std::size_t j = 0; j < lhs.m_ViewColumns; ++j)
-        //    {
-        //        if (j < halfCols)
-        //            row[j] = (*currentHalfBlockOne)(i - (colOffset * halfCols), j);
-        //        else
-        //            row[j] = (*currentHalfBlockTwo)(i - (colOffset * halfCols), j - halfRows);
-        //    }
-        //}
-
-
         return mat;
-        // return result;
     }
 
 
     template <Arithmetic T>
     template <Arithmetic U>
-    auto Matrix<T>::multiply(const Matrix<U>& rhs, MultiplicationAlgorithmType algo) const
+    auto Matrix<T>::multiply(const Matrix<U>& rhs, const MultiplicationAlgorithmType algo) const
         -> Matrix<std::common_type_t<T, U>>
     {
         if (this->m_Columns != rhs.m_Rows)
@@ -365,14 +330,9 @@ namespace datastructures
         {
             case MultiplicationAlgorithmType::BRUTE_FORCE:
                 return bruteForce(*this, rhs);
-                // TODO:Fixme block size for uneven matrices
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
                 return divideAndConquer(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
                                         rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
-                //return divideAndConquer(
-                //    ReadOnlyMatrixView<T>(m_Data.data(), m_Data.size(), m_Rows, m_Columns, 0, 0, m_Columns, true),
-                //    ReadOnlyMatrixView<U>(rhs.m_Data.data(), rhs.m_Data.size(), rhs.m_Rows, rhs.m_Columns, 0, 0,
-                //                          rhs.m_Columns, true));
             case MultiplicationAlgorithmType::STRASSENS:
                 break;
             default:
@@ -388,4 +348,5 @@ namespace datastructures
     {
         return lhs.multiply(rhs, algo);
     }
+
 } // namespace datastructures
