@@ -59,7 +59,7 @@ class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 template <typename T>
 struct SubmatrixParams
 {
-    datastructures::Matrix<T> _matrix, _subMatrix;
+    datastructures::Matrix<T> matrix, subMatrix;
     std::size_t rowBlock, colBlock, rowSize, colSize;
 };
 /** @brief Test fixture for @ref datastructures::Matrix submatrix creation, parameterized by @ref SubmatrixParams. */
@@ -476,8 +476,8 @@ INSTANTIATE_TEST_SUITE_P(
  *                                    *
  **************************************/
 
-/** 
- * @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped 
+/**
+ * @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped
  *       to the correct source boundaries.
  */
 TEST_P(MatrixViewTests, ProvidesCorrectView)
@@ -497,44 +497,78 @@ TEST_P(MatrixViewTests, ProvidesCorrectView)
 }
 
 
-const datastructures::Matrix<int> MATRIX1{ { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } } };
+const datastructures::Matrix<int> MATRIX1{ { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } };
 const datastructures::ReadOnlyMatrixView VIEW_1_00{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 0, 0, 4, true };
 const datastructures::ReadOnlyMatrixView VIEW_1_01{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 0, 1, 4, true };
 const datastructures::ReadOnlyMatrixView VIEW_1_10{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 1, 0, 4, true };
 const datastructures::ReadOnlyMatrixView VIEW_1_11{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 1, 1, 4, true };
 
-const datastructures::Matrix<int> MATRIX2{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
+const datastructures::Matrix<int> MATRIX2{ { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } } };
 const datastructures::ReadOnlyMatrixView VIEW_2_00{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 0, 0, 3, true };
 const datastructures::ReadOnlyMatrixView VIEW_2_01{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 0, 1, 3, true };
 const datastructures::ReadOnlyMatrixView VIEW_2_10{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 1, 0, 3, true };
 const datastructures::ReadOnlyMatrixView VIEW_2_11{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 1, 1, 3, true };
 
-const datastructures::Matrix<int> MATRIX3{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
-const datastructures::ReadOnlyMatrixView VIEW_3_00{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 0, 3, false };
-const datastructures::ReadOnlyMatrixView VIEW_3_01{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 1, 3, false };
-const datastructures::ReadOnlyMatrixView VIEW_3_10{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 0, 3, false };
-const datastructures::ReadOnlyMatrixView VIEW_3_11{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 1, 3, false };
+const datastructures::Matrix<int> MATRIX3{ { { 1, 2, 3 }, { 4, 5, 6 }, { 7, 8, 9 } } };
+const datastructures::ReadOnlyMatrixView VIEW_3_00{
+    MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 0, 3, false
+};
+const datastructures::ReadOnlyMatrixView VIEW_3_01{
+    MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 1, 3, false
+};
+const datastructures::ReadOnlyMatrixView VIEW_3_10{
+    MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 0, 3, false
+};
+const datastructures::ReadOnlyMatrixView VIEW_3_11{
+    MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 1, 3, false
+};
 
-INSTANTIATE_TEST_CASE_P(
-    MatrixViewTestCase, MatrixViewTests,
-    ::testing::Values(
-        MatrixViewParams{ MATRIX1, VIEW_1_00, 0, 0, 2, true }, MatrixViewParams{ MATRIX1, VIEW_1_01, 0, 1, 2, true },
-        MatrixViewParams{ MATRIX1, VIEW_1_10, 1, 0, 2, true }, MatrixViewParams{ MATRIX1, VIEW_1_11, 1, 1, 2, true },
+INSTANTIATE_TEST_CASE_P(MatrixViewTestCase, MatrixViewTests,
+                        ::testing::Values(MatrixViewParams{ MATRIX1, VIEW_1_00, 0, 0, 2, true },
+                                          MatrixViewParams{ MATRIX1, VIEW_1_01, 0, 1, 2, true },
+                                          MatrixViewParams{ MATRIX1, VIEW_1_10, 1, 0, 2, true },
+                                          MatrixViewParams{ MATRIX1, VIEW_1_11, 1, 1, 2, true },
 
-        MatrixViewParams{ MATRIX2, VIEW_2_00, 0, 0, 2, true }, MatrixViewParams{ MATRIX2, VIEW_2_01, 0, 1, 2, true },
-        MatrixViewParams{ MATRIX2, VIEW_2_10, 1, 0, 2, true }, MatrixViewParams{ MATRIX2, VIEW_2_11, 1, 1, 2, true },
+                                          MatrixViewParams{ MATRIX2, VIEW_2_00, 0, 0, 2, true },
+                                          MatrixViewParams{ MATRIX2, VIEW_2_01, 0, 1, 2, true },
+                                          MatrixViewParams{ MATRIX2, VIEW_2_10, 1, 0, 2, true },
+                                          MatrixViewParams{ MATRIX2, VIEW_2_11, 1, 1, 2, true },
 
-        MatrixViewParams{ MATRIX3, VIEW_3_00, 0, 0, 2, false }, MatrixViewParams{ MATRIX3, VIEW_3_01, 0, 1, 2, false },
-        MatrixViewParams{ MATRIX3, VIEW_3_10, 1, 0, 2, false }, MatrixViewParams{ MATRIX3, VIEW_3_11, 1, 1, 2, false }));
+                                          MatrixViewParams{ MATRIX3, VIEW_3_00, 0, 0, 2, false },
+                                          MatrixViewParams{ MATRIX3, VIEW_3_01, 0, 1, 2, false },
+                                          MatrixViewParams{ MATRIX3, VIEW_3_10, 1, 0, 2, false },
+                                          MatrixViewParams{ MATRIX3, VIEW_3_11, 1, 1, 2, false }));
 
 
 /** @brief Verify that the @ref datastructures::Matrix::getSubmatrix returns the correct submatrix. */
 TEST_P(SubmatrixTests, ProvidesCorrectSubmatrix)
 {
     const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize] = GetParam();
-
-    const auto subMatrix = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize);
+    const auto subMatrix = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, true);
+    EXPECT_MAT_EQ(expectedSubmatrix, subMatrix);
 }
+
+const datastructures::Matrix<int> SUBMATRIX_1_00{ { { 1, 2 }, { 5, 6 } } };
+const datastructures::Matrix<int> SUBMATRIX_1_01{ { { 9, 10 }, { 13, 14 } } };
+const datastructures::Matrix<int> SUBMATRIX_1_10{ { { 3, 4 }, { 7, 8 } } };
+const datastructures::Matrix<int> SUBMATRIX_1_11{ { { 11, 12 }, { 15, 16 } } };
+
+const datastructures::Matrix<int> SUBMATRIX_2_00{ { { 1, 2 }, { 4, 5 } } };
+const datastructures::Matrix<int> SUBMATRIX_2_01{ { { 7, 8 }, { 0, 0 } } };
+const datastructures::Matrix<int> SUBMATRIX_2_10{ { { 3, 0 }, { 6, 0 } } };
+const datastructures::Matrix<int> SUBMATRIX_2_11{ { { 9, 0 }, { 0, 0 } } };
+
+
+INSTANTIATE_TEST_SUITE_P(SubmatrixTestSuite, SubmatrixTests,
+                         ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 1, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 1, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_11, 1, 1, 2, 2 },
+
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_00, 0, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 1, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 1, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 2, 2 }));
 
 /** @} */
 
@@ -668,18 +702,18 @@ INSTANTIATE_TEST_SUITE_P(
                                          { { { 5, 6 }, { 7, 8 } } },
                                          { { { 19, 22 }, { 43, 50 } } },
                                          datastructures::MultiplicationAlgorithmType::STRASSENS }, // 2x2 * 2x2
-                                                                                                            // = 2x2
+                                                                                                   // = 2x2
         MatrixMultiplicationParams<int>{ { { { 1 }, { 2 }, { 3 } } },
                                          { { { 4, 5, 6 } } },
                                          { { { 4, 5, 6 }, { 8, 10, 12 }, { 12, 15, 18 } } },
                                          datastructures::MultiplicationAlgorithmType::STRASSENS }, // 3x1 * 1x3
-                                                                                                            // = 3x3
+                                                                                                   // = 3x3
         MatrixMultiplicationParams<int>{ { { { 1, 2 }, { 3, 4 } } },
                                          { { { 1, 0 }, { 0, 1 } } },
                                          { { { 1, 2 }, { 3, 4 } } },
                                          datastructures::MultiplicationAlgorithmType::STRASSENS }, // 2x2 * I2
-                                                                                                            // =
-                                                                                                            // 2x2
+                                                                                                   // =
+                                                                                                   // 2x2
         MatrixMultiplicationParams<int>{
             { { { 1, 2, 3, 4 }, { 5, 6, 7, 8 }, { 9, 10, 11, 12 }, { 13, 14, 15, 16 } } },
             { { { 17, 18, 19, 20 }, { 21, 22, 23, 24 }, { 25, 26, 27, 28 }, { 29, 30, 31, 32 } } },
@@ -692,9 +726,8 @@ INSTANTIATE_TEST_SUITE_P(
                                          { { { 0, 0 }, { 0, 0 } } },
                                          { { { 0, 0 }, { 0, 0 } } },
                                          datastructures::MultiplicationAlgorithmType::STRASSENS },
-        MatrixMultiplicationParams<int>{ { { { 3 } } },
-                                         { { { 4 } } },
-                                         { { { 12 } } }, datastructures::MultiplicationAlgorithmType::STRASSENS }
+        MatrixMultiplicationParams<int>{
+            { { { 3 } } }, { { { 4 } } }, { { { 12 } } }, datastructures::MultiplicationAlgorithmType::STRASSENS }
         // 2x2 * 0 = 2x2(0)
         ));
 
