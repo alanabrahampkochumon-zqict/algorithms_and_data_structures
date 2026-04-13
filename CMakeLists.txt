@@ -34,4 +34,6 @@ add_subdirectory(tests)
 add_subdirectory(benchmark-suite)
 add_subdirectory(common)
 
+set_target_properties(format PROPERTIES FOLDER "DevUtils")
+
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT Playground)
