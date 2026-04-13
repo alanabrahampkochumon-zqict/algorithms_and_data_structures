@@ -497,35 +497,35 @@ TEST_P(MatrixViewTests, ProvidesCorrectView)
 }
 
 
-datastructures::Matrix<int> mat1{ { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } } };
-const datastructures::ReadOnlyMatrixView view1_00{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 0, 0, 4, true };
-const datastructures::ReadOnlyMatrixView view1_01{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 0, 1, 4, true };
-const datastructures::ReadOnlyMatrixView view1_10{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 1, 0, 4, true };
-const datastructures::ReadOnlyMatrixView view1_11{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 1, 1, 4, true };
+const datastructures::Matrix<int> MATRIX1{ { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } } };
+const datastructures::ReadOnlyMatrixView VIEW_1_00{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 0, 0, 4, true };
+const datastructures::ReadOnlyMatrixView VIEW_1_01{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 0, 1, 4, true };
+const datastructures::ReadOnlyMatrixView VIEW_1_10{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 1, 0, 4, true };
+const datastructures::ReadOnlyMatrixView VIEW_1_11{ MATRIX1.m_Data.data(), MATRIX1.m_Data.size(), 2, 2, 1, 1, 4, true };
 
-datastructures::Matrix<int> mat2{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
-const datastructures::ReadOnlyMatrixView view2_00{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 0, 0, 3, true };
-const datastructures::ReadOnlyMatrixView view2_01{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 0, 1, 3, true };
-const datastructures::ReadOnlyMatrixView view2_10{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 1, 0, 3, true };
-const datastructures::ReadOnlyMatrixView view2_11{ mat2.m_Data.data(), mat2.m_Data.size(), 2, 2, 1, 1, 3, true };
+const datastructures::Matrix<int> MATRIX2{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
+const datastructures::ReadOnlyMatrixView VIEW_2_00{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 0, 0, 3, true };
+const datastructures::ReadOnlyMatrixView VIEW_2_01{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 0, 1, 3, true };
+const datastructures::ReadOnlyMatrixView VIEW_2_10{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 1, 0, 3, true };
+const datastructures::ReadOnlyMatrixView VIEW_2_11{ MATRIX2.m_Data.data(), MATRIX2.m_Data.size(), 2, 2, 1, 1, 3, true };
 
-datastructures::Matrix<int> mat3{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
-const datastructures::ReadOnlyMatrixView view3_00{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 0, 0, 3, false };
-const datastructures::ReadOnlyMatrixView view3_01{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 0, 1, 3, false };
-const datastructures::ReadOnlyMatrixView view3_10{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 1, 0, 3, false };
-const datastructures::ReadOnlyMatrixView view3_11{ mat3.m_Data.data(), mat3.m_Data.size(), 2, 2, 1, 1, 3, false };
+const datastructures::Matrix<int> MATRIX3{ { { 1, 2, 3 }, { 1, 2, 3 }, { 1, 2, 3 } } };
+const datastructures::ReadOnlyMatrixView VIEW_3_00{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 0, 3, false };
+const datastructures::ReadOnlyMatrixView VIEW_3_01{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 0, 1, 3, false };
+const datastructures::ReadOnlyMatrixView VIEW_3_10{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 0, 3, false };
+const datastructures::ReadOnlyMatrixView VIEW_3_11{ MATRIX3.m_Data.data(), MATRIX3.m_Data.size(), 2, 2, 1, 1, 3, false };
 
 INSTANTIATE_TEST_CASE_P(
     MatrixViewTestCase, MatrixViewTests,
     ::testing::Values(
-        MatrixViewParams{ mat1, view1_00, 0, 0, 2, true }, MatrixViewParams{ mat1, view1_01, 0, 1, 2, true },
-        MatrixViewParams{ mat1, view1_10, 1, 0, 2, true }, MatrixViewParams{ mat1, view1_11, 1, 1, 2, true },
+        MatrixViewParams{ MATRIX1, VIEW_1_00, 0, 0, 2, true }, MatrixViewParams{ MATRIX1, VIEW_1_01, 0, 1, 2, true },
+        MatrixViewParams{ MATRIX1, VIEW_1_10, 1, 0, 2, true }, MatrixViewParams{ MATRIX1, VIEW_1_11, 1, 1, 2, true },
 
-        MatrixViewParams{ mat2, view2_00, 0, 0, 2, true }, MatrixViewParams{ mat2, view2_01, 0, 1, 2, true },
-        MatrixViewParams{ mat2, view2_10, 1, 0, 2, true }, MatrixViewParams{ mat2, view2_11, 1, 1, 2, true },
+        MatrixViewParams{ MATRIX2, VIEW_2_00, 0, 0, 2, true }, MatrixViewParams{ MATRIX2, VIEW_2_01, 0, 1, 2, true },
+        MatrixViewParams{ MATRIX2, VIEW_2_10, 1, 0, 2, true }, MatrixViewParams{ MATRIX2, VIEW_2_11, 1, 1, 2, true },
 
-        MatrixViewParams{ mat3, view3_00, 0, 0, 2, false }, MatrixViewParams{ mat3, view3_01, 0, 1, 2, false },
-        MatrixViewParams{ mat3, view3_10, 1, 0, 2, false }, MatrixViewParams{ mat3, view3_11, 1, 1, 2, false }));
+        MatrixViewParams{ MATRIX3, VIEW_3_00, 0, 0, 2, false }, MatrixViewParams{ MATRIX3, VIEW_3_01, 0, 1, 2, false },
+        MatrixViewParams{ MATRIX3, VIEW_3_10, 1, 0, 2, false }, MatrixViewParams{ MATRIX3, VIEW_3_11, 1, 1, 2, false }));
 
 
 /** @brief Verify that the @ref datastructures::Matrix::getSubmatrix returns the correct submatrix. */

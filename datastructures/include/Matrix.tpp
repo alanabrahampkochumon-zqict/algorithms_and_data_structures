@@ -301,7 +301,7 @@ namespace datastructures
         //const auto C21 = P3 + P4;
         //const auto C22 = P5 + P1 - P3 - P7;
         // COMBINE TODO
-        return Matrix<R>();
+        return Matrix<R>(1, 1);
     }
 
 
