@@ -170,6 +170,14 @@ namespace datastructures
     }
 
 
+    template <Arithmetic T>
+    constexpr Matrix<T> Matrix<T>::getSubmatrix(std::size_t rowStart, std::size_t colStart, std::size_t rowSize,
+                                                std::size_t colSize, bool bitCeil) const
+    {
+        return *this;
+    }
+
+
     /**
      * @brief Combine the four quadrants of a matrix to form a matrix of the passed-in size.
      *        Ideally, all the quadrants needs to be of the same dimension.

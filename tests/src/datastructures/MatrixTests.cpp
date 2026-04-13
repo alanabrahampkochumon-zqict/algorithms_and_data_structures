@@ -56,6 +56,17 @@ class MatrixViewTests: public ::testing::TestWithParam<MatrixViewParams<int>>
 {};
 
 
+template <typename T>
+struct SubmatrixParams
+{
+    datastructures::Matrix<T> _matrix, _subMatrix;
+    std::size_t rowBlock, colBlock, rowSize, colSize;
+};
+/** @brief Test fixture for @ref datastructures::Matrix submatrix creation, parameterized by @ref SubmatrixParams. */
+class SubmatrixTests: public ::testing::TestWithParam<SubmatrixParams<int>>
+{};
+
+
 template <Arithmetic T>
 struct MatrixAdditionParams
 {
@@ -465,8 +476,10 @@ INSTANTIATE_TEST_SUITE_P(
  *                                    *
  **************************************/
 
-/** @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped to the correct source
- * boundaries. */
+/** 
+ * @test Verify that @ref datastructures::Matrix::getView returns a block-level view mapped 
+ *       to the correct source boundaries.
+ */
 TEST_P(MatrixViewTests, ProvidesCorrectView)
 {
     auto& [matrix, expectedView, rowBlock, colBlock, blockSize, bitCeil] = GetParam();
@@ -482,6 +495,7 @@ TEST_P(MatrixViewTests, ProvidesCorrectView)
     ASSERT_EQ(colBlock, matrixView.m_ColumnBlock);
     ASSERT_EQ(bitCeil, matrixView.m_BitCeil);
 }
+
 
 datastructures::Matrix<int> mat1{ { { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 }, { 1, 2, 3, 4 } } };
 const datastructures::ReadOnlyMatrixView view1_00{ mat1.m_Data.data(), mat1.m_Data.size(), 2, 2, 0, 0, 4, true };
@@ -512,6 +526,15 @@ INSTANTIATE_TEST_CASE_P(
 
         MatrixViewParams{ mat3, view3_00, 0, 0, 2, false }, MatrixViewParams{ mat3, view3_01, 0, 1, 2, false },
         MatrixViewParams{ mat3, view3_10, 1, 0, 2, false }, MatrixViewParams{ mat3, view3_11, 1, 1, 2, false }));
+
+
+/** @brief Verify that the @ref datastructures::Matrix::getSubmatrix returns the correct submatrix. */
+TEST_P(SubmatrixTests, ProvidesCorrectSubmatrix)
+{
+    const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize] = GetParam();
+
+    const auto subMatrix = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize);
+}
 
 /** @} */
 

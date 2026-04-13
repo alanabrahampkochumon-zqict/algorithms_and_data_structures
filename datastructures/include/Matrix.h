@@ -44,6 +44,28 @@ namespace datastructures
 
 
         /**
+         * @brief Construct a new submatrix of this matrix.
+         *
+         * @note If @p bitCeil is true, out-of-bounds elements will be filled with zero in the submatrix.
+         *
+         * @param rowStart The row to start the submatrix at.
+         * @param colStart The column to start the submatrix at.
+         * @param rowSize  The row span of the submatrix.
+         * @param colSize  The column span of the submatrix.
+         * @param bitCeil  A flag use to determine if the submatrix should be converted to a square matrix of size of
+         *                 power of 2. Default: `false`.
+         *
+         * @return A submatrix composed of elements from @p rowStart, @p colStart to @p rowSize, @p colSize and 0, if
+         *         @p bitCeil is `true` and the submatrix is beyond the bounds of the current matrix.
+         *
+         * @throw `std::out_of_range` if @p bitCeil is `false` and matrix beyond bound of the current matrix is
+         *        requested, either through invalid starting indices or size.
+         */
+        [[nodiscard]] constexpr Matrix getSubmatrix(std::size_t rowStart, std::size_t colStart, std::size_t rowSize,
+                                                    std::size_t colSize, bool bitCeil = false) const;
+
+
+        /**
          * @brief Access the element at the specified location.
          *        Provides read-write access to the element.
          *
@@ -156,7 +178,7 @@ namespace datastructures
          * @return A @ref datastructures::MatrixView representing the specified partition.
          */
         ReadOnlyMatrixView<T> getView(std::size_t blockSize, std::size_t rowBlock, std::size_t colBlock,
-                              bool bitCeilMatrix = true) const;
+                                      bool bitCeilMatrix = true) const;
 
 
         /**
@@ -201,7 +223,7 @@ namespace datastructures
 
         friend std::ostream& operator<<(std::ostream& os, const Matrix& mat)
         {
-            for (std::size_t row = 0; row < mat.m_Rows;++row)
+            for (std::size_t row = 0; row < mat.m_Rows; ++row)
             {
                 for (std::size_t col = 0; col < mat.m_Columns; ++col)
                     os << mat(row, col) << " ";
