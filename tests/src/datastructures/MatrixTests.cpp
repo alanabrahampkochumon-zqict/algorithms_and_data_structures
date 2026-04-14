@@ -63,13 +63,14 @@ struct SubmatrixParams
 {
     datastructures::Matrix<T> matrix, subMatrix;
     std::size_t rowStart, colStart, rowSize, colSize;
+    bool bitCeil = false;
 };
 /** @brief Test fixture for @ref datastructures::Matrix submatrix creation, parameterized by @ref SubmatrixParams. */
 class SubmatrixTests: public ::testing::TestWithParam<SubmatrixParams<int>>
 {};
 
 
-/** 
+/**
  * @brief Test fixture for @ref datastructures::Matrix submatrix creation out-of-range checking,
  *        parameterized by @ref SubmatrixParams.
  */
@@ -571,8 +572,8 @@ INSTANTIATE_TEST_CASE_P(MatrixViewTestCase, MatrixViewTests,
 /** @brief Verify that @ref datastructures::Matrix::getSubmatrix returns the correct submatrix. */
 TEST_P(SubmatrixTests, ProvidesCorrectSubmatrix)
 {
-    const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize] = GetParam();
-    const auto subMatrix = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, true);
+    const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
+    const auto subMatrix = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, bitCeil);
     EXPECT_MAT_EQ(expectedSubmatrix, subMatrix);
 }
 
@@ -587,15 +588,20 @@ const datastructures::Matrix<int> SUBMATRIX_2_10{ { { 7, 8 }, { 0, 0 } } };
 const datastructures::Matrix<int> SUBMATRIX_2_11{ { { 9, 0 }, { 0, 0 } } };
 
 INSTANTIATE_TEST_SUITE_P(SubmatrixTestSuite, SubmatrixTests,
-                         ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 2, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 2, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_11, 2, 2, 2, 2 },
+                         ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 2, 2, true },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 2, 2, 2, true },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 2, 0, 2, 2, true },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_11, 2, 2, 2, 2, true },
 
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_00, 0, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2 }));
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_00, 0, 0, 2, 2, true },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2, true },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2, true },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2, true },
+
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_00, 0, 0, 2, 2, false },
+                                           SubmatrixParams{ MATRIX2, MATRIX2, 0, 0, 3, 3, false },
+                                           SubmatrixParams{ MATRIX2, { { { 1 } } }, 0, 0, 1, 1, false },
+                                           SubmatrixParams{ MATRIX2, { { { 9 } } }, 2, 2, 1, 1, false }));
 
 
 /**
@@ -604,21 +610,24 @@ INSTANTIATE_TEST_SUITE_P(SubmatrixTestSuite, SubmatrixTests,
  */
 TEST_P(SubmatrixOutOfBoundsTests, InvalidRowColStartAndSize_ThrowsException)
 {
-    const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize] = GetParam();
-    EXPECT_THROW(const auto mat = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, false), std::out_of_range);
+    const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize, bitCeil] = GetParam();
+    EXPECT_THROW(const auto mat = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, bitCeil),
+                 std::out_of_range);
 }
 
 INSTANTIATE_TEST_SUITE_P(InvalidSubmatrixTestSuite, SubmatrixOutOfBoundsTests,
-                         ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 5, 5 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 4, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 4, 0, 2, 2 },
+                         ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 5, 5, false },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 4, 2, 2, false },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 4, 0, 2, 2, false },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 0, 0, 5, 5, false },
 
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2, false },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2, false },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2, false },
 
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 0, 0, 4, 4 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 3, 3 }));
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 0, 0, 4, 4, false },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 3, 3, false },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 3, 3, true }));
 
 /** @} */
 
