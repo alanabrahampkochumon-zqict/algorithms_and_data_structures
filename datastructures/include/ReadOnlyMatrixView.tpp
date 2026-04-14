@@ -80,9 +80,6 @@ namespace datastructures
     template <Arithmetic T>
     const T& ReadOnlyMatrixView<T>::operator()(const std::size_t i, const std::size_t j) const
     {
-        // std::cout << "MatrixView (Rows, Cols): (" << m_ViewRows << ", " << m_ViewColumns << ")\n Accessed (i, j): ("
-        // << i
-        //           << ", " << j << ")\n";
         if (i >= m_ViewRows || j >= m_ViewColumns)
             throw std::out_of_range("Invalid row/column access");
 
@@ -100,7 +97,6 @@ namespace datastructures
         if (actualColumn >= m_Stride)
             return s_Zero;
         std::size_t index = actualRow * m_Stride + actualColumn;
-        std::cout << "\nData Index: " << index << "\n\n";
         return m_Data[index];
     }
 

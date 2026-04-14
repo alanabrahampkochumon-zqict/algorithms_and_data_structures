@@ -62,10 +62,18 @@ template <typename T>
 struct SubmatrixParams
 {
     datastructures::Matrix<T> matrix, subMatrix;
-    std::size_t rowBlock, colBlock, rowSize, colSize;
+    std::size_t rowStart, colStart, rowSize, colSize;
 };
 /** @brief Test fixture for @ref datastructures::Matrix submatrix creation, parameterized by @ref SubmatrixParams. */
 class SubmatrixTests: public ::testing::TestWithParam<SubmatrixParams<int>>
+{};
+
+
+/** 
+ * @brief Test fixture for @ref datastructures::Matrix submatrix creation out-of-range checking,
+ *        parameterized by @ref SubmatrixParams.
+ */
+class SubmatrixOutOfBoundsTests: public ::testing::TestWithParam<SubmatrixParams<int>>
 {};
 
 
@@ -569,45 +577,48 @@ TEST_P(SubmatrixTests, ProvidesCorrectSubmatrix)
 }
 
 const datastructures::Matrix<int> SUBMATRIX_1_00{ { { 1, 2 }, { 5, 6 } } };
-const datastructures::Matrix<int> SUBMATRIX_1_01{ { { 9, 10 }, { 13, 14 } } };
-const datastructures::Matrix<int> SUBMATRIX_1_10{ { { 3, 4 }, { 7, 8 } } };
+const datastructures::Matrix<int> SUBMATRIX_1_10{ { { 9, 10 }, { 13, 14 } } };
+const datastructures::Matrix<int> SUBMATRIX_1_01{ { { 3, 4 }, { 7, 8 } } };
 const datastructures::Matrix<int> SUBMATRIX_1_11{ { { 11, 12 }, { 15, 16 } } };
 
 const datastructures::Matrix<int> SUBMATRIX_2_00{ { { 1, 2 }, { 4, 5 } } };
-const datastructures::Matrix<int> SUBMATRIX_2_01{ { { 7, 8 }, { 0, 0 } } };
-const datastructures::Matrix<int> SUBMATRIX_2_10{ { { 3, 0 }, { 6, 0 } } };
+const datastructures::Matrix<int> SUBMATRIX_2_01{ { { 3, 0 }, { 6, 0 } } };
+const datastructures::Matrix<int> SUBMATRIX_2_10{ { { 7, 8 }, { 0, 0 } } };
 const datastructures::Matrix<int> SUBMATRIX_2_11{ { { 9, 0 }, { 0, 0 } } };
 
 INSTANTIATE_TEST_SUITE_P(SubmatrixTestSuite, SubmatrixTests,
                          ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 1, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 1, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_11, 1, 1, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 2, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 2, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX1, SUBMATRIX_1_11, 2, 2, 2, 2 },
 
                                            SubmatrixParams{ MATRIX2, SUBMATRIX_2_00, 0, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 1, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 1, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 2, 2 }));
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2 }));
 
 
-/** 
+/**
  * @brief Verify that @ref datastructures::Matrix::getSubmatrix throws `std::out_of_range` when passed-in with
  *        invalid values for start and size values for rows and columns.
  */
-TEST_P(SubmatrixTests, InvalidRowColStartAndSize_ThrowsException)
+TEST_P(SubmatrixOutOfBoundsTests, InvalidRowColStartAndSize_ThrowsException)
 {
     const auto& [matrix, expectedSubmatrix, rowStart, colStart, rowSize, colSize] = GetParam();
     EXPECT_THROW(const auto mat = matrix.getSubmatrix(rowStart, colStart, rowSize, colSize, false), std::out_of_range);
 }
 
-INSTANTIATE_TEST_SUITE_P(InvalidSubmatrixTestSuite, SubmatrixTests,
+INSTANTIATE_TEST_SUITE_P(InvalidSubmatrixTestSuite, SubmatrixOutOfBoundsTests,
                          ::testing::Values(SubmatrixParams{ MATRIX1, SUBMATRIX_1_00, 0, 0, 5, 5 },
                                            SubmatrixParams{ MATRIX1, SUBMATRIX_1_01, 0, 4, 2, 2 },
                                            SubmatrixParams{ MATRIX1, SUBMATRIX_1_10, 4, 0, 2, 2 },
 
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 1, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 1, 0, 2, 2 },
-                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 2, 2 }));
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_01, 0, 2, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_10, 2, 0, 2, 2 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 2, 2, 2, 2 },
+
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 0, 0, 4, 4 },
+                                           SubmatrixParams{ MATRIX2, SUBMATRIX_2_11, 1, 1, 3, 3 }));
 
 /** @} */
 

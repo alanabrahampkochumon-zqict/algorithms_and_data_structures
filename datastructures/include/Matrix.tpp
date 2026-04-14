@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstddef>
+#include <type_traits>
 
 
 namespace datastructures
@@ -69,13 +70,38 @@ namespace datastructures
     }
 
     template <Arithmetic T>
-    const T& Matrix<T>::operator()(std::size_t row, std::size_t col) const
+    const T& Matrix<T>::operator()(const std::size_t row, const std::size_t col) const
     {
         if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
             throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
     }
 
+
+    template <Arithmetic T>
+    constexpr Matrix<T> Matrix<T>::getSubmatrix(const std::size_t rowStart, const std::size_t colStart,
+                                                const std::size_t rowSize, const std::size_t colSize,
+                                                const bool bitCeil) const
+    {
+        const std::size_t maxRows = bitCeil ? std::bit_ceil(m_Rows) : m_Rows;
+        const std::size_t maxCols = bitCeil ? std::bit_ceil(m_Columns) : m_Columns;
+
+        if (rowStart + rowSize > maxRows)
+            throw std::out_of_range("Invalid row index and size!");
+        if (colSize + colStart > maxCols)
+            throw std::out_of_range("Invalid column index and size!");
+
+        Matrix matrix(rowSize, colSize);
+
+        for (std::size_t i = rowStart; i < rowStart + rowSize; ++i)
+            for (std::size_t j = colStart; j < colStart + colSize; ++j)
+                if (i < m_Rows && j < m_Columns)
+                    matrix(i - rowStart, j - colStart) = m_Data[i * m_Columns + j];
+                else
+                    matrix(i - rowStart, j - colStart) = T(0);
+
+        return matrix;
+    }
 
 
 
@@ -170,14 +196,6 @@ namespace datastructures
     }
 
 
-    template <Arithmetic T>
-    constexpr Matrix<T> Matrix<T>::getSubmatrix(std::size_t rowStart, std::size_t colStart, std::size_t rowSize,
-                                                std::size_t colSize, bool bitCeil) const
-    {
-        return *this;
-    }
-
-
     /**
      * @brief Combine the four quadrants of a matrix to form a matrix of the passed-in size.
      *        Ideally, all the quadrants needs to be of the same dimension.
@@ -267,40 +285,40 @@ namespace datastructures
         const auto halfColumns = lhs.m_ViewColumns / 2; // Symmetric
 
         // Using 1-based indexing to be inline with CLRS
-        //const auto A11 = lhs.getSubview(0, 0, halfRows, halfColumns);
-        //const auto A12 = lhs.getSubview(0, 1, halfRows, halfColumns);
-        //const auto A21 = lhs.getSubview(1, 0, halfRows, halfColumns);
-        //const auto A22 = lhs.getSubview(1, 1, halfRows, halfColumns);
+        // const auto A11 = lhs.getSubview(0, 0, halfRows, halfColumns);
+        // const auto A12 = lhs.getSubview(0, 1, halfRows, halfColumns);
+        // const auto A21 = lhs.getSubview(1, 0, halfRows, halfColumns);
+        // const auto A22 = lhs.getSubview(1, 1, halfRows, halfColumns);
 
-        //const auto B11 = rhs.getSubview(0, 0, halfRows, halfColumns);
-        //const auto B12 = rhs.getSubview(0, 1, halfRows, halfColumns);
-        //const auto B21 = rhs.getSubview(1, 0, halfRows, halfColumns);
-        //const auto B22 = rhs.getSubview(1, 1, halfRows, halfColumns);
+        // const auto B11 = rhs.getSubview(0, 0, halfRows, halfColumns);
+        // const auto B12 = rhs.getSubview(0, 1, halfRows, halfColumns);
+        // const auto B21 = rhs.getSubview(1, 0, halfRows, halfColumns);
+        // const auto B22 = rhs.getSubview(1, 1, halfRows, halfColumns);
         //
-        //const auto S1 = B12 - B22;
-        //const auto S2 = A11 + A12;
-        //const auto S3 = A21 + A22;
-        //const auto S4 = B21 - B11;
-        //const auto S5 = A11 + A22;
-        //const auto S6 = B11 + B22;
-        //const auto S7 = A12 - A22;
-        //const auto S8 = B21 - B22;
-        //const auto S9 = A11 - A21;
-        //const auto S10 = B11 + B12;
+        // const auto S1 = B12 - B22;
+        // const auto S2 = A11 + A12;
+        // const auto S3 = A21 + A22;
+        // const auto S4 = B21 - B11;
+        // const auto S5 = A11 + A22;
+        // const auto S6 = B11 + B22;
+        // const auto S7 = A12 - A22;
+        // const auto S8 = B21 - B22;
+        // const auto S9 = A11 - A21;
+        // const auto S10 = B11 + B12;
 
-        //const auto P1 = A11 * S1;
-        //const auto P2 = S2 * B22;
-        //const auto P3 = S3 * B11;
-        //const auto P4 = A22 * S4;
-        //const auto P5 = S5 * S6;
-        //const auto P6 = S7 * S8;
-        //const auto P7 = S9 * S10;
+        // const auto P1 = A11 * S1;
+        // const auto P2 = S2 * B22;
+        // const auto P3 = S3 * B11;
+        // const auto P4 = A22 * S4;
+        // const auto P5 = S5 * S6;
+        // const auto P6 = S7 * S8;
+        // const auto P7 = S9 * S10;
 
-        //const auto C11 = P5 + P4 - P2 + P6;
-        //const auto C12 = P1 + P2;
-        //const auto C21 = P3 + P4;
-        //const auto C22 = P5 + P1 - P3 - P7;
-        // COMBINE TODO
+        // const auto C11 = P5 + P4 - P2 + P6;
+        // const auto C12 = P1 + P2;
+        // const auto C21 = P3 + P4;
+        // const auto C22 = P5 + P1 - P3 - P7;
+        //  COMBINE TODO
         return Matrix<R>(1, 1);
     }
 
