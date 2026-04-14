@@ -14,6 +14,7 @@
 #include <algorithm>
 #include <bit>
 #include <cstddef>
+#include <algorithm>
 #include <type_traits>
 
 
@@ -274,52 +275,56 @@ namespace datastructures
     }
 
     template <Arithmetic T, Arithmetic U>
-    static Matrix<std::common_type_t<T, U>> strassens(const ReadOnlyMatrixView<T>& lhs,
-                                                      const ReadOnlyMatrixView<U>& rhs)
+    static Matrix<std::common_type_t<T, U>> strassens(const Matrix<T>& lhs, const Matrix<U>& rhs)
     {
         using R = std::common_type_t<T, U>;
-        if (lhs.m_ViewColumns == 1 && lhs.m_ViewRows == 1)
+        if (lhs.m_Columns == 1 && lhs.m_Rows == 1)
             return Matrix<T>({ { lhs(0, 0) * rhs(0, 0) } });
 
-        const auto halfRows = lhs.m_ViewRows / 2;       // Symmetric
-        const auto halfColumns = lhs.m_ViewColumns / 2; // Symmetric
+        const auto lHalfRows = lhs.m_Rows / 2;
+        const auto lHalfColumns = lhs.m_Columns / 2;
+        const auto rHalfRows = rhs.m_Rows / 2;
+        const auto rHalfColumns = rhs.m_Columns / 2;
 
         // Using 1-based indexing to be inline with CLRS
-        // const auto A11 = lhs.getSubview(0, 0, halfRows, halfColumns);
-        // const auto A12 = lhs.getSubview(0, 1, halfRows, halfColumns);
-        // const auto A21 = lhs.getSubview(1, 0, halfRows, halfColumns);
-        // const auto A22 = lhs.getSubview(1, 1, halfRows, halfColumns);
+        const auto a11 = lhs.getSubmatrix(0, 0, lHalfRows, lHalfColumns);
+        const auto a12 = lhs.getSubmatrix(0, lHalfColumns, lHalfRows, lhs.m_Columns - lHalfColumns);
+        const auto a21 = lhs.getSubmatrix(lHalfRows, 0, lhs.m_Rows - lHalfRows, lHalfColumns);
+        const auto a22 = 
+            lhs.getSubmatrix(lHalfRows, lHalfColumns, lhs.m_Rows - lHalfRows, lhs.m_Columns - lHalfColumns);
 
-        // const auto B11 = rhs.getSubview(0, 0, halfRows, halfColumns);
-        // const auto B12 = rhs.getSubview(0, 1, halfRows, halfColumns);
-        // const auto B21 = rhs.getSubview(1, 0, halfRows, halfColumns);
-        // const auto B22 = rhs.getSubview(1, 1, halfRows, halfColumns);
-        //
-        // const auto S1 = B12 - B22;
-        // const auto S2 = A11 + A12;
-        // const auto S3 = A21 + A22;
-        // const auto S4 = B21 - B11;
-        // const auto S5 = A11 + A22;
-        // const auto S6 = B11 + B22;
-        // const auto S7 = A12 - A22;
-        // const auto S8 = B21 - B22;
-        // const auto S9 = A11 - A21;
-        // const auto S10 = B11 + B12;
+        const auto b11 = rhs.getSubmatrix(0, 0, rHalfRows, rHalfColumns);
+        const auto b12 = rhs.getSubmatrix(0, rHalfColumns, rHalfRows, lhs.m_Columns - rHalfColumns);
+        const auto b21 = rhs.getSubmatrix(rHalfRows, 0, lhs.m_Rows - rHalfRows, rHalfColumns);
+        const auto b22 = 
+            rhs.getSubmatrix(rHalfRows, rHalfColumns, lhs.m_Rows - rHalfRows, lhs.m_Columns - rHalfColumns);
 
-        // const auto P1 = A11 * S1;
-        // const auto P2 = S2 * B22;
-        // const auto P3 = S3 * B11;
-        // const auto P4 = A22 * S4;
-        // const auto P5 = S5 * S6;
-        // const auto P6 = S7 * S8;
-        // const auto P7 = S9 * S10;
 
-        // const auto C11 = P5 + P4 - P2 + P6;
-        // const auto C12 = P1 + P2;
-        // const auto C21 = P3 + P4;
-        // const auto C22 = P5 + P1 - P3 - P7;
-        //  COMBINE TODO
-        return Matrix<R>(1, 1);
+        const auto s1 = b12 - b22;
+        const auto s2 = a11 + a12;
+        const auto s3 = a21 + a22;
+        const auto s4 = b21 - b11;
+        const auto s5 = a11 + a22;
+        const auto s6 = b11 + b22;
+        const auto s7 = a12 - a22;
+        const auto s8 = b21 + b22;
+        const auto s9 = a11 - a21;
+        const auto s10 = b11 + b12;
+
+        const auto p1 = strassens(a11, s1);
+        const auto p2 = strassens(s2, b22);
+        const auto p3 = strassens(s3, b11);
+        const auto p4 = strassens(a22, s4);
+        const auto p5 = strassens(s5, s6);
+        const auto p6 = strassens(s7, s8);
+        const auto p7 = strassens(s9, s10);
+
+        const auto c11 = p5 + p4 - p2 + p6;
+        const auto c12 = p1 + p2;
+        const auto c21 = p3 + p4;
+        const auto c22 = p5 + p1 - p3 - p7;
+        
+        return mergeQuadrantsAndFlatten(lhs.m_Rows, rhs.m_Columns, c11, c12, c21, c22);
     }
 
 
@@ -339,8 +344,7 @@ namespace datastructures
                 return divideAndConquer(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
                                         rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
             case MultiplicationAlgorithmType::STRASSENS:
-                return strassens(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
-                                 rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
+                return strassens(*this, rhs);
             default:
                 break;
         }
