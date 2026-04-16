@@ -336,7 +336,7 @@ namespace datastructures
      * @param targetRowSize    The row size of the resulting matrix.
      * @param targetColumnSize The column size of the resulting matrix.
      *
-     * @return A new @ref Matrix instance having the first entries  @p targetRowSize by @p targetColumnSize 
+     * @return A new @ref Matrix instance having the first entries  @p targetRowSize by @p targetColumnSize
      *         of the original matrix.
      */
     template <Arithmetic T>
@@ -356,6 +356,7 @@ namespace datastructures
         return reducedMatrix;
     }
 
+
     template <Arithmetic T>
     template <Arithmetic U>
     auto Matrix<T>::multiply(const Matrix<U>& rhs, const MultiplicationAlgorithmType algo) const
@@ -371,13 +372,18 @@ namespace datastructures
             case MultiplicationAlgorithmType::DIVIDE_AND_CONQUER:
                 return divideAndConquer(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
                                         rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
-            case MultiplicationAlgorithmType::STRASSENS:
-                return strassens(*this, rhs);
+            case MultiplicationAlgorithmType::STRASSENS: {
+                std::size_t size = std::max({ m_Rows, m_Columns, rhs.m_Rows, rhs.m_Columns });
+                return reduce(
+                    strassens(this->getSubmatrix(0, 0, size, size, true), rhs.getSubmatrix(0, 0, size, size, true)),
+                    m_Rows, rhs.m_Columns);
+            }
             default:
                 break;
         }
         return Matrix(m_Rows, rhs.m_Columns); // TODO: Replace
     }
+
 
     template <Arithmetic T>
     template <Arithmetic U>
