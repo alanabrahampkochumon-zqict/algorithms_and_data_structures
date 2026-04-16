@@ -12,6 +12,7 @@
 
 /** 
  * @brief Declare an execution path as unreachable during program normal execution.
+ *        Reaching that execution path is considered as undefined behavior and may abort the program.
  *
  * @par Example UseCase:
  *      When a function returns an object depending on a condition but the doesn't run any in the default execution
