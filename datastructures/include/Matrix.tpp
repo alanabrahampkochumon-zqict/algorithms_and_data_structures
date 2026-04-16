@@ -14,7 +14,6 @@
 #include <algorithm>
 #include <bit>
 #include <cstddef>
-#include <algorithm>
 #include <type_traits>
 
 
@@ -290,16 +289,16 @@ namespace datastructures
         const auto a11 = lhs.getSubmatrix(0, 0, lHalfRows, lHalfColumns);
         const auto a12 = lhs.getSubmatrix(0, lHalfColumns, lHalfRows, lhs.m_Columns - lHalfColumns);
         const auto a21 = lhs.getSubmatrix(lHalfRows, 0, lhs.m_Rows - lHalfRows, lHalfColumns);
-        const auto a22 = 
+        const auto a22 =
             lhs.getSubmatrix(lHalfRows, lHalfColumns, lhs.m_Rows - lHalfRows, lhs.m_Columns - lHalfColumns);
 
         const auto b11 = rhs.getSubmatrix(0, 0, rHalfRows, rHalfColumns);
         const auto b12 = rhs.getSubmatrix(0, rHalfColumns, rHalfRows, lhs.m_Columns - rHalfColumns);
         const auto b21 = rhs.getSubmatrix(rHalfRows, 0, lhs.m_Rows - rHalfRows, rHalfColumns);
-        const auto b22 = 
+        const auto b22 =
             rhs.getSubmatrix(rHalfRows, rHalfColumns, lhs.m_Rows - rHalfRows, lhs.m_Columns - rHalfColumns);
 
-
+        // TODO: Update to use view with add and subtract support
         const auto s1 = b12 - b22;
         const auto s2 = a11 + a12;
         const auto s3 = a21 + a22;
@@ -323,10 +322,39 @@ namespace datastructures
         const auto c12 = p1 + p2;
         const auto c21 = p3 + p4;
         const auto c22 = p5 + p1 - p3 - p7;
-        
+
         return mergeQuadrantsAndFlatten(lhs.m_Rows, rhs.m_Columns, c11, c12, c21, c22);
     }
 
+
+    /**
+     * @brief Reduce a matrix into a smaller @p targetRowSize x @p targetColumnSize matrix.
+     *
+     * @tparam T The numeric type of the matrix. Must satisfy @ref Arithmetic concept.
+     *
+     * @param mat              The matrix to reduce.
+     * @param targetRowSize    The row size of the resulting matrix.
+     * @param targetColumnSize The column size of the resulting matrix.
+     *
+     * @return A new @ref Matrix instance having the first entries  @p targetRowSize by @p targetColumnSize 
+     *         of the original matrix.
+     */
+    template <Arithmetic T>
+    Matrix<T> reduce(const Matrix<T>& mat, std::size_t targetRowSize, std::size_t targetColumnSize)
+    {
+        if (targetRowSize > mat.m_Rows)
+            throw std::out_of_range("Invalid row size. Must be less than the matrix's row count");
+        if (targetColumnSize > mat.m_Columns)
+            throw std::out_of_range("Invalid column size. Must be less than the matrix's column count");
+
+        Matrix<T> reducedMatrix(targetRowSize, targetColumnSize);
+
+        for (std::size_t i = 0; i < targetRowSize; ++i)
+            for (std::size_t j = 0; j < targetColumnSize; ++j)
+                reducedMatrix(i, j) = mat(i, j);
+
+        return reducedMatrix;
+    }
 
     template <Arithmetic T>
     template <Arithmetic U>
