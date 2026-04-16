@@ -11,6 +11,8 @@
  */
 
 
+#include "Preprocessors.h"
+
 #include <algorithm>
 #include <bit>
 #include <cstddef>
@@ -373,15 +375,14 @@ namespace datastructures
                 return divideAndConquer(getView(std::bit_ceil(std::max(m_Rows, m_Columns)), 0, 0, true),
                                         rhs.getView(std::bit_ceil(std::max(rhs.m_Rows, rhs.m_Columns)), 0, 0, true));
             case MultiplicationAlgorithmType::STRASSENS: {
-                std::size_t size = std::max({ m_Rows, m_Columns, rhs.m_Rows, rhs.m_Columns });
+                std::size_t size = std::bit_ceil(std::max({ m_Rows, m_Columns, rhs.m_Rows, rhs.m_Columns }));
                 return reduce(
                     strassens(this->getSubmatrix(0, 0, size, size, true), rhs.getSubmatrix(0, 0, size, size, true)),
                     m_Rows, rhs.m_Columns);
             }
             default:
-                break;
+                UNREACHABLE;
         }
-        return Matrix(m_Rows, rhs.m_Columns); // TODO: Replace
     }
 
 

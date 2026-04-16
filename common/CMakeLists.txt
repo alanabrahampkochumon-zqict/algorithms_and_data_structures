@@ -1,7 +1,7 @@
 add_library(Common INTERFACE)
 
 set(IncludeDirectory "include/")
-set(IncludeFiles "Concepts.h;Doxygen.h")
+set(IncludeFiles "Concepts.h;Doxygen.h;Preprocessors.h")
 list(TRANSFORM IncludeFiles PREPEND ${IncludeDirectory})
 
 target_sources(
