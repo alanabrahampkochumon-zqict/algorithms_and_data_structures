@@ -64,7 +64,7 @@ namespace datastructures
     template <Arithmetic T>
     T& Matrix<T>::operator()(const std::size_t row, const std::size_t col)
     {
-        if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
+        if (row >= m_Rows || col >= m_Columns)
             throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
     }
@@ -72,7 +72,7 @@ namespace datastructures
     template <Arithmetic T>
     const T& Matrix<T>::operator()(const std::size_t row, const std::size_t col) const
     {
-        if (row < 0 || row >= m_Rows || col < 0 || col >= m_Columns)
+        if (row >= m_Rows || col >= m_Columns)
             throw std::out_of_range("Invalid index");
         return m_Data[row * m_Columns + col];
     }
@@ -83,8 +83,8 @@ namespace datastructures
                                                 const std::size_t rowSize, const std::size_t colSize,
                                                 const bool bitCeil) const
     {
-        const std::size_t maxRows = bitCeil ? std::bit_ceil(m_Rows) : m_Rows;
-        const std::size_t maxCols = bitCeil ? std::bit_ceil(m_Columns) : m_Columns;
+        const std::size_t maxRows = bitCeil ? std::bit_ceil(std::max(m_Rows, m_Columns)) : m_Rows;
+        const std::size_t maxCols = bitCeil ? std::bit_ceil(std::max(m_Rows, m_Columns)) : m_Columns;
 
         if (rowStart + rowSize > maxRows)
             throw std::out_of_range("Invalid row index and size!");
